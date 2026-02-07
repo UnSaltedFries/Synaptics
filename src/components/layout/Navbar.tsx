@@ -74,9 +74,7 @@ export function Navbar({
         {/* Right: Social Links + Contacts (hidden on mobile) */}
         <div className="hidden md:flex items-center gap-4">
           <div className="hidden lg:flex items-center gap-4">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={cn("text-xs uppercase tracking-wide font-medium transition-colors inline-flex items-center gap-1", isDark ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-black")}>
-              TW<span className="text-[10px]">↗</span>
-            </a>
+            
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={cn("text-xs uppercase tracking-wide font-medium transition-colors inline-flex items-center gap-1", isDark ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-black")}>
               IG<span className="text-[10px]">↗</span>
             </a>
