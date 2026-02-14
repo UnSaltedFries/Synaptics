@@ -223,7 +223,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "howItWorks.step1.desc": "We analyze your call flow, understand your industry, and design a custom voice agent that speaks like your best receptionist.",
         "howItWorks.step2.title": "We configure your AI agent",
         "howItWorks.step2.desc": "We build the AI, integrate your calendar, CRM, and booking tools, then test everything until it's perfect.",
-        "howItWorks.step3.title": "Go live — calls answered instantly",
+        "howItWorks.step3.title": "Calls answered instantly",
         "howItWorks.step3.desc": "Your AI receptionist goes live. Every call is answered, booked, or qualified — 24/7, without lifting a finger.",
 
         // Floating CTA
@@ -537,7 +537,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "howItWorks.step1.desc": "On analyse votre flux d'appels, on comprend votre secteur, et on conçoit un agent vocal sur mesure qui parle comme votre meilleur(e) réceptionniste.",
         "howItWorks.step2.title": "On configure votre agent IA",
         "howItWorks.step2.desc": "On construit l'IA, on intègre votre calendrier, CRM et outils de réservation, puis on teste tout jusqu'à la perfection.",
-        "howItWorks.step3.title": "C'est live — appels décrochés instantanément",
+        "howItWorks.step3.title": "Appels décrochés instantanément",
         "howItWorks.step3.desc": "Votre réceptionniste IA est en ligne. Chaque appel est décroché, réservé ou qualifié — 24/7, sans lever le petit doigt.",
 
         // Floating CTA

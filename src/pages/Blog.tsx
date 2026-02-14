@@ -3,11 +3,12 @@ import { Layout } from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { projects } from "@/data/projects";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const Blog = () => {
     const { t, lang } = useLanguage();
     const [selectedProjectId, setSelectedProjectId] = useState<string>(projects[0].id);
+    const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
 
     // Find the currently selected project
     const selectedProject = projects.find(p => p.id === selectedProjectId) || projects[0];
@@ -19,6 +20,11 @@ const Blog = () => {
     const selectedRole = (lang === "fr" && selectedProject.role_fr) ? selectedProject.role_fr : selectedProject.role;
     const selectedTags = (lang === "fr" && selectedProject.tags_fr) ? selectedProject.tags_fr : selectedProject.tags;
 
+    const handleProjectClick = (projectId: string) => {
+        setSelectedProjectId(projectId);
+        setIsMobileDetailOpen(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
     return (
         <Layout variant="dark">
@@ -39,7 +45,7 @@ const Blog = () => {
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
                         {/* Left Column: List of Projects */}
-                        <div className="lg:col-span-4 flex flex-col gap-2">
+                        <div className={`lg:col-span-4 flex flex-col gap-2 ${isMobileDetailOpen ? 'hidden lg:flex' : 'flex'}`}>
                             {projects.map((project) => {
                                 const title = (lang === "fr" && project.title_fr) ? project.title_fr : project.title;
                                 const tags = (lang === "fr" && project.tags_fr) ? project.tags_fr : project.tags;
@@ -48,7 +54,7 @@ const Blog = () => {
                                 return (
                                     <button
                                         key={project.id}
-                                        onClick={() => setSelectedProjectId(project.id)}
+                                        onClick={() => handleProjectClick(project.id)}
                                         className={`text-left p-6 rounded-xl transition-all duration-300 border group ${isSelected
                                                 ? "bg-white/10 border-white/20 shadow-lg"
                                                 : "bg-transparent border-transparent hover:bg-white/5"
@@ -67,9 +73,18 @@ const Blog = () => {
                             })}
                         </div>
 
-                        {/* Right Column: Sticky Detail View */}
-                        <div className="lg:col-span-8 relative">
-                            <div className="sticky top-32">
+                        {/* Right Column: Detail View (Desktop Sticky / Mobile Overlay) */}
+                        <div className={`lg:col-span-8 ${isMobileDetailOpen ? 'fixed inset-0 z-50 bg-black overflow-y-auto lg:static lg:bg-transparent lg:z-auto lg:overflow-visible' : 'hidden lg:block relative'}`}>
+                            {isMobileDetailOpen && (
+                                <button
+                                    onClick={() => setIsMobileDetailOpen(false)}
+                                    className="lg:hidden absolute top-6 left-6 z-50 p-2 bg-white/10 backdrop-blur-md rounded-full text-white"
+                                >
+                                    <ArrowLeft className="w-6 h-6" />
+                                </button>
+                            )}
+
+                            <div className="lg:sticky lg:top-32 min-h-screen lg:min-h-0 pt-20 lg:pt-0 px-6 lg:px-0 pb-10">
                                 <AnimatePresence mode="wait">
                                     <motion.div
                                         key={selectedProjectId}

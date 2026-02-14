@@ -72,7 +72,7 @@ export function HowItWorks() {
                                                 <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-white">
                                                     {step.icon}
                                                 </div>
-                                                <h3 className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
+                                                <h3 className="text-3xl md:text-4xl font-semibold text-white tracking-tight min-h-[1.2em] md:min-h-[1.2em]">
                                                     {t(`howItWorks.step${i + 1}.title`)}
                                                 </h3>
                                             </div>
