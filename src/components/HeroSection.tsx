@@ -31,7 +31,7 @@ export function HeroSection() {
                 delay={50}
                 animateBy="letters"
                 direction="top"
-                className="inline-block"
+                className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400"
               />
               <br />
               <BlurText
@@ -39,7 +39,7 @@ export function HeroSection() {
                 delay={50}
                 animateBy="letters"
                 direction="top"
-                className="inline-block"
+                className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400"
               />
             </h1>
           </div>

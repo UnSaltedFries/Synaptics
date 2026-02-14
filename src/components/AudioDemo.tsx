@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 export function AudioDemo() {
     const { t } = useLanguage();
+    const [voice, setVoice] = useState<"man" | "woman">("woman");
 
     return (
         <section className="py-24 md:py-32 bg-black relative overflow-hidden">
@@ -67,7 +70,7 @@ export function AudioDemo() {
                                     key={i}
                                     className="flex-1 bg-purple-400/60 rounded-full transition-all duration-300"
                                     style={{
-                                        height: `${Math.sin(i * 0.3) * 30 + 50}%`,
+                                        height: `${Math.sin(i * 0.3 + (voice === 'woman' ? 0 : 2)) * 30 + 50}%`, // Slight visual change based on voice
                                     }}
                                 />
                             ))}
@@ -79,6 +82,39 @@ export function AudioDemo() {
                             <span>{t("audio.comingSoon")}</span>
                         </div>
                     </div>
+                </div>
+
+                {/* Voice Toggle */}
+                <div className="flex justify-center mt-12">
+                    <button
+                        onClick={() => setVoice(voice === "man" ? "woman" : "man")}
+                        className="relative flex items-center rounded-full overflow-hidden bg-white/[0.07] border border-white/[0.12] text-xs uppercase tracking-widest font-semibold p-1 cursor-pointer"
+                    >
+                        <span
+                            className={cn(
+                                "relative z-10 px-6 py-2 transition-colors duration-300",
+                                voice === "man" ? "text-white" : "text-gray-500"
+                            )}
+                        >
+                            {t("audio.voice.man")}
+                        </span>
+                        <span
+                            className={cn(
+                                "relative z-10 px-6 py-2 transition-colors duration-300",
+                                voice === "woman" ? "text-white" : "text-gray-500"
+                            )}
+                        >
+                            {t("audio.voice.woman")}
+                        </span>
+
+                        {/* Sliding indicator */}
+                        <div
+                            className="absolute top-[4px] bottom-[4px] w-[calc(50%-4px)] rounded-full bg-white/[0.15] backdrop-blur-md border border-white/[0.1] shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                            style={{
+                                left: voice === "man" ? "4px" : "calc(50%)",
+                            }}
+                        />
+                    </button>
                 </div>
             </div>
         </section>

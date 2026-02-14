@@ -132,6 +132,8 @@ const translations: Record<Lang, Record<string, string>> = {
         "audio.after": "After — AI Agent",
         "audio.afterDesc": "Instant response. Tasks automated. Clients happy.",
         "audio.listenDemo": "Listen to demo",
+        "audio.voice.man": "Man",
+        "audio.voice.woman": "Woman",
         "audio.comingSoon": "Demo audio coming soon",
 
         // Testimonials
@@ -446,6 +448,8 @@ const translations: Record<Lang, Record<string, string>> = {
         "audio.after": "Après — Agent IA",
         "audio.afterDesc": "Réponse instantanée. Tâches automatisées. Clients satisfaits.",
         "audio.listenDemo": "Écouter la démo",
+        "audio.voice.man": "Homme",
+        "audio.voice.woman": "Femme",
         "audio.comingSoon": "Audio démo bientôt disponible",
 
         // Testimonials

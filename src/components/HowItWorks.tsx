@@ -53,7 +53,7 @@ export function HowItWorks() {
                             itemDistance={30} // Reverted to tighter scroll
                             itemScale={0.05} // Reverted to original scale diff
                             itemStackDistance={35} // Reverted to tighter cascading overlap
-                            stackPosition="15%" // Brought up significantly to reduce gap
+                            stackPosition="25%" // Brought up to be closer to title
                             scaleEndPosition="10%"
                             baseScale={0.90} // Original base scale
                             scaleDuration={0.4}
