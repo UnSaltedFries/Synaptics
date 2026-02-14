@@ -49,9 +49,15 @@ export function HeroSection() {
           transform: `translateY(${descOffset}px)`
         }}>
           <div className="text-lg md:text-xl font-light leading-relaxed max-w-md">
-            <span className="animate-shine-text inline-block">
-              {t("hero.desc")}
-            </span>
+            <BlurText
+              text={t("hero.desc")}
+              delay={10}
+              duration={300}
+              animateBy="letters"
+              direction="top"
+              className="inline-block"
+              childClassName="animate-shine-text"
+            />
           </div>
         </div>
       </div>

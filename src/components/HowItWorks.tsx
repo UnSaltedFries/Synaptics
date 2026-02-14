@@ -1,4 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
+import ScrollStack, { ScrollStackItem } from "./ScrollStack";
 
 const steps = [
     {
@@ -32,54 +33,62 @@ export function HowItWorks() {
     const { t } = useLanguage();
 
     return (
-        <section className="py-24 md:py-32 bg-black relative overflow-hidden">
-            <div className="container">
-                <div className="flex flex-col lg:flex-row gap-16 lg:gap-32">
+        <section className="py-8 md:py-20 bg-black relative z-30">
+            <div className="container relative z-10">
+                <div className="flex flex-col items-center max-w-5xl mx-auto">
 
-                    {/* Left Column - Sticky Title */}
-                    <div className="lg:w-1/3">
-                        <div className="sticky top-32">
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-[-0.03em] mb-6">
-                                {t("howItWorks.title")}
-                            </h2>
-                            <p className="text-gray-400 text-lg leading-relaxed max-w-sm">
-                                {t("howItWorks.subtitle")}
-                            </p>
-                        </div>
+                    {/* Header - Centered */}
+                    <div className="text-center mb-8 md:mb-12">
+                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-[-0.03em] mb-6">
+                            {t("howItWorks.title")}
+                        </h2>
+                        <p className="text-gray-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+                            {t("howItWorks.subtitle")}
+                        </p>
                     </div>
 
-                    {/* Right Column - Steps List */}
-                    <div className="lg:w-2/3">
-                        <div className="flex flex-col">
+                    {/* Scrolling Steps */}
+                    <div className="w-full min-h-[120vh]">
+                        <ScrollStack
+                            itemDistance={30} // Reverted to tighter scroll
+                            itemScale={0.05} // Reverted to original scale diff
+                            itemStackDistance={35} // Reverted to tighter cascading overlap
+                            stackPosition="15%" // Brought up significantly to reduce gap
+                            scaleEndPosition="10%"
+                            baseScale={0.90} // Original base scale
+                            scaleDuration={0.4}
+                            useWindowScroll={true}
+                            className="w-full"
+                        >
                             {steps.map((step, i) => (
-                                <div
-                                    key={i}
-                                    className="group relative border-t border-white/[0.08] py-12 md:py-16 transition-colors hover:bg-white/[0.02]"
-                                >
-                                    <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-12">
-                                        {/* Number & Icon */}
-                                        <div className="flex items-center gap-4 md:w-32 shrink-0">
-                                            <span className="text-sm font-mono text-gray-500 tracking-widest">{step.number}</span>
-                                            <div className="text-gray-400 group-hover:text-white transition-colors duration-300">
-                                                {step.icon}
+                                <ScrollStackItem key={i} itemClassName="relative overflow-hidden bg-zinc-900/80 backdrop-blur-xl border border-white/10 !p-10 md:!p-16 !h-auto !min-h-[350px] flex flex-col justify-center rounded-[2.5rem] shadow-2xl hover:border-white/20 transition-colors duration-500">
+                                    {/* Glass shine effect */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-transparent pointer-events-none" />
+
+                                    <div className="relative z-10 flex flex-col gap-8">
+                                        {/* Header */}
+                                        <div className="flex items-center justify-between border-b border-white/10 pb-8">
+                                            <div className="flex items-center gap-4">
+                                                <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-white">
+                                                    {step.icon}
+                                                </div>
+                                                <h3 className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
+                                                    {t(`howItWorks.step${i + 1}.title`)}
+                                                </h3>
                                             </div>
+                                            <span className="text-6xl font-display font-bold text-white/5 tracking-tighter">
+                                                {step.number}
+                                            </span>
                                         </div>
 
-                                        {/* Content */}
-                                        <div className="flex-1">
-                                            <h3 className="text-2xl font-medium text-white mb-3 group-hover:translate-x-1 transition-transform duration-300">
-                                                {t(`howItWorks.step${i + 1}.title`)}
-                                            </h3>
-                                            <p className="text-gray-400 leading-relaxed max-w-lg">
-                                                {t(`howItWorks.step${i + 1}.desc`)}
-                                            </p>
-                                        </div>
+                                        {/* Body */}
+                                        <p className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl">
+                                            {t(`howItWorks.step${i + 1}.desc`)}
+                                        </p>
                                     </div>
-                                </div>
+                                </ScrollStackItem>
                             ))}
-                            {/* Closing border */}
-                            <div className="border-t border-white/[0.08]" />
-                        </div>
+                        </ScrollStack>
                     </div>
 
                 </div>

@@ -7,7 +7,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { motion } from "framer-motion";
 
 const CheckIcon = () => (
-    <svg className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+    <svg className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
     </svg>
 );
@@ -28,7 +28,7 @@ const Pricing = () => {
         <Layout variant="dark">
             <section className="min-h-screen bg-black text-white pt-20 relative overflow-hidden">
                 <LightRays
-                    raysColor="#34d399"
+                    raysColor="#a855f7" // Purple-500
                     raysSpeed={0.2}
                     raysOrigin="top-center"
                     clickable={false}
@@ -44,11 +44,7 @@ const Pricing = () => {
                                 direction="bottom"
                             />
                         </div>
-                        <ScrollReveal delay={0.2}>
-                            <p className="text-lg text-gray-400 max-w-lg mx-auto">
-                                {t("pricing.subtitle")}
-                            </p>
-                        </ScrollReveal>
+
                     </div>
 
                     {/* Single centered custom card */}
@@ -61,7 +57,7 @@ const Pricing = () => {
                                     repeat: Infinity,
                                     ease: "easeInOut"
                                 }}
-                                className="relative rounded-3xl border border-emerald-500/[0.25] bg-emerald-500/[0.04] backdrop-blur-sm p-6 md:p-8 w-full shadow-2xl shadow-emerald-500/[0.05]"
+                                className="relative rounded-3xl border border-purple-500/[0.25] bg-purple-500/[0.04] backdrop-blur-sm p-6 md:p-8 w-full shadow-2xl shadow-purple-500/[0.05]"
                             >
 
                                 {/* Plan name */}
@@ -91,7 +87,7 @@ const Pricing = () => {
                                 {/* CTA */}
                                 <Link
                                     to="/contact"
-                                    className="block w-full text-center py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 bg-gradient-to-r from-blue-500 to-emerald-500 text-white hover:from-blue-400 hover:to-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20"
+                                    className="block w-full text-center py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 hover:shadow-lg hover:shadow-purple-500/20"
                                 >
                                     {t("pricing.cta.contact")}
                                 </Link>

@@ -146,7 +146,7 @@ const Contact = () => {
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-[0.9] tracking-[-0.03em] mb-6">
                 {t("contact.title.line1")}
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400 bg-[length:200%_auto] animate-gradient">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-[length:200%_auto] animate-gradient">
                   {t("contact.title.line2")}
                 </span>
               </h1>
@@ -173,8 +173,8 @@ const Contact = () => {
 
                 <div className="group p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-300">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-400">
+                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-purple-400">
                         <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
                       </svg>
                     </div>
@@ -211,7 +211,7 @@ const Contact = () => {
                       <FormField control={form.control} name="name" render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                            {t("contact.form.name")} <span className="text-emerald-400">*</span>
+                            {t("contact.form.name")} <span className="text-purple-400">*</span>
                           </FormLabel>
                           <FormControl>
                             <Input placeholder="Jane Doe" className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
@@ -222,7 +222,7 @@ const Contact = () => {
                       <FormField control={form.control} name="email" render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                            {t("contact.form.email")} <span className="text-emerald-400">*</span>
+                            {t("contact.form.email")} <span className="text-purple-400">*</span>
                           </FormLabel>
                           <FormControl>
                             <Input type="email" placeholder="jane@clinic.com" className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
@@ -236,7 +236,7 @@ const Contact = () => {
                     <FormField control={form.control} name="company" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                          {t("contact.form.company")} <span className="text-emerald-400">*</span>
+                          {t("contact.form.company")} <span className="text-purple-400">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input placeholder={t("contact.form.company")} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
@@ -249,7 +249,7 @@ const Contact = () => {
                     <FormField control={form.control} name="projectType" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                          {t("contact.form.useCase")} <span className="text-emerald-400">*</span>
+                          {t("contact.form.useCase")} <span className="text-purple-400">*</span>
                         </FormLabel>
                         <Popover open={open} onOpenChange={setOpen}>
                           <PopoverTrigger asChild>
@@ -356,7 +356,7 @@ const Contact = () => {
                     <FormField control={form.control} name="description" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                          {t("contact.form.tellMore")} <span className="text-emerald-400">*</span>
+                          {t("contact.form.tellMore")} <span className="text-purple-400">*</span>
                         </FormLabel>
                         <FormControl>
                           <Textarea placeholder={t("contact.form.tellMore.placeholder")} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl min-h-[80px] px-4 py-3 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm resize-none" {...field} />
@@ -370,7 +370,7 @@ const Contact = () => {
                       <FormField control={form.control} name="budget" render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                            {t("contact.form.budget")} <span className="text-emerald-400">*</span>
+                            {t("contact.form.budget")} <span className="text-purple-400">*</span>
                           </FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
@@ -392,7 +392,7 @@ const Contact = () => {
                       <FormField control={form.control} name="timeline" render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                            {t("contact.form.timeline")} <span className="text-emerald-400">*</span>
+                            {t("contact.form.timeline")} <span className="text-purple-400">*</span>
                           </FormLabel>
                           <FormControl>
                             <Input placeholder={t("contact.form.timelinePlaceholder")} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
@@ -406,7 +406,7 @@ const Contact = () => {
                     <FormField control={form.control} name="referral" render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                          {t("contact.form.referral")} <span className="text-emerald-400">*</span>
+                          {t("contact.form.referral")} <span className="text-purple-400">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input placeholder={t("contact.form.referralPlaceholder")} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
@@ -419,7 +419,7 @@ const Contact = () => {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-500 to-emerald-500 text-white hover:from-blue-400 hover:to-emerald-400 transition-all text-sm font-semibold uppercase tracking-widest disabled:opacity-50 shadow-[0_8px_32px_rgba(59,130,246,0.2)] hover:shadow-[0_8px_40px_rgba(59,130,246,0.3)] border-0"
+                      className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 transition-all text-sm font-semibold uppercase tracking-widest disabled:opacity-50 shadow-[0_8px_32px_rgba(124,58,237,0.2)] hover:shadow-[0_8px_40px_rgba(124,58,237,0.3)] border-0"
                     >
                       {isSubmitting ? t("contact.form.submitting") : t("contact.form.submit")}
                     </Button>

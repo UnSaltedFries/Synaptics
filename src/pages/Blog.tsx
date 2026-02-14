@@ -1,220 +1,125 @@
-import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { projects } from "@/data/projects";
-import { motion, AnimatePresence, useSpring } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const Blog = () => {
     const { t, lang } = useLanguage();
-    const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+    const [selectedProjectId, setSelectedProjectId] = useState<string>(projects[0].id);
 
-    // List of projects
-    const displayedProjects = projects;
+    // Find the currently selected project
+    const selectedProject = projects.find(p => p.id === selectedProjectId) || projects[0];
 
-    // Animation variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
+    // Language fallback for selected project
+    const selectedTitle = (lang === "fr" && selectedProject.title_fr) ? selectedProject.title_fr : selectedProject.title;
+    const selectedSubtitle = (lang === "fr" && selectedProject.subtitle_fr) ? selectedProject.subtitle_fr : selectedProject.subtitle;
+    const selectedFullDescription = (lang === "fr" && selectedProject.fullDescription_fr) ? selectedProject.fullDescription_fr : selectedProject.fullDescription;
+    const selectedRole = (lang === "fr" && selectedProject.role_fr) ? selectedProject.role_fr : selectedProject.role;
+    const selectedTags = (lang === "fr" && selectedProject.tags_fr) ? selectedProject.tags_fr : selectedProject.tags;
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.5,
-                ease: "easeOut"
-            }
-        }
-    };
-
-    const [cursorY, setCursorY] = useState(0);
-    const previewRef = useRef<HTMLDivElement>(null);
-    const springY = useSpring(0, { stiffness: 100, damping: 20, mass: 0.5 });
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const y = e.clientY;
-        setCursorY(y);
-    };
-
-    useEffect(() => {
-        if (hoveredProject && previewRef.current) {
-            const previewHeight = previewRef.current.offsetHeight;
-            const viewportHeight = window.innerHeight;
-            const padding = 100; // Safe zone padding
-
-            // Calculate target center
-            let targetY = cursorY - (previewHeight / 2);
-
-            // Clamp
-            const minAllowedY = padding;
-            const maxAllowedY = viewportHeight - previewHeight - padding;
-            targetY = Math.max(minAllowedY, Math.min(targetY, maxAllowedY));
-
-            springY.set(targetY);
-        }
-    }, [cursorY, hoveredProject, springY]);
 
     return (
         <Layout variant="dark">
-            <div className="bg-black min-h-screen">
-                <div className="min-h-screen pt-24 md:pt-32 pb-20 px-6 md:px-12 max-w-[1400px] mx-auto">
-                    <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={containerVariants}
-                        className="flex flex-col gap-16"
-                    >
-                        <div>
-                            <motion.h1
-                                variants={itemVariants}
-                                className="text-4xl md:text-6xl font-medium text-white mb-6 uppercase tracking-tight"
-                            >
-                                {lang === "fr" ? "Études de cas" : "Case Studies"}
-                            </motion.h1>
-                            <motion.p
-                                variants={itemVariants}
-                                className="text-xl text-gray-400 max-w-2xl font-light"
-                            >
-                                {lang === "fr"
-                                    ? "Découvrez comment nous transformons les entreprises avec nos agents IA."
-                                    : "Discover how we transform businesses with our AI agents."
-                                }
-                            </motion.p>
+            <div className="bg-black min-h-screen text-white">
+                <div className="container px-6 md:px-12 max-w-[1400px] mx-auto pt-24 md:pt-32 pb-20">
+
+                    <div className="mb-12">
+                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
+                            {lang === "fr" ? "Études de cas" : "Case Studies"}
+                        </h1>
+                        <p className="text-xl text-gray-400 max-w-2xl font-light">
+                            {lang === "fr"
+                                ? "Découvrez comment nous transformons les entreprises avec nos agents IA."
+                                : "Discover how we transform businesses with our AI agents."
+                            }
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+                        {/* Left Column: List of Projects */}
+                        <div className="lg:col-span-4 flex flex-col gap-2">
+                            {projects.map((project) => {
+                                const title = (lang === "fr" && project.title_fr) ? project.title_fr : project.title;
+                                const tags = (lang === "fr" && project.tags_fr) ? project.tags_fr : project.tags;
+                                const isSelected = selectedProjectId === project.id;
+
+                                return (
+                                    <button
+                                        key={project.id}
+                                        onClick={() => setSelectedProjectId(project.id)}
+                                        className={`text-left p-6 rounded-xl transition-all duration-300 border group ${isSelected
+                                                ? "bg-white/10 border-white/20 shadow-lg"
+                                                : "bg-transparent border-transparent hover:bg-white/5"
+                                            }`}
+                                    >
+                                        <div className="flex flex-col gap-2">
+                                            <span className={`text-[10px] uppercase tracking-widest font-mono ${isSelected ? "text-purple-400" : "text-gray-500 group-hover:text-gray-400"}`}>
+                                                {tags[0]}
+                                            </span>
+                                            <h3 className={`text-xl font-medium ${isSelected ? "text-white" : "text-gray-400 group-hover:text-white"}`}>
+                                                {title}
+                                            </h3>
+                                        </div>
+                                    </button>
+                                );
+                            })}
                         </div>
 
-                        <div
-                            className="flex flex-col lg:flex-row gap-12 lg:gap-20"
-                            onMouseMove={handleMouseMove} // Track mouse globally in the container
-                        >
-                            {/* List Section - Wider Text Column */}
-                            <div className="w-full lg:w-[55%] order-2 lg:order-1">
-                                <motion.div
-                                    className="flex flex-col"
-                                    variants={containerVariants}
-                                >
-                                    {displayedProjects.map((project) => {
-                                        const title = (lang === "fr" && project.title_fr) ? project.title_fr : project.title;
-                                        const role = (lang === "fr" && project.role_fr) ? project.role_fr : project.role;
-                                        const industry = (lang === "fr" && project.tags_fr) ? project.tags_fr[0] : project.tags[0];
-                                        const description = (lang === "fr" && project.fullDescription_fr) ? project.fullDescription_fr : project.fullDescription;
-
-                                        return (
-                                            <motion.div key={project.id} variants={itemVariants}>
-                                                <Link
-                                                    to={`/project/${project.id}`}
-                                                    className="group relative border-t border-white/10 py-8 transition-colors hover:bg-white/5 block"
-                                                    onMouseEnter={() => setHoveredProject(project.id)}
-                                                    onMouseLeave={() => setHoveredProject(null)}
-                                                >
-                                                    <div className="flex flex-col gap-4">
-                                                        <div className="flex items-center gap-3 mb-1">
-                                                            <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
-                                                                {industry}
-                                                            </span>
-                                                        </div>
-
-                                                        <h2 className="text-2xl md:text-3xl font-medium text-white group-hover:text-gray-200 transition-colors">
-                                                            {title}
-                                                        </h2>
-
-                                                        <p className="text-sm font-medium text-white/60 mb-2">
-                                                            {role}
-                                                        </p>
-
-                                                        <p className="text-gray-400 text-sm leading-relaxed max-w-xl">
-                                                            {description}
-                                                        </p>
-                                                    </div>
-                                                </Link>
-                                            </motion.div>
-                                        );
-                                    })}
-                                    <motion.div variants={itemVariants} className="border-t border-white/10" />
-                                </motion.div>
-                            </div>
-
-                            {/* Preview Section - Smart Sticky */}
-                            <motion.div
-                                variants={itemVariants}
-                                className="hidden lg:block w-[45%] order-1 lg:order-2 relative"
-                            >
-                                {/* Container is purely for spacing/layout, content is absolute positioned within relative parent?
-                                    No, we need the parent to be the reference for "absolute".
-                                    Wait, the parent `motion.div` has `relative`.
-                                    The `sticky` container inside should probably be removed if we are using absolute positioning relative to the Viewport or Page?
-
-                                    Actually, `sticky top-0 h-screen` creates a "viewport frame" that stays put.
-                                    Inside that frame, we can move things around using absolute positioning.
-                                    This is the correct pattern.
-                                */}
-                                <div className="sticky top-0 h-screen pointer-events-none">
-                                    <AnimatePresence mode="wait">
-                                        {hoveredProject ? (
-                                            (() => {
-                                                const project = projects.find(p => p.id === hoveredProject);
-                                                const title = project ? ((lang === "fr" && project.title_fr) ? project.title_fr : project.title) : "";
-                                                const description = project ? ((lang === "fr" && project.fullDescription_fr) ? project.fullDescription_fr : project.fullDescription) : "";
-
-                                                return project ? (
-                                                    <motion.div
-                                                        key={project.id}
-                                                        ref={previewRef}
-                                                        initial={{ opacity: 0, y: 20 }}
-                                                        animate={{
-                                                            opacity: 1,
-                                                            // y is controlled by springY via style logic below,
-                                                            // but for framer motion animate prop, we can just leave it or use the spring value?
-                                                            // Actually, if we pass style={{ y: springY }}, we shouldn't pass y in animate.
-                                                        }}
-                                                        exit={{ opacity: 0, y: -20 }}
-                                                        transition={{ duration: 0.3 }}
-                                                        style={{ y: springY }}
-                                                        className="absolute left-6 right-0 flex flex-col gap-6"
-                                                    >
-                                                        {/* Image */}
-                                                        <div className="w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 max-h-[45vh] shadow-2xl">
-                                                            <img
-                                                                src={project.heroImage}
-                                                                alt={title}
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        </div>
-
-                                                        {/* Text Content */}
-                                                        <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-white/5">
-                                                            <h3 className="text-2xl font-medium text-white mb-2">
-                                                                {title}
-                                                            </h3>
-                                                            <p className="text-gray-400 leading-relaxed text-sm lg:text-base line-clamp-5">
-                                                                {description}
-                                                            </p>
-                                                        </div>
-                                                    </motion.div>
-                                                ) : null;
-                                            })()
-                                        ) : (
-                                            <div className="absolute top-1/2 -translate-y-1/2 w-full px-6">
-                                                <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center text-gray-600">
-                                                    <span className="text-sm uppercase tracking-widest">
-                                                        Select a project
+                        {/* Right Column: Sticky Detail View */}
+                        <div className="lg:col-span-8 relative">
+                            <div className="sticky top-32">
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={selectedProjectId}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        transition={{ duration: 0.4, ease: "easeOut" }}
+                                        className="bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm"
+                                    >
+                                        {/* Tag & Year Banner */}
+                                        <div className="p-8 border-b border-white/5 flex items-center justify-between">
+                                            <div className="flex gap-2">
+                                                {selectedTags.map(tag => (
+                                                    <span key={tag} className="text-xs font-mono py-1 px-3 rounded-full bg-white/5 border border-white/10 text-gray-300">
+                                                        {tag}
                                                     </span>
+                                                ))}
+                                            </div>
+                                            <span className="text-sm text-gray-500 font-mono">{selectedProject.year}</span>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2">
+                                            {/* Text Content */}
+                                            <div className="p-8 md:p-10 flex flex-col justify-center order-2 md:order-1">
+                                                <h2 className="text-3xl font-bold mb-4">{selectedTitle}</h2>
+                                                <p className="text-lg text-gray-300 leading-relaxed mb-6">
+                                                    {selectedFullDescription}
+                                                </p>
+
+                                                <div className="pt-6 border-t border-white/5">
+                                                    <p className="text-xs uppercase tracking-widest text-gray-500 mb-2">{t("projectDetail.role")}</p>
+                                                    <p className="text-sm font-medium">{selectedRole}</p>
                                                 </div>
                                             </div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            </motion.div>
+
+                                            {/* Image */}
+                                            <div className="h-64 md:h-auto overflow-hidden order-1 md:order-2 bg-white/5 relative">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
+                                                <img
+                                                    src={selectedProject.heroImage}
+                                                    alt={selectedTitle}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                </AnimatePresence>
+                            </div>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </Layout>

@@ -46,8 +46,8 @@ const Index = () => {
 
           {/* Sections moved from Blog */}
           <div className="space-y-4">
-            <ScrollReveal><HowItWorks /></ScrollReveal>
-            <ScrollReveal><StatsSection /></ScrollReveal>
+            <ScrollReveal className="relative z-30"><HowItWorks /></ScrollReveal>
+            <ScrollReveal className="relative z-20"><StatsSection /></ScrollReveal>
 
             <ScrollReveal><AudioDemo /></ScrollReveal>
             <ScrollReveal><Testimonials /></ScrollReveal>
