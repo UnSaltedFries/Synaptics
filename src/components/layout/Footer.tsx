@@ -57,7 +57,9 @@ export function Footer() {
           </h2>
           <a
             className="text-lg md:text-xl text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group"
-            href="mailto:hello@synaptics.fr"
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@synaptics.fr"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             hello@synaptics.fr
             <span className="inline-block transition-transform group-hover:translate-x-1 text-gray-500">→</span>
@@ -110,25 +112,15 @@ export function Footer() {
               {t("footer.col.legal")}
             </p>
             <div className="flex flex-col gap-3">
-              {footerLinks.legal.map((link) =>
-                link.to ? (
-                  <Link
-                    key={link.label}
-                    to={link.to}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                ) : (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                )
-              )}
+              {footerLinks.legal.map((link) => (
+                <Link
+                  key={link.label}
+                  to={link.to}
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
 

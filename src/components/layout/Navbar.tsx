@@ -44,7 +44,20 @@ export function Navbar({ variant = "light" }: NavbarProps) {
   const expanded = manualExpand || isOnSubpage;
   const pillRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const gridRef = useRef<HTMLAnchorElement>(null);
+  const listRef = useRef<HTMLButtonElement>(null);
   const [indicatorPos, setIndicatorPos] = useState({ left: 3, width: 52 });
+  const [isLayoutAnimating, setIsLayoutAnimating] = useState(false);
+
+  useEffect(() => {
+    if (expanded) {
+      setIsLayoutAnimating(true);
+      const timer = setTimeout(() => setIsLayoutAnimating(false), 600);
+      return () => clearTimeout(timer);
+    } else {
+      setIsLayoutAnimating(false);
+    }
+  }, [expanded]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,42 +102,58 @@ export function Navbar({ variant = "light" }: NavbarProps) {
     { label: t("nav.blog"), to: "/blog" },
   ];
 
+  const activeIndex = expandedLinks.findIndex(link => link.to === location.pathname);
+
   // Measure the active link position and move indicator there
   useEffect(() => {
-    if (isHome && !manualExpand) {
-      setIndicatorPos({ left: 3, width: 52 });
-      return;
-    }
+    const measure = (targetEl?: HTMLElement | null) => {
+      const el = targetEl || (activeIndex >= 0 ? linkRefs.current[activeIndex] : (expanded ? listRef.current : gridRef.current));
 
-    const activeIndex = expandedLinks.findIndex(link => link.to === location.pathname);
+      if (el && pillRef.current) {
+        const pillRect = pillRef.current.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        if (elRect.width > 0) {
+          // Calculate target position with a 3px inset to ensure it's always "nested"
+          // and looks smaller than the target hit area.
+          const INSET = 3;
+          let targetLeft = elRect.left - pillRect.left + INSET;
+          let targetWidth = elRect.width - (INSET * 2);
 
-    if (activeIndex >= 0 && expanded) {
-      const measure = () => {
-        const el = linkRefs.current[activeIndex];
-        if (el && pillRef.current) {
-          const pillRect = pillRef.current.getBoundingClientRect();
-          const elRect = el.getBoundingClientRect();
-          if (elRect.width > 0) {
-            setIndicatorPos({
-              left: elRect.left - pillRect.left,
-              width: elRect.width,
-            });
-            return true;
+          // Clamp to ensure it never touches the outer borders
+          const minLeft = INSET;
+          const maxRight = pillRect.width - INSET;
+
+          if (targetLeft < minLeft) {
+            targetWidth -= (minLeft - targetLeft);
+            targetLeft = minLeft;
           }
+
+          if (targetLeft + targetWidth > maxRight) {
+            targetWidth = maxRight - targetLeft;
+          }
+
+          setIndicatorPos({
+            left: targetLeft,
+            width: Math.max(0, targetWidth),
+          });
         }
-        return false;
+      }
+    };
+
+    if (isLayoutAnimating && activeIndex >= 0) {
+      // Continuous updates ONLY for subpage links that move during expansion
+      let animationFrameId: number;
+      const tick = () => {
+        measure();
+        animationFrameId = requestAnimationFrame(tick);
       };
-
-      // Measure multiple times to account for transition
-      const intervals = [0, 50, 100, 200, 300, 400, 500];
-      const timers = intervals.map(delay => setTimeout(measure, delay));
-
-      return () => timers.forEach(clearTimeout);
-    } else if (expanded) {
-      // Manually expanded from home, not on a subpage
-      setIndicatorPos({ left: 59, width: 52 });
+      tick();
+      return () => cancelAnimationFrame(animationFrameId);
+    } else {
+      // Single update for stable icons or normal navigation
+      measure();
     }
-  }, [location.pathname, expanded, isHome, manualExpand, lang]); // Added lang dependency
+  }, [location.pathname, expanded, isHome, manualExpand, lang, isLayoutAnimating, activeIndex]);
 
   return (
     <header
@@ -154,11 +183,14 @@ export function Navbar({ variant = "light" }: NavbarProps) {
         {/* Center: Expandable pill — stretches to reveal links */}
         <div
           ref={pillRef}
-          className="relative flex items-center rounded-full backdrop-blur-xl bg-white/[0.07] border border-white/[0.12] shadow-[0_4px_24px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+          className="relative flex items-center rounded-full backdrop-blur-xl bg-white/[0.07] border border-white/[0.12] shadow-[0_4px_24px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] overflow-hidden"
         >
           {/* Sliding glass indicator — dynamically follows the active link */}
           <div
-            className="absolute top-[3px] bottom-[3px] rounded-full transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white/[0.15] backdrop-blur-md shadow-[0_2px_12px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.15)]"
+            className={cn(
+              "absolute top-[3px] bottom-[3px] rounded-full bg-white/[0.15] backdrop-blur-md shadow-[0_2px_12px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.15)]",
+              (isLayoutAnimating && activeIndex >= 0) ? "transition-none duration-0" : "transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            )}
             style={{
               width: `${indicatorPos.width}px`,
               left: `${indicatorPos.left}px`,
@@ -168,6 +200,7 @@ export function Navbar({ variant = "light" }: NavbarProps) {
           {/* Grid button — hover collapses (only if not on a subpage) */}
           <Link
             to="/"
+            ref={gridRef}
             onClick={() => {
               setManualExpand(false);
               window.scrollTo({ top: 0, behavior: "smooth" });
@@ -185,6 +218,7 @@ export function Navbar({ variant = "light" }: NavbarProps) {
           {/* List button — toggles expansion */}
           <button
             onClick={handleListClick}
+            ref={listRef}
             className={cn(
               "relative z-10 flex items-center justify-center w-14 h-10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
               expanded

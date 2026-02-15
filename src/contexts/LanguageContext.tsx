@@ -21,6 +21,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "hero.title.line1": "Synaptics",
         "hero.title.line2": "AI Agency",
         "hero.desc": "Automate calls, emails, documents, and workflows — 24/7 with intelligent AI agents built for your business.",
+        "hero.cta.button": "Book a Demo",
 
         // About Hero
         "about.hero.line1": "We build ",
@@ -56,15 +57,22 @@ const translations: Record<Lang, Record<string, string>> = {
         "about.bio4.post": " that never sleeps.",
 
         // Contact
-        "contact.title.line1": "Book a",
-        "contact.title.line2": "demo.",
-        "contact.desc": "Ready to automate your operations? Tell us about your business, and we'll build a custom AI solution for you.",
+        "contact.title.line1": "Get in touch",
+        "contact.title.line2": "with the Team",
+        "contact.desc": "Have a question or want to see Synaptics in action? Use the form below or reach out directly.",
+        "contact.direct": "Direct Contact",
+        "contact.email": "Email",
+        "contact.phone": "Phone",
+        "contact.location": "Location",
+        "contact.success.title": "Request Received!",
+        "contact.success.desc": "Thank you for your message. Our team will review your project and get back to you within 24 hours.",
+        "contact.success.button": "Back to Home",
         "contact.useCase": "Use Case",
         "contact.useCase.desc": "AI agents for calls, emails, documents, invoicing, and custom workflows.",
-        "contact.onboarding": "Onboarding",
-        "contact.onboarding.desc": "Most agents deployed in 48-72h. Complex integrations 1-2 weeks.",
+        "contact.onboarding": "Deployment",
+        "contact.onboarding.desc": "Deployment follows the development phase (duration varies by project).",
         "contact.pricing": "Pricing",
-        "contact.pricing.desc": "Flat monthly retainers based on call volume. No hidden fees.",
+        "contact.pricing.desc": "Flat monthly retainers based on call volume and number of features. No hidden fees.",
         "contact.form.name": "Name",
         "contact.form.email": "Email",
         "contact.form.company": "Company",
@@ -337,6 +345,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "hero.title.line1": "Synaptics",
         "hero.title.line2": "Agence IA",
         "hero.desc": "Automatisez vos appels, emails, documents et flux de travail — 24h/24 avec des agents IA sur mesure.",
+        "hero.cta.button": "Réserver une démo",
 
         // About Hero
         "about.hero.line1": "On crée des ",
@@ -372,15 +381,22 @@ const translations: Record<Lang, Record<string, string>> = {
         "about.bio4.post": " qui ne dort jamais.",
 
         // Contact
-        "contact.title.line1": "Réservez une",
-        "contact.title.line2": "démo.",
-        "contact.desc": "Prêt à automatiser vos opérations ? Parlez-nous de votre activité, et on vous crée une solution IA sur mesure.",
+        "contact.title.line1": "Contactez",
+        "contact.title.line2": "l'Équipe",
+        "contact.desc": "Une question ou envie de voir Synaptics en action ? Utilisez le formulaire ou contactez-nous directement.",
+        "contact.direct": "Contact Direct",
+        "contact.email": "Email",
+        "contact.phone": "Téléphone",
+        "contact.location": "Localisation",
+        "contact.success.title": "Demande Reçue !",
+        "contact.success.desc": "Merci pour votre message. Notre équipe va examiner votre projet et vous recontactera sous 24 heures.",
+        "contact.success.button": "Retour à l'accueil",
         "contact.useCase": "Cas d'usage",
         "contact.useCase.desc": "Agents IA pour appels, emails, documents, facturation et workflows personnalisés.",
         "contact.onboarding": "Déploiement",
-        "contact.onboarding.desc": "La plupart des agents déployés en 48-72h. Intégrations complexes : 1-2 semaines.",
+        "contact.onboarding.desc": "Le déploiement s'effectue après le développement (la durée dépendra de votre projet).",
         "contact.pricing": "Tarifs",
-        "contact.pricing.desc": "Forfaits mensuels fixes selon le volume d'appels. Sans frais cachés.",
+        "contact.pricing.desc": "Forfaits mensuels fixes selon le nombre de fonctionnalités et le volume. Sans frais cachés.",
         "contact.form.name": "Nom",
         "contact.form.email": "Email",
         "contact.form.company": "Nom de l'entreprise",
@@ -472,7 +488,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "integrations.subtitle": "Connexion transparente avec les outils que vous utilisez déjà.",
 
         // ROI Calculator
-        "roi.title": "Calculez le temps que vous perdez",
+        "roi.title": "Calculez l'argent que vous perdez",
         "roi.subtitle": "Découvrez combien les tâches manuelles coûtent vraiment à votre entreprise.",
         "roi.callsPerMonth": "Appels par mois",
         "roi.missedPercent": "% d'appels manqués",
@@ -498,7 +514,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "faq.a6": "Absolument. Tous les appels sont chiffrés et nous respectons le RGPD. Les enregistrements sont stockés de manière sécurisée et peuvent être supprimés automatiquement selon votre politique de rétention. Nous ne vendons ni ne partageons jamais vos données.",
 
         // Pricing
-        "pricing.title": "Tarifs simples et transparents",
+        "pricing.title": "Une tarification adaptée",
         "pricing.subtitle": "Sans frais cachés. Sans coût d'installation. Résiliable à tout moment.",
         "pricing.starter": "Starter",
         "pricing.starter.price": "500€",
@@ -521,9 +537,9 @@ const translations: Record<Lang, Record<string, string>> = {
         "pricing.growth.f6": "Support prioritaire",
         "pricing.popular": "Le plus populaire",
         "pricing.enterprise": "Enterprise",
-        "pricing.enterprise.price": "Sur mesure",
+        "pricing.enterprise.price": "Sur devis",
         "pricing.enterprise.period": "",
-        "pricing.enterprise.desc": "Solutions sur mesure pour les opérations à fort volume.",
+        "pricing.enterprise.desc": "Solutions dédiées pour les opérations à fort volume.",
         "pricing.enterprise.f1": "Appels illimités",
         "pricing.enterprise.f2": "Agents illimités",
         "pricing.enterprise.f3": "Intégrations personnalisées",
@@ -531,8 +547,8 @@ const translations: Record<Lang, Record<string, string>> = {
         "pricing.enterprise.f5": "Garantie SLA",
         "pricing.enterprise.f6": "Option marque blanche",
         "pricing.cta.start": "Commencer",
-        "pricing.cta.contact": "Contacter les ventes",
-        "pricing.custom.note": "Chaque projet est unique — contactez-nous pour un devis sur mesure.",
+        "pricing.cta.contact": "Nous contacter",
+        "pricing.custom.note": "Chaque projet est unique — contactez-nous pour un devis personnalisé.",
 
         // How It Works
         "howItWorks.title": "Comment ça marche",

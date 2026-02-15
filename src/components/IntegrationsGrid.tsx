@@ -5,10 +5,12 @@ const integrations = [
     { name: "HubSpot", logo: "/images/logos/hubspot.svg" },
     { name: "Salesforce", logo: "/images/logos/salesforce.svg" },
     { name: "Doctolib", logo: "/images/logos/doctolib.svg" },
-    { name: "Twilio", logo: "/images/logos/twilio.svg" },
-    { name: "n8n", logo: "/images/logos/n8n.svg" },
+
     { name: "Make", logo: "/images/logos/make.svg" },
     { name: "Zapier", logo: "/images/logos/zapier.svg" },
+    { name: "Zenchef", logo: "/images/logos/zenchef.svg" },
+    { name: "Quickbooks", logo: "/images/logos/quickbooks.svg" },
+    { name: "Planity", logo: "/images/logos/planity.svg" },
 ];
 
 export function IntegrationsGrid() {
@@ -26,7 +28,7 @@ export function IntegrationsGrid() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
                     {integrations.map((integration, i) => (
                         <div
                             key={i}

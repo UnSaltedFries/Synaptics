@@ -1,22 +1,21 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useScroll } from "framer-motion";
 
 export function FloatingCTA() {
     const { t } = useLanguage();
     const [visible, setVisible] = useState(false);
     const [dismissed, setDismissed] = useState(false);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            // Show after scrolling 60% of viewport height
-            const scrollThreshold = window.innerHeight * 0.6;
-            setVisible(window.scrollY > scrollThreshold);
-        };
+    const { scrollY } = useScroll();
 
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    useEffect(() => {
+        return scrollY.on("change", (latest) => {
+            const scrollThreshold = window.innerHeight * 0.6;
+            setVisible(latest > scrollThreshold);
+        });
+    }, [scrollY]);
 
     if (dismissed || !visible) return null;
 

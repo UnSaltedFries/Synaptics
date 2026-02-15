@@ -52,7 +52,7 @@ export const WaveBackground = () => {
                         fill="none"
                         stroke="url(#grad1)"
                         strokeWidth="150"
-                        style={{ y: y1 }}
+                        style={{ y: y1, willChange: "transform" }}
                         className="blur-3xl"
                     />
 
@@ -66,7 +66,7 @@ export const WaveBackground = () => {
                         fill="none"
                         stroke="url(#grad2)"
                         strokeWidth="150"
-                        style={{ y: y2 }}
+                        style={{ y: y2, willChange: "transform" }}
                         className="blur-2xl"
                     />
                 </svg>

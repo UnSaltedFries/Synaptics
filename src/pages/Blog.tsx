@@ -31,7 +31,12 @@ const Blog = () => {
             <div className="bg-black min-h-screen text-white">
                 <div className="container px-6 md:px-12 max-w-[1400px] mx-auto pt-24 md:pt-32 pb-20">
 
-                    <div className="mb-12">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        className="mb-12"
+                    >
                         <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
                             {lang === "fr" ? "Études de cas" : "Case Studies"}
                         </h1>
@@ -41,23 +46,30 @@ const Blog = () => {
                                 : "Discover how we transform businesses with our AI agents."
                             }
                         </p>
-                    </div>
+                    </motion.div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
                         {/* Left Column: List of Projects */}
                         <div className={`lg:col-span-4 flex flex-col gap-2 ${isMobileDetailOpen ? 'hidden lg:flex' : 'flex'}`}>
-                            {projects.map((project) => {
+                            {projects.map((project, index) => {
                                 const title = (lang === "fr" && project.title_fr) ? project.title_fr : project.title;
                                 const tags = (lang === "fr" && project.tags_fr) ? project.tags_fr : project.tags;
                                 const isSelected = selectedProjectId === project.id;
 
                                 return (
-                                    <button
+                                    <motion.button
                                         key={project.id}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{
+                                            duration: 0.5,
+                                            delay: 0.2 + (index * 0.1),
+                                            ease: "easeOut"
+                                        }}
                                         onClick={() => handleProjectClick(project.id)}
                                         className={`text-left p-6 rounded-xl transition-all duration-300 border group ${isSelected
-                                                ? "bg-white/10 border-white/20 shadow-lg"
-                                                : "bg-transparent border-transparent hover:bg-white/5"
+                                            ? "bg-white/10 border-white/20 shadow-lg"
+                                            : "bg-transparent border-transparent hover:bg-white/5"
                                             }`}
                                     >
                                         <div className="flex flex-col gap-2">
@@ -68,7 +80,7 @@ const Blog = () => {
                                                 {title}
                                             </h3>
                                         </div>
-                                    </button>
+                                    </motion.button>
                                 );
                             })}
                         </div>

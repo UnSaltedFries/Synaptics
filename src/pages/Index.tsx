@@ -1,7 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { HeroSection } from "@/components/HeroSection";
-import { TrustBadge } from "@/components/TrustBadge";
-import { HomeCaseStudies } from "@/components/HomeCaseStudies";
+
 import { FloatingCTA } from "@/components/FloatingCTA";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { HowItWorks } from "@/components/HowItWorks";
@@ -41,11 +40,10 @@ const Index = () => {
 
         <div className="relative z-10">
           <HeroSection />
-          <TrustBadge />
-          <HomeCaseStudies />
+
 
           {/* Sections moved from Blog */}
-          <div className="space-y-4">
+          <div className="space-y-4 mt-32 md:mt-64">
             <ScrollReveal className="relative z-30"><HowItWorks /></ScrollReveal>
             <ScrollReveal className="relative z-20"><StatsSection /></ScrollReveal>
 
