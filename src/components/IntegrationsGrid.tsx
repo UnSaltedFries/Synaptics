@@ -10,7 +10,7 @@ const integrations = [
     { name: "Zapier", logo: "/images/logos/zapier.svg" },
     { name: "Zenchef", logo: "/images/logos/zenchef.svg" },
     { name: "Quickbooks", logo: "/images/logos/quickbooks.svg" },
-    { name: "Planity", logo: "/images/logos/planity.svg" },
+    { name: "Formitable", logo: "/images/logos/formitable.svg" },
 ];
 
 export function IntegrationsGrid() {

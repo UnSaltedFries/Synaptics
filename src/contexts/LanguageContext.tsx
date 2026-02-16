@@ -146,6 +146,7 @@ const translations: Record<Lang, Record<string, string>> = {
 
         // Testimonials
         "testimonials.title": "What our clients say",
+        "testimonials.reviews": "10 Google reviews",
         "testimonial.1.quote": "Since we switched to Synaptics, we haven't missed a single appointment request. Our booking rate went up 40% in the first month.",
         "testimonial.1.name": "Dr. Sophie Martin",
         "testimonial.1.role": "Director, Clinique Belleville",
@@ -172,7 +173,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "roi.result.missed": "Missed calls / month",
         "roi.result.revenue": "Revenue lost / month",
         "roi.result.year": "Revenue lost / year",
-        "roi.cta": "Stop losing money →",
+        "roi.cta": "Stop losing money",
 
         // FAQ
         "faq.title": "Frequently asked questions",
@@ -255,8 +256,8 @@ const translations: Record<Lang, Record<string, string>> = {
 
         // Trust Badge
         "trustBadge.gdpr": "GDPR Compliant",
-        "trustBadge.response": "< 1s response",
-        "trustBadge.clients": "50+ active clients",
+        "trustBadge.response": "< 1s AI response",
+        "trustBadge.clients": "10+ active clients",
 
         // Blog / Case Studies
         "blog.title": "Case Studies",
@@ -470,6 +471,7 @@ const translations: Record<Lang, Record<string, string>> = {
 
         // Testimonials
         "testimonials.title": "Ce que disent nos clients",
+        "testimonials.reviews": "10 avis Google",
         "testimonial.1.quote": "Depuis qu'on utilise Synaptics, on n'a pas manqué une seule demande de rendez-vous. Notre taux de réservation a augmenté de 40% le premier mois.",
         "testimonial.1.name": "Dr. Sophie Martin",
         "testimonial.1.role": "Directrice, Clinique Belleville",
@@ -496,7 +498,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "roi.result.missed": "Appels manqués / mois",
         "roi.result.revenue": "CA perdu / mois",
         "roi.result.year": "CA perdu / an",
-        "roi.cta": "Arrêtez de perdre de l'argent →",
+        "roi.cta": "Arrêtez de perdre de l'argent",
 
         // FAQ
         "faq.title": "Questions fréquentes",
@@ -579,8 +581,8 @@ const translations: Record<Lang, Record<string, string>> = {
 
         // Trust Badge
         "trustBadge.gdpr": "Conforme RGPD",
-        "trustBadge.response": "< 1s de réponse",
-        "trustBadge.clients": "50+ clients actifs",
+        "trustBadge.response": "< 1s de réponse IA",
+        "trustBadge.clients": "10+ clients actifs",
 
         // Blog / Case Studies
         "blog.title": "Études de cas",

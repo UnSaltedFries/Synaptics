@@ -3,7 +3,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { FAQSection } from "@/components/FAQSection";
 import InfiniteMarquee from "@/components/InfiniteMarquee";
 import { Globe } from "@/components/Globe";
-import TextReveal from "@/components/TextReveal";
+import { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const technologies = [
   { name: "OpenAI / Anthropic" },
@@ -24,6 +28,60 @@ const ChromeWord = ({ children }: { children: string }) => (
 
 const About = () => {
   const { t } = useLanguage();
+  const textContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = textContainerRef.current;
+    if (!container) return;
+
+    const words = container.querySelectorAll(".reveal-word");
+    const blocks = container.querySelectorAll(".reveal-text-block");
+
+    // Master Timeline for Word Reveal (Blur/Opacity)
+    // Finishes much lower (80% from top) so the text is fully clear almost immediately after entering
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: "top center",
+        end: "bottom 80%",
+        scrub: true,
+      }
+    });
+
+    tl.to(words, {
+      opacity: 1,
+      filter: "blur(0px)",
+      stagger: {
+        each: 0.1,
+        ease: "none"
+      },
+      ease: "none",
+    });
+
+    // Individual Rotation for each block
+    // Ensures each paragraph straightens out exactly as it hits the center line
+    blocks.forEach((block) => {
+      gsap.fromTo(
+        block,
+        { rotate: 10, y: 20, transformOrigin: '0% 0%' },
+        {
+          rotate: 0,
+          y: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: block,
+            start: "top bottom",
+            end: "top center", // Becomes straight exactly at the center line
+            scrub: true,
+          }
+        }
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, []);
 
   const services = [
     { name: t("about.service.receptionist"), description: t("about.service.receptionist.desc") },
@@ -99,57 +157,40 @@ const About = () => {
 
               {/* Right Column */}
               <div className="lg:col-span-8">
-                <div className="max-w-none py-20"> {/* Removed max-w-2xl to allow full width of column */}
-                  {/* Lead statement — bold & huge */}
-                  <TextReveal
-                    textClassName="text-5xl md:text-7xl lg:text-8xl font-bold text-black leading-[1.05] tracking-[-0.03em] mb-24"
-                    baseOpacity={0.05}
-                    enableBlur={true}
-                    baseRotation={5}
-                    blurStrength={10}
-                    rotationEnd="bottom center"
-                    wordAnimationEnd="bottom center"
-                  >
-                    {t("about.bio1")}
-                  </TextReveal>
+                <div ref={textContainerRef} className="max-w-none py-20">
+                  {/* Custom Continuous Animation Implementation */}
 
-                  {/* Body paragraphs with left accent */}
-                  {/* Body paragraphs - Standard Size with Reveal */}
-                  <TextReveal
-                    textClassName="text-xl md:text-2xl font-medium text-gray-600 leading-relaxed mb-12"
-                    baseOpacity={0.05}
-                    enableBlur={true}
-                    baseRotation={5}
-                    blurStrength={10}
-                    rotationEnd="bottom center"
-                    wordAnimationEnd="bottom center"
-                  >
-                    {`${t("about.bio2.pre")} ${t("about.bio2.highlight")} ${t("about.bio2.post")}`}
-                  </TextReveal>
+                  {/* Bio 1 */}
+                  <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-black leading-[1.05] tracking-[-0.03em] mb-24 reveal-text-block origin-top-left will-change-transform">
+                    {t("about.bio1").split(/(\s+)/).map((word, i) => {
+                      if (word.match(/^\s+$/)) return <span key={i} className="whitespace-pre">{word}</span>;
+                      return <span key={i} className="reveal-word inline-block will-change-[opacity,filter] opacity-[0.05] blur-[10px]">{word}</span>;
+                    })}
+                  </h2>
 
-                  <TextReveal
-                    textClassName="text-xl md:text-2xl font-medium text-gray-600 leading-relaxed mb-12"
-                    baseOpacity={0.05}
-                    enableBlur={true}
-                    baseRotation={5}
-                    blurStrength={10}
-                    rotationEnd="bottom center"
-                    wordAnimationEnd="bottom center"
-                  >
-                    {`${t("about.bio3.pre")} ${t("about.bio3.highlight")} ${t("about.bio3.post")}`}
-                  </TextReveal>
+                  {/* Bio 2 */}
+                  <p className="text-xl md:text-2xl font-medium text-gray-600 leading-relaxed mb-12 reveal-text-block origin-top-left will-change-transform">
+                    {`${t("about.bio2.pre")} ${t("about.bio2.highlight")} ${t("about.bio2.post")}`.split(/(\s+)/).map((word, i) => {
+                      if (word.match(/^\s+$/)) return <span key={i} className="whitespace-pre">{word}</span>;
+                      return <span key={i} className="reveal-word inline-block will-change-[opacity,filter] opacity-[0.05] blur-[10px]">{word}</span>;
+                    })}
+                  </p>
 
-                  <TextReveal
-                    textClassName="text-2xl md:text-3xl font-semibold text-black leading-relaxed mb-24"
-                    baseOpacity={0.05}
-                    enableBlur={true}
-                    baseRotation={5}
-                    blurStrength={10}
-                    rotationEnd="bottom center"
-                    wordAnimationEnd="bottom center"
-                  >
-                    {`${t("about.bio4.pre")} ${t("about.bio4.highlight")} ${t("about.bio4.post")}`}
-                  </TextReveal>
+                  {/* Bio 3 */}
+                  <p className="text-xl md:text-2xl font-medium text-gray-600 leading-relaxed mb-12 reveal-text-block origin-top-left will-change-transform">
+                    {`${t("about.bio3.pre")} ${t("about.bio3.highlight")} ${t("about.bio3.post")}`.split(/(\s+)/).map((word, i) => {
+                      if (word.match(/^\s+$/)) return <span key={i} className="whitespace-pre">{word}</span>;
+                      return <span key={i} className="reveal-word inline-block will-change-[opacity,filter] opacity-[0.05] blur-[10px]">{word}</span>;
+                    })}
+                  </p>
+
+                  {/* Bio 4 */}
+                  <p className="text-2xl md:text-3xl font-semibold text-black leading-relaxed mb-24 reveal-text-block origin-top-left will-change-transform">
+                    {`${t("about.bio4.pre")} ${t("about.bio4.highlight")} ${t("about.bio4.post")}`.split(/(\s+)/).map((word, i) => {
+                      if (word.match(/^\s+$/)) return <span key={i} className="whitespace-pre">{word}</span>;
+                      return <span key={i} className="reveal-word inline-block will-change-[opacity,filter] opacity-[0.05] blur-[10px]">{word}</span>;
+                    })}
+                  </p>
                 </div>
               </div>
             </div>

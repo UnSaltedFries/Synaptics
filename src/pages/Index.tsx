@@ -53,26 +53,7 @@ const Index = () => {
             <ScrollReveal><ROICalculator /></ScrollReveal>
           </div>
 
-          {/* CTA from Blog */}
-          <section className="container pb-20 lg:pb-32 mt-20">
-            <ScrollReveal>
-              <div className="rounded-3xl border border-white/[0.06] bg-gradient-to-br from-blue-500/[0.05] to-purple-500/[0.05] p-10 md:p-16 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  {t("blog.cta.title")}
-                </h2>
-                <p className="text-gray-400 mb-8 max-w-md mx-auto">
-                  {t("blog.cta.desc")}
-                </p>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 transition-opacity"
-                >
-                  {t("blog.cta.button")}
-                  <span>→</span>
-                </Link>
-              </div>
-            </ScrollReveal>
-          </section>
+
 
           <FloatingCTA />
         </div>

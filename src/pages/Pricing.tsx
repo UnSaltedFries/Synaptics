@@ -39,7 +39,7 @@ const Pricing = () => {
                             <BlurText
                                 text={t("pricing.title")}
                                 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-[-0.03em] leading-[0.9]"
-                                delay={50}
+                                delay={150}
                                 animateBy="words"
                                 direction="bottom"
                             />

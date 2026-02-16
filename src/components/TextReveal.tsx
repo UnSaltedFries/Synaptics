@@ -30,8 +30,9 @@ export const TextReveal = ({
     textClassName = '',
     rotationEnd = 'bottom bottom',
     wordAnimationEnd = 'bottom bottom',
-    scrubAmount = true
-}: TextRevealProps) => {
+    scrubAmount = true,
+    triggerRef
+}: TextRevealProps & { triggerRef?: React.RefObject<HTMLElement> }) => {
     const containerRef = useRef<HTMLHeadingElement>(null);
 
     const splitText = useMemo(() => {
@@ -51,6 +52,7 @@ export const TextReveal = ({
         if (!el) return;
 
         const scroller = scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
+        const triggerElement = triggerRef?.current || el;
 
         gsap.fromTo(
             el,
@@ -59,7 +61,7 @@ export const TextReveal = ({
                 ease: 'none',
                 rotate: 0,
                 scrollTrigger: {
-                    trigger: el,
+                    trigger: triggerElement,
                     scroller,
                     start: 'top bottom',
                     end: rotationEnd,
@@ -78,7 +80,7 @@ export const TextReveal = ({
                 opacity: 1,
                 stagger: 0.05,
                 scrollTrigger: {
-                    trigger: el,
+                    trigger: triggerElement,
                     scroller,
                     start: 'top bottom-=20%',
                     end: wordAnimationEnd,
@@ -96,7 +98,7 @@ export const TextReveal = ({
                     filter: 'blur(0px)',
                     stagger: 0.05,
                     scrollTrigger: {
-                        trigger: el,
+                        trigger: triggerElement,
                         scroller,
                         start: 'top bottom-=20%',
                         end: wordAnimationEnd,
@@ -109,7 +111,7 @@ export const TextReveal = ({
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
-    }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
+    }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength, triggerRef]);
 
     return (
         <h2 ref={containerRef} className={`scroll-reveal ${containerClassName}`}>

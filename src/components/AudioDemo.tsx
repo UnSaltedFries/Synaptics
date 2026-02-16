@@ -88,11 +88,11 @@ export function AudioDemo() {
                 <div className="flex justify-center mt-12">
                     <button
                         onClick={() => setVoice(voice === "man" ? "woman" : "man")}
-                        className="relative flex items-center rounded-full overflow-hidden bg-white/[0.07] border border-white/[0.12] text-xs uppercase tracking-widest font-semibold p-1 cursor-pointer"
+                        className="relative grid grid-cols-2 items-center rounded-full overflow-hidden bg-white/[0.07] border border-white/[0.12] text-xs uppercase tracking-widest font-semibold p-1 cursor-pointer w-[240px]"
                     >
                         <span
                             className={cn(
-                                "relative z-10 px-6 py-2 transition-colors duration-300",
+                                "relative z-10 px-6 py-2 transition-colors duration-300 text-center",
                                 voice === "man" ? "text-white" : "text-gray-500"
                             )}
                         >
@@ -100,7 +100,7 @@ export function AudioDemo() {
                         </span>
                         <span
                             className={cn(
-                                "relative z-10 px-6 py-2 transition-colors duration-300",
+                                "relative z-10 px-6 py-2 transition-colors duration-300 text-center",
                                 voice === "woman" ? "text-white" : "text-gray-500"
                             )}
                         >

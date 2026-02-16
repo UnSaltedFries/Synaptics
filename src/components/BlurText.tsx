@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 
 export const BlurText = ({
     text,
-    delay = 200,
+    delay = 500,
     animateBy = 'words', // 'words' or 'letters'
     direction = 'top', // 'top' or 'bottom'
     threshold = 0.1,
@@ -77,7 +77,8 @@ export const BlurText = ({
                         className={childClassName}
                         style={{
                             display: 'inline-block',
-                            transition: `all ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`, // Use prop duration
+                            willChange: 'opacity, filter, transform',
+                            transition: `opacity ${duration}ms, filter ${duration}ms, transform ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`, // Specific properties
                             transitionDelay: `${wordIndex * delay}ms`,
                             filter: inView ? (animationTo?.filter as string || defaultTo.filter) : (animationFrom?.filter as string || defaultFrom.filter),
                             opacity: inView ? (animationTo?.opacity as number || defaultTo.opacity) : (animationFrom?.opacity as number || defaultFrom.opacity),
@@ -98,7 +99,8 @@ export const BlurText = ({
                                     className={childClassName}
                                     style={{
                                         display: 'inline-block',
-                                        transition: `all ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`,
+                                        willChange: 'opacity, filter, transform',
+                                        transition: `opacity ${duration}ms, filter ${duration}ms, transform ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`,
                                         transitionDelay: `${index * delay}ms`,
                                         filter: inView ? (animationTo?.filter as string || defaultTo.filter) : (animationFrom?.filter as string || defaultFrom.filter),
                                         opacity: inView ? (animationTo?.opacity as number || defaultTo.opacity) : (animationFrom?.opacity as number || defaultFrom.opacity),
@@ -124,7 +126,8 @@ export const BlurText = ({
                                 className={childClassName}
                                 style={{
                                     display: 'inline-block',
-                                    transition: `all ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`,
+                                    willChange: 'opacity, filter, transform',
+                                    transition: `opacity ${duration}ms, filter ${duration}ms, transform ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`,
                                     transitionDelay: `${spaceIndex * delay}ms`,
                                     filter: inView ? (animationTo?.filter as string || defaultTo.filter) : (animationFrom?.filter as string || defaultFrom.filter),
                                     opacity: inView ? (animationTo?.opacity as number || defaultTo.opacity) : (animationFrom?.opacity as number || defaultFrom.opacity),

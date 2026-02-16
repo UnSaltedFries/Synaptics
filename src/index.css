@@ -405,6 +405,7 @@ html.lang-transitioning body {
 }
 
 .animate-shine-text {
+  will-change: background-position;
   /* Gradient: Gray -> White -> Gray */
   background: linear-gradient(to right,
       #9ca3af 40%,
