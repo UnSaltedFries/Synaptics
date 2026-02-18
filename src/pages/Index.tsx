@@ -35,7 +35,7 @@ const Index = () => {
 
   return (
     <Layout variant="dark">
-      <div className="bg-black min-h-screen relative overflow-hidden">
+      <div className="bg-black min-h-screen relative overflow-hidden" style={{ backgroundColor: "#000000" }}>
         <WaveBackground />
 
         <div className="relative z-10">

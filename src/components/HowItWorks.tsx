@@ -33,7 +33,7 @@ export function HowItWorks() {
     const { t } = useLanguage();
 
     return (
-        <section className="py-8 md:py-20 bg-black relative z-30">
+        <section className="py-8 md:py-20 bg-black relative z-30" style={{ backgroundColor: "#000000" }}>
             <div className="container relative z-10">
                 <div className="flex flex-col items-center max-w-5xl mx-auto">
 

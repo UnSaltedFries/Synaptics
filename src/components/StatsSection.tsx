@@ -54,7 +54,7 @@ export function StatsSection() {
     ];
 
     return (
-        <section className="py-24 md:py-32 bg-black relative overflow-hidden">
+        <section className="py-24 md:py-32 bg-black relative overflow-hidden" style={{ backgroundColor: "#000000" }}>
 
 
             <div className="container relative">

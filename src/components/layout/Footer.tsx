@@ -48,7 +48,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-black text-white" style={{ backgroundColor: "#000000" }}>
       <div className="container py-16 md:py-20">
         {/* Top CTA */}
         <div className="mb-14">
