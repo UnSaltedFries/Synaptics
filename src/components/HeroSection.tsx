@@ -35,17 +35,19 @@ export function HeroSection() {
               <h1 className="text-8xl md:text-9xl lg:text-[11rem] font-bold text-white tracking-tighter leading-[0.8]">
                 <BlurText
                   text={t("hero.title.line1")}
-                  delay={100}
+                  delay={50}
                   animateBy="letters"
                   direction="top"
+                  startDelay={0}
                   className="inline-block"
                 />
                 <br />
                 <BlurText
                   text={t("hero.title.line2")}
-                  delay={100}
+                  delay={50}
                   animateBy="letters"
                   direction="top"
+                  startDelay={100}
                   className="inline-block"
                 />
               </h1>
@@ -57,41 +59,53 @@ export function HeroSection() {
             <div className="text-xl md:text-3xl font-light leading-relaxed text-gray-300">
               <BlurText
                 text={t("hero.desc")}
-                delay={30}
+                delay={15}
                 duration={300}
-                animateBy="letters"
+                animateBy="words"
                 direction="top"
+                startDelay={200}
                 className="inline-block"
                 childClassName="animate-shine-text"
               />
             </div>
 
             <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="w-fit relative group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
             >
-              {/* Luminous Glow/Shadow */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-40 group-hover:opacity-100 transition duration-500" />
-
-              <Link
-                to="/contact"
-                className="relative inline-flex items-center justify-center gap-2 px-10 py-5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-xl hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 w-full md:w-auto"
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="w-fit relative group"
               >
-                <span>{t("hero.cta.button") || "Réserver une démo"}</span>
-                <span>→</span>
-              </Link>
+                {/* Luminous Glow/Shadow */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-40 group-hover:opacity-100 transition duration-500" />
+
+                <Link
+                  to="/contact"
+                  className="relative inline-flex items-center justify-center gap-2 px-10 py-5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-xl hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 w-full md:w-auto"
+                >
+                  <span>{t("hero.cta.button") || "Réserver une démo"}</span>
+                  <span>→</span>
+                </Link>
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>
       </div>
 
       {/* Trust Indicators at Bottom - Centered and Tighter Spacing */}
-      <div className="container relative z-10 pb-8 mt-auto">
+      <motion.div
+        className="container relative z-10 pb-8 mt-auto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+      >
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-6 md:pt-12 text-xs md:text-sm text-gray-400 font-medium tracking-wide uppercase max-w-4xl mx-auto">
           {/* Rating */}
           <div className="flex items-center gap-2">
@@ -129,7 +143,7 @@ export function HeroSection() {
             <span>{t("trustBadge.clients") || "10+ active clients"}</span>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

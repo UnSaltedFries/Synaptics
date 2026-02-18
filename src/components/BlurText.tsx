@@ -12,6 +12,7 @@ export const BlurText = ({
     className = '',
     childClassName,
     duration = 800,
+    startDelay = 0,
 }: {
     text: string;
     delay?: number;
@@ -24,6 +25,7 @@ export const BlurText = ({
     className?: string;
     childClassName?: string;
     duration?: number;
+    startDelay?: number;
 }) => {
     // If words, split by space. If letters, split by space then by char inside render.
     const words = text.split(' ');
@@ -79,7 +81,7 @@ export const BlurText = ({
                             display: 'inline-block',
                             willChange: 'opacity, filter, transform',
                             transition: `opacity ${duration}ms, filter ${duration}ms, transform ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`, // Specific properties
-                            transitionDelay: `${wordIndex * delay}ms`,
+                            transitionDelay: `${startDelay + wordIndex * delay}ms`,
                             filter: inView ? (animationTo?.filter as string || defaultTo.filter) : (animationFrom?.filter as string || defaultFrom.filter),
                             opacity: inView ? (animationTo?.opacity as number || defaultTo.opacity) : (animationFrom?.opacity as number || defaultFrom.opacity),
                             transform: inView ? (animationTo?.transform as string || defaultTo.transform) : (animationFrom?.transform as string || defaultFrom.transform),
@@ -101,7 +103,7 @@ export const BlurText = ({
                                         display: 'inline-block',
                                         willChange: 'opacity, filter, transform',
                                         transition: `opacity ${duration}ms, filter ${duration}ms, transform ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`,
-                                        transitionDelay: `${index * delay}ms`,
+                                        transitionDelay: `${startDelay + index * delay}ms`,
                                         filter: inView ? (animationTo?.filter as string || defaultTo.filter) : (animationFrom?.filter as string || defaultFrom.filter),
                                         opacity: inView ? (animationTo?.opacity as number || defaultTo.opacity) : (animationFrom?.opacity as number || defaultFrom.opacity),
                                         transform: inView ? (animationTo?.transform as string || defaultTo.transform) : (animationFrom?.transform as string || defaultFrom.transform),
@@ -128,7 +130,7 @@ export const BlurText = ({
                                     display: 'inline-block',
                                     willChange: 'opacity, filter, transform',
                                     transition: `opacity ${duration}ms, filter ${duration}ms, transform ${duration}ms cubic-bezier(0.2, 0.65, 0.3, 0.9)`,
-                                    transitionDelay: `${spaceIndex * delay}ms`,
+                                    transitionDelay: `${startDelay + spaceIndex * delay}ms`,
                                     filter: inView ? (animationTo?.filter as string || defaultTo.filter) : (animationFrom?.filter as string || defaultFrom.filter),
                                     opacity: inView ? (animationTo?.opacity as number || defaultTo.opacity) : (animationFrom?.opacity as number || defaultFrom.opacity),
                                     transform: inView ? (animationTo?.transform as string || defaultTo.transform) : (animationFrom?.transform as string || defaultFrom.transform),

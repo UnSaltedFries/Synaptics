@@ -23,7 +23,6 @@ const Blog = () => {
     const handleProjectClick = (projectId: string) => {
         setSelectedProjectId(projectId);
         setIsMobileDetailOpen(true);
-        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (

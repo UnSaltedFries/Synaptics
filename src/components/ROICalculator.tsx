@@ -22,7 +22,7 @@ export function ROICalculator() {
 
     return (
         <section className="py-24 md:py-32 bg-black relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/[0.05] to-transparent" />
+
 
             <div className="container relative">
                 <div className="text-center mb-16">

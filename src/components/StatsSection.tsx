@@ -55,8 +55,7 @@ export function StatsSection() {
 
     return (
         <section className="py-24 md:py-32 bg-black relative overflow-hidden">
-            {/* Subtle gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/[0.05] to-transparent" />
+
 
             <div className="container relative">
                 <h2 className="text-center text-sm uppercase tracking-[0.2em] text-gray-500 font-medium mb-16 md:mb-20">

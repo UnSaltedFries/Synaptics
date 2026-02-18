@@ -250,7 +250,8 @@ export function Navbar({ variant = "light" }: NavbarProps) {
                 to={link.to}
                 ref={(el) => { linkRefs.current[i] = el; }}
                 className={cn(
-                  "px-3 py-1.5 rounded-full text-xs uppercase tracking-[0.1em] font-medium whitespace-nowrap shrink-0",
+                  "px-4 py-2 rounded-full text-xs uppercase tracking-[0.1em] font-medium whitespace-nowrap shrink-0",
+                  "flex items-center justify-center",
                   "transition-all duration-300 ease-out",
                   "text-gray-400 hover:text-white",
                   location.pathname === link.to && "text-white",

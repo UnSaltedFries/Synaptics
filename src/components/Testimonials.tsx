@@ -12,7 +12,7 @@ export function Testimonials() {
 
     return (
         <section className="py-16 md:py-24 bg-black relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-950/[0.03] to-transparent" />
+
 
             <div className="container relative">
                 <div className="text-center mb-12 md:mb-16">
