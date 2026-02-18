@@ -43,12 +43,12 @@ const Index = () => {
 
 
           {/* Sections moved from Blog */}
-          <div className="space-y-4 mt-32 md:mt-64">
+          <div className="space-y-0 mt-32 md:mt-64">
             <ScrollReveal className="relative z-30"><HowItWorks /></ScrollReveal>
             <ScrollReveal className="relative z-20"><StatsSection /></ScrollReveal>
 
             <ScrollReveal><AudioDemo /></ScrollReveal>
-            <ScrollReveal><Testimonials /></ScrollReveal>
+            {/* <ScrollReveal><Testimonials /></ScrollReveal> */}
             <ScrollReveal><IntegrationsGrid /></ScrollReveal>
             <ScrollReveal><ROICalculator /></ScrollReveal>
           </div>

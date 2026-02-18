@@ -4,7 +4,7 @@ export function TrustBadge() {
     const { t } = useLanguage();
 
     return (
-        <section className="py-10 md:py-14 bg-black border-b border-white/[0.04]">
+        <section className="py-10 md:py-14 bg-black">
             <div className="container">
                 <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
                     {/* Google Rating */}

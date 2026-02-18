@@ -61,7 +61,7 @@ export function HowItWorks() {
                             className="w-full"
                         >
                             {steps.map((step, i) => (
-                                <ScrollStackItem key={i} itemClassName="relative overflow-hidden bg-zinc-900/80 backdrop-blur-xl border border-white/10 !p-10 md:!p-16 !h-auto !min-h-[350px] flex flex-col justify-center rounded-[2.5rem] shadow-2xl hover:border-white/20 transition-colors duration-500">
+                                <ScrollStackItem key={i} itemClassName="relative overflow-hidden bg-black/80 backdrop-blur-xl border border-white/[0.05] !p-10 md:!p-16 !h-auto !min-h-[350px] flex flex-col justify-center rounded-[2.5rem] shadow-2xl hover:border-white/10 transition-colors duration-500">
                                     {/* Glass shine effect */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-transparent pointer-events-none" />
 

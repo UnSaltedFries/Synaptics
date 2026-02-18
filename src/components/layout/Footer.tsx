@@ -48,7 +48,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-black text-white border-t border-white/[0.06]">
+    <footer className="bg-black text-white">
       <div className="container py-16 md:py-20">
         {/* Top CTA */}
         <div className="mb-14">
@@ -147,14 +147,14 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/[0.06] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-3">
             <span className="text-sm font-bold tracking-wider">SYNAPTICS</span>
             <span className="text-xs text-gray-600">·</span>
             <span className="text-xs text-gray-600">Paris, France</span>
           </div>
           <p className="text-xs text-gray-600">
-            © {new Date().getFullYear()} Synaptics. {t("footer.copyright")}
+            © {new Date().getFullYear()} Synaptics. {t("footer.copyright")} <span className="italic">{t("footer.credit")}</span>
           </p>
         </div>
       </div>
