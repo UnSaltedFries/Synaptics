@@ -39,7 +39,7 @@ const MobilePricing = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                    className="rounded-xl border border-purple-500/[0.25] bg-purple-500/[0.04] p-5 chrome-word-always animate-float"
+                    className="rounded-xl border border-purple-500/[0.25] bg-purple-500/[0.04] p-5 animate-float"
                 >
                     <h3 className="text-[10px] uppercase tracking-[0.15em] text-gray-400 font-medium mb-3">
                         {t("pricing.enterprise")}

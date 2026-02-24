@@ -151,7 +151,7 @@ const MobileIndex = () => {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
-                        className="text-base sm:text-lg leading-relaxed chrome-word-always"
+                        className="text-base sm:text-lg leading-relaxed text-gray-400"
                     >
                         {t("hero.desc")}
                     </motion.p>
