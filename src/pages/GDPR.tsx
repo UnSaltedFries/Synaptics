@@ -7,9 +7,9 @@ const GDPR = () => {
 
     return (
         <Layout variant="light">
-            <div className="pt-32 pb-20 bg-white min-h-screen">
-                <div className="container max-w-4xl mx-auto px-4">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-6 text-black tracking-tight">
+            <div className="pt-24 pb-16 md:pt-32 md:pb-20 bg-white min-h-screen">
+                <div className="container max-w-4xl mx-auto px-5 md:px-4">
+                    <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 text-black tracking-tight">
                         Conformité RGPD
                     </h1>
                     <p className="text-gray-500 mb-12">

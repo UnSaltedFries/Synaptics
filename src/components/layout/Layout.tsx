@@ -1,5 +1,7 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { Footer } from "./Footer";
+import { MobileFooter } from "@/pages/mobile/MobileFooter";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useLocation } from "react-router-dom";
 
 interface LayoutProps {
@@ -11,6 +13,7 @@ interface LayoutProps {
 export function Layout({ children, hideFooter = false, variant = "light" }: LayoutProps) {
   const location = useLocation();
   const overlayRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (variant === "light" && overlayRef.current) {
@@ -33,7 +36,7 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
       <main className="flex-1">
         {children}
       </main>
-      {!hideFooter && <Footer />}
+      {!hideFooter && (isMobile ? <MobileFooter /> : <Footer />)}
       {/* Black overlay for smooth dark→light transition */}
       {variant === "light" && (
         <div

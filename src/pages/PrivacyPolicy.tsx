@@ -6,9 +6,9 @@ const PrivacyPolicy = () => {
 
     return (
         <Layout variant="light">
-            <div className="bg-white min-h-screen pt-32 pb-24 md:pt-40 md:pb-32">
-                <div className="container max-w-4xl">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-8 text-black">Politique de Confidentialité</h1>
+            <div className="bg-white min-h-screen pt-24 pb-16 md:pt-40 md:pb-32">
+                <div className="container max-w-4xl px-5 md:px-0">
+                    <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-black">Politique de Confidentialité</h1>
                     <p className="text-gray-500 mb-12">Dernière mise à jour : {new Date().toLocaleDateString()}</p>
 
                     <div className="prose prose-lg max-w-none text-gray-600">

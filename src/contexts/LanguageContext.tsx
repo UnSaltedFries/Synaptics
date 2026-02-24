@@ -12,6 +12,7 @@ const translations: Record<Lang, Record<string, string>> = {
     en: {
         // Navbar
         "nav.location": "Paris, FR",
+        "nav.home": "Home",
         "nav.contacts": "Contacts",
         "nav.pricing": "Pricing",
         "nav.about": "About",
@@ -110,6 +111,9 @@ const translations: Record<Lang, Record<string, string>> = {
 
         // Footer
         "footer.cta": "Stop wasting time on manual tasks.",
+        "footer.cta.title": "Ready to automate your business?",
+        "footer.cta.button": "Book a Demo",
+        "mobile.bestOnPc": "Best experience on desktop",
         "footer.networking": "For Networking",
         "footer.updates": "For Updates",
         "footer.work": "For Work",
@@ -338,6 +342,7 @@ const translations: Record<Lang, Record<string, string>> = {
     fr: {
         // Navbar
         "nav.location": "Paris, FR",
+        "nav.home": "Accueil",
         "nav.contacts": "Contact",
         "nav.pricing": "Tarifs",
         "nav.about": "À propos",
@@ -436,6 +441,9 @@ const translations: Record<Lang, Record<string, string>> = {
 
         // Footer
         "footer.cta": "Arrêtez de perdre du temps sur les tâches manuelles.",
+        "footer.cta.title": "Prêt à automatiser votre business ?",
+        "footer.cta.button": "Réserver une démo",
+        "mobile.bestOnPc": "Meilleure expérience sur ordinateur",
         "footer.networking": "Réseau",
         "footer.updates": "Actualités",
         "footer.work": "Portfolio",

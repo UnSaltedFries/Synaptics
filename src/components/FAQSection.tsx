@@ -15,9 +15,9 @@ export function FAQSection() {
     ];
 
     return (
-        <section className="py-24 md:py-32 bg-black relative overflow-hidden">
-            <div className="container relative">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-[-0.03em] text-center mb-16 md:mb-20">
+        <section className="py-12 sm:py-24 md:py-32 bg-black relative overflow-hidden">
+            <div className="container relative px-5 md:px-0">
+                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-[-0.03em] text-center mb-8 sm:mb-16 md:mb-20">
                     {t("faq.title")}
                 </h2>
 
@@ -28,15 +28,15 @@ export function FAQSection() {
                             <div
                                 key={i}
                                 className={`rounded-2xl border transition-all duration-500 ${isOpen
-                                        ? "border-white/[0.12] bg-white/[0.04]"
-                                        : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.10]"
+                                    ? "border-white/[0.12] bg-white/[0.04]"
+                                    : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.10]"
                                     }`}
                             >
                                 <button
                                     onClick={() => setOpenIndex(isOpen ? null : i)}
-                                    className="w-full flex items-center justify-between p-6 md:p-7 text-left cursor-pointer"
+                                    className="w-full flex items-center justify-between p-4 sm:p-6 md:p-7 text-left cursor-pointer"
                                 >
-                                    <span className="text-white font-medium text-base md:text-lg pr-8 leading-snug">
+                                    <span className="text-white font-medium text-sm sm:text-base md:text-lg pr-6 sm:pr-8 leading-snug">
                                         {faq.q}
                                     </span>
                                     <span className={`text-gray-400 text-xl flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}>
@@ -50,7 +50,7 @@ export function FAQSection() {
                                         opacity: isOpen ? 1 : 0,
                                     }}
                                 >
-                                    <p className="px-6 md:px-7 pb-6 md:pb-7 text-gray-400 text-sm leading-relaxed">
+                                    <p className="px-4 sm:px-6 md:px-7 pb-4 sm:pb-6 md:pb-7 text-gray-400 text-xs sm:text-sm leading-relaxed">
                                         {faq.a}
                                     </p>
                                 </div>
