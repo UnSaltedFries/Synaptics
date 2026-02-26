@@ -13,7 +13,7 @@ const translations: Record<Lang, Record<string, string>> = {
         // Navbar
         "nav.location": "Paris, FR",
         "nav.home": "Home",
-        "nav.contacts": "Contacts",
+        "nav.contacts": "Contact",
         "nav.pricing": "Pricing",
         "nav.about": "About",
         "nav.blog": "Case Studies",

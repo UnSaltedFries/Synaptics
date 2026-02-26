@@ -118,9 +118,9 @@ const MobileIndex = () => {
 
     // HowItWorks steps
     const steps = [
-        { number: "01", colorClass: "text-blue-400", bgClass: "bg-blue-500/10 border-blue-500/20" },
-        { number: "02", colorClass: "text-purple-400", bgClass: "bg-purple-500/10 border-purple-500/20" },
-        { number: "03", colorClass: "text-blue-400", bgClass: "bg-blue-500/10 border-blue-500/20" },
+        { number: "01", colorClass: "text-blue-400", bgClass: "bg-white/[0.03] border-white/[0.05]" },
+        { number: "02", colorClass: "text-purple-400", bgClass: "bg-white/[0.03] border-white/[0.05]" },
+        { number: "03", colorClass: "text-blue-400", bgClass: "bg-white/[0.03] border-white/[0.05]" },
     ];
 
     return (
@@ -238,7 +238,7 @@ const MobileIndex = () => {
                             viewport={{ once: true, margin: "-30px" }}
                             transition={{ duration: 0.5, delay: i * 0.15, ease: "easeOut" }}
                             className={cn(
-                                "relative overflow-hidden rounded-2xl p-5 border backdrop-blur-sm",
+                                "relative overflow-hidden rounded-3xl p-6 border backdrop-blur-sm",
                                 step.bgClass
                             )}
                         >
@@ -299,7 +299,7 @@ const MobileIndex = () => {
                 <p className="text-gray-400 text-xs mb-5 leading-relaxed">{t("audio.subtitle")}</p>
 
                 {/* Before Card */}
-                <div className="rounded-xl border border-red-500/[0.15] bg-red-500/[0.03] p-4 mb-3">
+                <div className="rounded-3xl border border-red-500/[0.15] bg-red-500/[0.03] p-5 mb-4 group transition-all duration-500">
                     <div className="flex items-center gap-2 mb-3">
                         <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
                             <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -308,25 +308,46 @@ const MobileIndex = () => {
                         </div>
                         <h3 className="text-sm font-semibold">{t("audio.before")}</h3>
                     </div>
-                    <p className="text-gray-400 text-[11px] mb-3">{t("audio.beforeDesc")}</p>
+                    <p className="text-gray-400 text-[11px] mb-4">{t("audio.beforeDesc")}</p>
+
+                    {/* Simple Reactive Waveform */}
+                    <div className="flex items-center gap-[1px] h-6 mb-6">
+                        {Array.from({ length: 75 }).map((_, i) => (
+                            <div
+                                key={i}
+                                className={cn(
+                                    "flex-1 rounded-full transition-all duration-300",
+                                    playingCard === "before" ? "bg-red-400" : "bg-red-400/30"
+                                )}
+                                style={{
+                                    height: playingCard === "before"
+                                        ? `${Math.random() * 60 + 20}%`
+                                        : `${(Math.sin(i * 0.5) * 15) + 30}%`,
+                                    transitionDelay: `${i * 10}ms`
+                                }}
+                            />
+                        ))}
+                    </div>
 
                     <button
                         onClick={() => togglePlay("before")}
                         className={cn(
-                            "w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all",
-                            playingCard === "before" ? "bg-red-600 text-white" : "bg-red-500/10 text-red-400 border border-red-500/20"
+                            "w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold transition-all duration-300",
+                            playingCard === "before"
+                                ? "bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.25)] scale-[1.02]"
+                                : "bg-red-500/10 text-red-400 border border-red-500/20"
                         )}
                     >
                         {playingCard === "before" ? (
-                            <><svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg> Pause</>
+                            <><svg className="w-4 h-4 fill-current animate-pulse" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg> {t("audio.playing")}</>
                         ) : (
-                            <><svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> Play</>
+                            <><svg className="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> {t("audio.playBtn")}</>
                         )}
                     </button>
                 </div>
 
                 {/* After Card */}
-                <div className="rounded-xl border border-purple-500/[0.15] bg-purple-500/[0.03] p-4 mb-4">
+                <div className="rounded-3xl border border-purple-500/[0.15] bg-purple-500/[0.03] p-5 mb-5 group transition-all duration-500">
                     <div className="flex items-center gap-2 mb-3">
                         <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center">
                             <svg className="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -335,19 +356,40 @@ const MobileIndex = () => {
                         </div>
                         <h3 className="text-sm font-semibold">{t("audio.after")}</h3>
                     </div>
-                    <p className="text-gray-400 text-[11px] mb-3">{t("audio.afterDesc")}</p>
+                    <p className="text-gray-400 text-[11px] mb-4">{t("audio.afterDesc")}</p>
+
+                    {/* Simple Reactive Waveform */}
+                    <div className="flex items-center gap-[1px] h-6 mb-6">
+                        {Array.from({ length: 75 }).map((_, i) => (
+                            <div
+                                key={i}
+                                className={cn(
+                                    "flex-1 rounded-full transition-all duration-300",
+                                    playingCard === "after" ? "bg-purple-400" : "bg-purple-400/30"
+                                )}
+                                style={{
+                                    height: playingCard === "after"
+                                        ? `${Math.random() * 60 + 20}%`
+                                        : `${(Math.sin(i * 0.5) * 15) + 30}%`,
+                                    transitionDelay: `${i * 10}ms`
+                                }}
+                            />
+                        ))}
+                    </div>
 
                     <button
                         onClick={() => togglePlay("after")}
                         className={cn(
-                            "w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all",
-                            playingCard === "after" ? "bg-purple-600 text-white" : "bg-purple-500/10 text-purple-400 border border-purple-500/20"
+                            "w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold transition-all duration-300",
+                            playingCard === "after"
+                                ? "bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.25)] scale-[1.02]"
+                                : "bg-purple-500/10 text-purple-400 border border-purple-500/20"
                         )}
                     >
                         {playingCard === "after" ? (
-                            <><svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg> Pause</>
+                            <><svg className="w-4 h-4 fill-current animate-pulse" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg> {t("audio.playing")}</>
                         ) : (
-                            <><svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> Play</>
+                            <><svg className="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> {t("audio.playBtn")}</>
                         )}
                     </button>
                 </div>
@@ -381,9 +423,9 @@ const MobileIndex = () => {
 
                 <div className="grid grid-cols-3 gap-2">
                     {integrations.map((integration, i) => (
-                        <div key={i} className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3 flex flex-col items-center gap-1.5">
-                            <img src={integration.logo} alt={integration.name} className="w-5 h-5" />
-                            <span className="text-[8px] text-gray-400 font-medium text-center leading-tight">{integration.name}</span>
+                        <div key={i} className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 flex flex-col items-center gap-2">
+                            <img src={integration.logo} alt={integration.name} className="w-6 h-6" />
+                            <span className="text-[9px] text-gray-400 font-medium text-center leading-tight">{integration.name}</span>
                         </div>
                     ))}
                 </div>
@@ -394,7 +436,7 @@ const MobileIndex = () => {
                 <h2 className="text-xl font-bold mb-1.5 tracking-tight">{t("roi.title")}</h2>
                 <p className="text-gray-400 text-xs mb-5 leading-relaxed">{t("roi.subtitle")}</p>
 
-                <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
+                <div className="rounded-3xl border border-white/[0.08] bg-white/[0.02] p-5">
                     {/* Calls */}
                     <div className="mb-4">
                         <label className="block text-[9px] uppercase tracking-[0.15em] font-medium text-gray-500 mb-2">{t("roi.callsPerMonth")}</label>
@@ -444,18 +486,18 @@ const MobileIndex = () => {
                     <div className="h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent mb-4" />
 
                     {/* Results */}
-                    <div className="flex flex-col gap-2 mb-4">
-                        <div className="text-center py-3 bg-white/[0.02] rounded-lg border border-white/[0.05]">
-                            <p className="text-[8px] uppercase tracking-[0.15em] text-gray-500 font-medium mb-0.5">{t("roi.result.missed")}</p>
-                            <p className="text-lg font-bold text-red-400">{missedCalls}</p>
+                    <div className="flex flex-col gap-3 mb-5">
+                        <div className="text-center py-4 px-6 bg-white/[0.02] rounded-2xl border border-white/[0.05]">
+                            <p className="text-[9px] uppercase tracking-[0.15em] text-gray-500 font-medium mb-1.5">{t("roi.result.missed")}</p>
+                            <p className="text-xl font-bold text-red-400">{missedCalls}</p>
                         </div>
-                        <div className="text-center py-3 bg-white/[0.02] rounded-lg border border-white/[0.05]">
-                            <p className="text-[8px] uppercase tracking-[0.15em] text-gray-500 font-medium mb-0.5">{t("roi.result.revenue")}</p>
-                            <p className="text-lg font-bold text-red-400">{formatCurrency(monthlyLoss)}</p>
+                        <div className="text-center py-4 px-6 bg-white/[0.02] rounded-2xl border border-white/[0.05]">
+                            <p className="text-[9px] uppercase tracking-[0.15em] text-gray-500 font-medium mb-1.5">{t("roi.result.revenue")}</p>
+                            <p className="text-xl font-bold text-red-400">{formatCurrency(monthlyLoss)}</p>
                         </div>
-                        <div className="text-center py-3 bg-white/[0.02] rounded-lg border border-white/[0.05]">
-                            <p className="text-[8px] uppercase tracking-[0.15em] text-gray-500 font-medium mb-0.5">{t("roi.result.year")}</p>
-                            <p className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">{formatCurrency(yearlyLoss)}</p>
+                        <div className="text-center py-4 px-6 bg-white/[0.02] rounded-2xl border border-white/[0.05]">
+                            <p className="text-[9px] uppercase tracking-[0.15em] text-gray-500 font-medium mb-1.5">{t("roi.result.year")}</p>
+                            <p className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">{formatCurrency(yearlyLoss)}</p>
                         </div>
                     </div>
 
