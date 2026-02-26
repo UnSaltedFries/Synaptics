@@ -329,21 +329,42 @@ const MobileIndex = () => {
                         ))}
                     </div>
 
-                    <button
-                        onClick={() => togglePlay("before")}
-                        className={cn(
-                            "w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold transition-all duration-300",
-                            playingCard === "before"
-                                ? "bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.25)] scale-[1.02]"
-                                : "bg-red-500/10 text-red-400 border border-red-500/20"
-                        )}
-                    >
-                        {playingCard === "before" ? (
-                            <><svg className="w-4 h-4 fill-current animate-pulse" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg> {t("audio.playing")}</>
-                        ) : (
-                            <><svg className="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> {t("audio.playBtn")}</>
-                        )}
-                    </button>
+                    <div className="flex justify-center">
+                        <button
+                            onClick={() => togglePlay("before")}
+                            className="flex items-center gap-5 text-left group"
+                        >
+                            <div className={cn(
+                                "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300",
+                                playingCard === "before"
+                                    ? "bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.25)] scale-105"
+                                    : "bg-red-500/10 text-red-500 group-hover:bg-red-500/20"
+                            )}>
+                                {playingCard === "before" ? (
+                                    <svg className="w-5 h-5 fill-current animate-pulse ml-0.5" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                                ) : (
+                                    <svg className="w-5 h-5 fill-current ml-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                                )}
+                            </div>
+                            <div className="flex flex-col justify-center">
+                                <span className={cn(
+                                    "font-bold text-[15px] italic mb-0.5 transition-colors",
+                                    playingCard === "before" ? "text-white" : "text-white"
+                                )}>
+                                    {playingCard === "before" ? t("audio.playing") : t("audio.playBtn")}
+                                </span>
+                                <div className="flex items-center gap-1.5">
+                                    <span className={cn(
+                                        "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                                        playingCard === "before" ? "bg-red-500 animate-pulse" : "bg-red-600/60"
+                                    )} />
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-red-500/80">
+                                        {t("audio.manualProcess")}
+                                    </span>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
                 </div>
 
                 {/* After Card */}
@@ -377,21 +398,42 @@ const MobileIndex = () => {
                         ))}
                     </div>
 
-                    <button
-                        onClick={() => togglePlay("after")}
-                        className={cn(
-                            "w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold transition-all duration-300",
-                            playingCard === "after"
-                                ? "bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.25)] scale-[1.02]"
-                                : "bg-purple-500/10 text-purple-400 border border-purple-500/20"
-                        )}
-                    >
-                        {playingCard === "after" ? (
-                            <><svg className="w-4 h-4 fill-current animate-pulse" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg> {t("audio.playing")}</>
-                        ) : (
-                            <><svg className="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg> {t("audio.playBtn")}</>
-                        )}
-                    </button>
+                    <div className="flex justify-center">
+                        <button
+                            onClick={() => togglePlay("after")}
+                            className="flex items-center gap-5 text-left group"
+                        >
+                            <div className={cn(
+                                "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300",
+                                playingCard === "after"
+                                    ? "bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.25)] scale-105"
+                                    : "bg-purple-500/10 text-purple-500 group-hover:bg-purple-500/20"
+                            )}>
+                                {playingCard === "after" ? (
+                                    <svg className="w-5 h-5 fill-current animate-pulse ml-0.5" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                                ) : (
+                                    <svg className="w-5 h-5 fill-current ml-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                                )}
+                            </div>
+                            <div className="flex flex-col justify-center">
+                                <span className={cn(
+                                    "font-bold text-[15px] italic mb-0.5 transition-colors",
+                                    playingCard === "after" ? "text-white" : "text-white"
+                                )}>
+                                    {playingCard === "after" ? t("audio.playing") : t("audio.playBtn")}
+                                </span>
+                                <div className="flex items-center gap-1.5">
+                                    <span className={cn(
+                                        "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                                        playingCard === "after" ? "bg-purple-500 animate-pulse" : "bg-purple-600/60"
+                                    )} />
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-purple-500/80">
+                                        {t("audio.newExperience")}
+                                    </span>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Voice Toggle */}
