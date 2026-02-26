@@ -112,7 +112,7 @@ export function AudioDemo() {
                             ))}
                         </div>
 
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center justify-center gap-6">
                             <button
                                 onClick={() => togglePlay("before")}
                                 className={cn(
@@ -136,14 +136,14 @@ export function AudioDemo() {
 
                             <div className="flex flex-col gap-1">
                                 <span className="text-white font-bold text-base tracking-tight italic">
-                                    {playingCard === "before" ? "En lecture..." : "Play Demo"}
+                                    {playingCard === "before" ? t("audio.playing") : t("audio.playBtn")}
                                 </span>
                                 <div className="flex items-center gap-2 text-red-400/80 text-[10px] uppercase tracking-[0.2em] font-black">
                                     <span className={cn(
                                         "h-2 w-2 rounded-full bg-red-500 transition-all duration-300",
                                         playingCard === "before" ? "animate-ping" : "opacity-30"
                                     )} />
-                                    {playingCard === "before" ? "Audio Agent" : "Manual Process"}
+                                    {playingCard === "before" ? t("audio.agent") : t("audio.manualProcess")}
                                 </div>
                             </div>
                         </div>
@@ -180,7 +180,7 @@ export function AudioDemo() {
                             ))}
                         </div>
 
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center justify-center gap-6">
                             <button
                                 onClick={() => togglePlay("after")}
                                 className={cn(
@@ -204,14 +204,14 @@ export function AudioDemo() {
 
                             <div className="flex flex-col gap-1">
                                 <span className="text-white font-bold text-base tracking-tight italic">
-                                    {playingCard === "after" ? "En lecture..." : "Play Demo"}
+                                    {playingCard === "after" ? t("audio.playing") : t("audio.playBtn")}
                                 </span>
                                 <div className="flex items-center gap-2 text-purple-400/80 text-[10px] uppercase tracking-[0.2em] font-black">
                                     <span className={cn(
                                         "h-2 w-2 rounded-full bg-purple-500 transition-all duration-300",
                                         playingCard === "after" ? "animate-ping" : "opacity-30"
                                     )} />
-                                    {playingCard === "after" ? "Audio Agent" : "New Experience"}
+                                    {playingCard === "after" ? t("audio.agent") : t("audio.newExperience")}
                                 </div>
                             </div>
                         </div>

@@ -148,6 +148,11 @@ const translations: Record<Lang, Record<string, string>> = {
         "audio.voice.man": "Man",
         "audio.voice.woman": "Woman",
         "audio.comingSoon": "Demo audio coming soon",
+        "audio.playBtn": "Play Demo",
+        "audio.playing": "Playing...",
+        "audio.manualProcess": "Manual Process",
+        "audio.newExperience": "New Experience",
+        "audio.agent": "Audio Agent",
 
         // Testimonials
         "testimonials.title": "What our clients say",
@@ -478,6 +483,11 @@ const translations: Record<Lang, Record<string, string>> = {
         "audio.voice.man": "Homme",
         "audio.voice.woman": "Femme",
         "audio.comingSoon": "Audio démo bientôt disponible",
+        "audio.playBtn": "Play démo",
+        "audio.playing": "En lecture...",
+        "audio.manualProcess": "Processus manuel",
+        "audio.newExperience": "Nouvelle expérience",
+        "audio.agent": "Agent Audio",
 
         // Testimonials
         "testimonials.title": "Ce que disent nos clients",
