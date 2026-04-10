@@ -89,7 +89,7 @@ const AnimatedOrb = () => {
         resize();
         window.addEventListener("resize", resize);
 
-        let startTime = performance.now();
+        const startTime = performance.now();
 
         const animate = (now: number) => {
             const elapsed = (now - startTime) / 1000;

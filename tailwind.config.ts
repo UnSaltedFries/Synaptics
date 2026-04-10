@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
 
+import tailwindcssAnimate from "tailwindcss-animate";
+
 export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
@@ -119,6 +121,9 @@ export default {
           to: { opacity: "1", transform: "translateY(0)" },
         },
       },
+      transitionTimingFunction: {
+        "spring-smooth": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
@@ -129,5 +134,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

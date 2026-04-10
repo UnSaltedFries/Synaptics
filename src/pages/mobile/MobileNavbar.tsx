@@ -150,7 +150,7 @@ export function MobileNavbar() {
                                     FR
                                 </span>
                                 <div
-                                    className="absolute top-[2px] bottom-[2px] w-[calc(50%-2px)] rounded-full bg-white/[0.15] transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                                    className="absolute top-[2px] bottom-[2px] w-[calc(50%-2px)] rounded-full bg-white/[0.15] transition-all duration-400 ease-spring-smooth"
                                     style={{ left: lang === "en" ? "2px" : "calc(50%)" }}
                                 />
                             </button>

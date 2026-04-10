@@ -133,7 +133,7 @@ interface ThreadsProps {
     amplitude?: number;
     distance?: number;
     enableMouseInteraction?: boolean;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 const defaultColor: [number, number, number] = [1, 1, 1];
@@ -146,7 +146,7 @@ const Threads = ({ color = defaultColor, amplitude = 1, distance = 0, enableMous
         if (!containerRef.current) return;
         const container = containerRef.current;
 
-        // @ts-ignore - OGL types might be missing or partial
+        // @ts-expect-error - OGL types might be missing or partial
         const renderer = new Renderer({
             alpha: true,
             antialias: true,
@@ -158,27 +158,27 @@ const Threads = ({ color = defaultColor, amplitude = 1, distance = 0, enableMous
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         container.appendChild(gl.canvas);
 
-        // @ts-ignore
+        // @ts-expect-error - OGL internal types
         const geometry = new Triangle(gl);
-        // @ts-ignore
+        // @ts-expect-error - OGL internal types
         const program = new Program(gl, {
             vertex: vertexShader,
             fragment: fragmentShader,
             uniforms: {
                 iTime: { value: 0 },
                 iResolution: {
-                    // @ts-ignore
+                    // @ts-expect-error - OGL internal types
                     value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
                 },
-                // @ts-ignore
-                uColor: { value: new Color(...color) },
+                // @ts-expect-error - OGL internal types
+                uColor: { value: new Color(...(color as [number, number, number])) },
                 uAmplitude: { value: amplitude },
                 uDistance: { value: distance },
                 uMouse: { value: new Float32Array([0.5, 0.5]) }
             }
         });
 
-        // @ts-ignore
+        // @ts-expect-error - OGL internal types
         const mesh = new Mesh(gl, { geometry, program });
 
         function resize() {
@@ -191,7 +191,7 @@ const Threads = ({ color = defaultColor, amplitude = 1, distance = 0, enableMous
         window.addEventListener('resize', resize);
         resize();
 
-        let currentMouse = [0.5, 0.5];
+        const currentMouse = [0.5, 0.5];
         let targetMouse = [0.5, 0.5];
 
         function handleMouseMove(e: MouseEvent) {
@@ -245,7 +245,7 @@ const Threads = ({ color = defaultColor, amplitude = 1, distance = 0, enableMous
                 container.removeEventListener('mouseleave', handleMouseLeave);
             }
             if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
-            // @ts-ignore
+            // @ts-expect-error - OGL internal types
             gl.getExtension('WEBGL_lose_context')?.loseContext();
         };
     }, [color, amplitude, distance, enableMouseInteraction]);

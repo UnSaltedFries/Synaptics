@@ -243,7 +243,7 @@ export function AudioDemo() {
 
                         {/* Sliding indicator */}
                         <div
-                            className="absolute top-[4px] bottom-[4px] w-[calc(50%-4px)] rounded-full bg-white/[0.15] backdrop-blur-md border border-white/[0.1] shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                            className="absolute top-[4px] bottom-[4px] w-[calc(50%-4px)] rounded-full bg-white/[0.15] backdrop-blur-md border border-white/[0.1] shadow-lg transition-all duration-500 ease-spring-smooth"
                             style={{
                                 left: voice === "man" ? "4px" : "calc(50%)",
                             }}

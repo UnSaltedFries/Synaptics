@@ -62,7 +62,7 @@ const LightRays = ({
     clickable?: boolean; // Add type definition
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const uniformsRef = useRef<any>(null);
+    const uniformsRef = useRef<Record<string, { value: unknown }>>({});
     const rendererRef = useRef<Renderer | null>(null);
     const mouseRef = useRef({ x: 0.5, y: 0.5 });
     const smoothMouseRef = useRef({ x: 0.5, y: 0.5 });

@@ -44,7 +44,7 @@ export function FAQSection() {
                                     </span>
                                 </button>
                                 <div
-                                    className="overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                                    className="overflow-hidden transition-all duration-500 ease-spring-smooth"
                                     style={{
                                         maxHeight: isOpen ? "300px" : "0px",
                                         opacity: isOpen ? 1 : 0,

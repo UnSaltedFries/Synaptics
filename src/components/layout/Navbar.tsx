@@ -183,13 +183,13 @@ export function Navbar({ variant = "light" }: NavbarProps) {
         {/* Center: Expandable pill — stretches to reveal links */}
         <div
           ref={pillRef}
-          className="relative flex items-center rounded-full backdrop-blur-xl bg-white/[0.07] border border-white/[0.12] shadow-[0_4px_24px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] overflow-hidden"
+          className="relative flex items-center rounded-full backdrop-blur-xl bg-white/[0.07] border border-white/[0.12] shadow-[0_4px_24px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-500 ease-spring-smooth overflow-hidden"
         >
           {/* Sliding glass indicator — dynamically follows the active link */}
           <div
             className={cn(
               "absolute top-[3px] bottom-[3px] rounded-full bg-white/[0.15] backdrop-blur-md shadow-[0_2px_12px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.15)]",
-              (isLayoutAnimating && activeIndex >= 0) ? "transition-none duration-0" : "transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+              (isLayoutAnimating && activeIndex >= 0) ? "transition-none duration-0" : "transition-all duration-500 ease-spring-smooth"
             )}
             style={{
               width: `${indicatorPos.width}px`,
@@ -206,7 +206,7 @@ export function Navbar({ variant = "light" }: NavbarProps) {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             className={cn(
-              "relative z-10 flex items-center justify-center w-14 h-10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+              "relative z-10 flex items-center justify-center w-14 h-10 transition-all duration-500 ease-spring-smooth",
               isHome && !expanded
                 ? "text-white scale-110"
                 : "text-gray-500 hover:text-gray-300 scale-100"
@@ -220,7 +220,7 @@ export function Navbar({ variant = "light" }: NavbarProps) {
             onClick={handleListClick}
             ref={listRef}
             className={cn(
-              "relative z-10 flex items-center justify-center w-14 h-10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+              "relative z-10 flex items-center justify-center w-14 h-10 transition-all duration-500 ease-spring-smooth",
               expanded
                 ? "text-white scale-110"
                 : "text-gray-500 hover:text-gray-300 scale-100"
@@ -232,7 +232,7 @@ export function Navbar({ variant = "light" }: NavbarProps) {
           {/* Expanded links — appear inside the pill */}
           <div
             className={cn(
-              "flex items-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+              "flex items-center overflow-hidden transition-all duration-500 ease-spring-smooth",
               expanded ? "max-w-[400px] opacity-100 pr-2" : "max-w-0 opacity-0 pr-0"
             )}
           >
@@ -292,7 +292,7 @@ export function Navbar({ variant = "light" }: NavbarProps) {
             </span>
             {/* Sliding indicator */}
             <div
-              className="absolute top-[2px] bottom-[2px] w-[calc(50%-2px)] rounded-full bg-white/[0.15] transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+              className="absolute top-[2px] bottom-[2px] w-[calc(50%-2px)] rounded-full bg-white/[0.15] transition-all duration-400 ease-spring-smooth"
               style={{
                 left: lang === "en" ? "2px" : "calc(50%)",
               }}
