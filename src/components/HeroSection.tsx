@@ -9,8 +9,9 @@ export function HeroSection() {
   const { scrollY } = useScroll();
   const { t } = useLanguage();
 
-  const titleOffset = useTransform(scrollY, [0, 1000], [0, 100]);
-  const descOffset = useTransform(scrollY, [0, 1000], [0, 50]);
+  const titleOffset = useTransform(scrollY, [0, 800], [0, 80]);
+  const descOffset = useTransform(scrollY, [0, 800], [0, 40]);
+  const imageOffset = useTransform(scrollY, [0, 800], [0, 120]);
 
   return (
     <section ref={containerRef} className="min-h-screen flex flex-col justify-center bg-black text-white relative overflow-hidden pt-20" style={{ backgroundColor: "#000000" }}>
@@ -18,19 +19,12 @@ export function HeroSection() {
       <div className="container relative z-10 flex-1 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-          {/* Left Column: Title - VERY LARGE */}
-          <motion.div
-            style={{ y: titleOffset, willChange: "transform", backfaceVisibility: "hidden" }}
-
-          >
+          {/* Left Column: Title */}
+          <motion.div style={{ y: titleOffset, willChange: "transform" }}>
             <motion.div
               animate={{ y: [0, -15, 0] }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              style={{ willChange: "transform", backfaceVisibility: "hidden" }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              style={{ willChange: "transform" }}
             >
               <h1 className="text-8xl md:text-9xl lg:text-[11rem] font-bold text-white tracking-tighter leading-[0.8]">
                 <BlurText
@@ -55,7 +49,7 @@ export function HeroSection() {
           </motion.div>
 
           {/* Right Column: Description + CTA */}
-          <motion.div style={{ y: descOffset, willChange: "transform", backfaceVisibility: "hidden" }} className="flex flex-col gap-10 max-w-lg lg:ml-auto">
+          <motion.div style={{ y: descOffset, willChange: "transform" }} className="flex flex-col gap-10 max-w-lg lg:ml-auto">
             <div className="text-xl md:text-3xl font-light leading-relaxed text-gray-300">
               <BlurText
                 text={t("hero.desc")}
@@ -76,16 +70,10 @@ export function HeroSection() {
             >
               <motion.div
                 animate={{ y: [0, -10, 0] }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="w-fit relative group"
               >
-                {/* Luminous Glow/Shadow */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-40 group-hover:opacity-100 transition duration-500" />
-
                 <Link
                   to="/contact"
                   className="relative inline-flex items-center justify-center gap-2 px-10 py-5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-xl hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 w-full md:w-auto"
@@ -97,17 +85,17 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
         </div>
+
       </div>
 
-      {/* Trust Indicators at Bottom - Centered and Tighter Spacing */}
+      {/* Trust Indicators at Bottom */}
       <motion.div
-        className="container relative z-10 pb-8 mt-auto"
+        className="container relative z-10 pb-8 mt-12"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
       >
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-6 md:pt-12 text-xs md:text-sm text-gray-400 font-medium tracking-wide uppercase max-w-4xl mx-auto">
-          {/* Rating */}
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-6 text-xs md:text-sm text-gray-400 font-medium tracking-wide uppercase max-w-4xl mx-auto">
           <div className="flex items-center gap-2">
             <div className="flex gap-0.5 text-yellow-500">
               {[...Array(5)].map((_, i) => (
@@ -119,7 +107,6 @@ export function HeroSection() {
             <span className="text-white ml-1">4.9 Google</span>
           </div>
 
-          {/* GDPR */}
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
@@ -127,7 +114,6 @@ export function HeroSection() {
             <span>{t("trustBadge.gdpr") || "GDPR Compliant"}</span>
           </div>
 
-          {/* Response Time */}
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -135,7 +121,6 @@ export function HeroSection() {
             <span>{t("trustBadge.response") || "< 1s response"}</span>
           </div>
 
-          {/* Clients */}
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />

@@ -21,6 +21,7 @@ import LegalNotice from "./pages/LegalNotice";
 import TermsOfSale from "./pages/TermsOfSale";
 import CookiePolicy from "./pages/CookiePolicy";
 import { CookieBanner } from "@/components/layout/CookieBanner";
+import { Chatbot } from "@/components/chat/Chatbot";
 
 // Mobile pages
 import MobileIndex from "./pages/mobile/MobileIndex";
@@ -89,6 +90,7 @@ function AppRoutes() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <CookieBanner />
+      <Chatbot />
     </>
   );
 }
