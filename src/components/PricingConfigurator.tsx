@@ -80,7 +80,7 @@ export function PricingConfigurator() {
     }, [selectedIds]);
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
             {/* Services List */}
             <div className="lg:col-span-7 space-y-10">
                 {categories.map(catKey => {
@@ -107,11 +107,12 @@ export function PricingConfigurator() {
             </div>
 
             {/* Summary Sticky Panel */}
-            <div className="lg:col-span-5 lg:sticky lg:top-32 self-start">
-                <motion.div 
-                    layout
-                    className="relative p-6 md:p-8 rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl overflow-hidden"
-                >
+            <div className="lg:col-span-5 relative">
+                <div className="lg:sticky lg:top-32 transition-all duration-300">
+                    <motion.div 
+                        layout
+                        className="relative p-6 md:p-8 rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-2xl shadow-purple-500/5 hover:shadow-purple-500/10 transition-shadow"
+                    >
                     {/* Background Glow */}
                     <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/10 blur-[100px] rounded-full" />
                     
@@ -190,6 +191,7 @@ export function PricingConfigurator() {
                         </Button>
                     </div>
                 </motion.div>
+                </div>
             </div>
         </div>
     );
