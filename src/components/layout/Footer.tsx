@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, MotionValue, useTransform } from "framer-motion";
+import { motion, MotionValue, useTransform, useMotionValue } from "framer-motion";
 import { Linkedin, Twitter, Instagram } from "lucide-react";
 
 interface FooterProps {
