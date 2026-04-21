@@ -20,10 +20,10 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
   // Track global window scroll progress
   const { scrollYProgress } = useScroll();
   
-  // ADJUSTED: 97% as requested! This focuses the full reveal on the final 3% of the scroll.
+  // ADJUSTED: 90% to match tall pages and ensure a smoother footer reveal (not too rapid)
   const revealProgress = useTransform(
     scrollYProgress,
-    [0.97, 1], 
+    [0.90, 1], 
     [0, 1]
   );
 

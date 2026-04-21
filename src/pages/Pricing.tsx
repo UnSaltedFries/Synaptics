@@ -60,7 +60,13 @@ const Pricing = () => {
 
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 items-start">
                         {/* LEFT: The Kustom Agent Card */}
-                        <ScrollReveal delay={0.4} className="w-full">
+                        <motion.div 
+                            initial={{ opacity: 0, marginTop: 40 }}
+                            whileInView={{ opacity: 1, marginTop: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+                            className="w-full"
+                        >
                             <div className="space-y-6">
                                 <h3 className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase">
                                     01. AI FRONT-OFFICE
@@ -103,14 +109,14 @@ const Pricing = () => {
                                     </p>
                                 </motion.div>
                             </div>
-                        </ScrollReveal>
+                        </motion.div>
 
                         {/* RIGHT: The Configurator */}
                         <motion.div 
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: 0.9 }}
+                            initial={{ opacity: 0, marginTop: 40 }}
+                            whileInView={{ opacity: 1, marginTop: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
                             className="w-full"
                         >
                             <div className="space-y-6">
