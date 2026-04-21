@@ -3,7 +3,7 @@ import { Footer } from "./Footer";
 import { MobileFooter } from "@/pages/mobile/MobileFooter";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useLocation } from "react-router-dom";
-import { useScroll } from "framer-motion";
+import { useInView } from "framer-motion";
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,14 +14,14 @@ interface LayoutProps {
 export function Layout({ children, hideFooter = false, variant = "light" }: LayoutProps) {
   const location = useLocation();
   const overlayRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
+  const footerTriggerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const [footerHeight, setFooterHeight] = useState(0);
+  const [_footerHeight, setFooterHeight] = useState(0);
 
-  // High-precision scroll tracking for the footer reveal
-  const { scrollYProgress } = useScroll({
-    target: triggerRef,
-    offset: ["start end", "end end"]
+  // Detect when the ABSOLUTE end of the page is reached
+  const isFooterVisible = useInView(footerTriggerRef, { 
+    once: false, 
+    amount: 0.1 
   });
 
   // ResizeObserver to measure footer height dynamically
@@ -64,17 +64,19 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
       <main 
         className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         style={{ marginBottom: hideFooter ? 0 : "var(--footer-height)" }}
+      >
         {children}
-        {/* Trigger for footer animations - same height as footer for perfect mapping */}
-        {!hideFooter && <div ref={triggerRef} style={{ height: "var(--footer-height)" }} className="w-full absolute bottom-0 pointer-events-none" />}
       </main>
+
+      {/* NEW: Absolute end trigger, placed AFTER main to trigger at the very last pixel of scroll */}
+      {!hideFooter && <div ref={footerTriggerRef} className="h-10 w-full relative z-20 pointer-events-none" />}
 
       {/* Reveal Footer Layer */}
       {!hideFooter && (
         <div className="fixed bottom-0 left-0 right-0 z-0 h-[var(--footer-height)]">
           {isMobile 
-             ? <MobileFooter progress={scrollYProgress} /> 
-             : <Footer progress={scrollYProgress} />
+            ? <MobileFooter animate={isFooterVisible} /> 
+            : <Footer animate={isFooterVisible} />
           }
         </div>
       )}
@@ -89,7 +91,7 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
             backgroundColor: "#000",
             opacity: 1,
             pointerEvents: "none",
-            zIndex: 9999,
+            zIndex: 9991,
           }}
         />
       )}

@@ -1,21 +1,40 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, useTransform, useSpring, MotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { Linkedin, Twitter, Instagram } from "lucide-react";
 
 interface MobileFooterProps {
-    progress?: MotionValue<number>;
+    animate?: boolean;
 }
 
-export function MobileFooter({ progress }: MobileFooterProps) {
+export function MobileFooter({ animate = false }: MobileFooterProps) {
     const { t } = useLanguage();
 
-    const smoothProgress = useSpring(progress || 0, { stiffness: 80, damping: 25 });
+    const headlineText = t("footer.cta");
+    const characters = Array.from(headlineText);
 
-    // Subtler 3D for mobile but still visible
-    const rotateX = useTransform(smoothProgress, [0, 1], [60, 0]);
-    const opacity = useTransform(smoothProgress, [0, 0.4, 1], [0, 0.5, 1]);
-    const y = useTransform(smoothProgress, [0, 1], [40, 0]);
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.015,
+                delayChildren: 0.4,
+            },
+        },
+    };
+
+    const charVariants = {
+        hidden: { opacity: 0, y: 5 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.3,
+                ease: "easeOut",
+            },
+        },
+    };
 
     const socialLinks = [
         { label: "LinkedIn", href: "https://linkedin.com", icon: <Linkedin className="w-5 h-5" /> },
@@ -25,24 +44,36 @@ export function MobileFooter({ progress }: MobileFooterProps) {
 
     return (
         <footer 
-            className="bg-black text-white px-6 pt-16 pb-12 preserve-3d overflow-hidden" 
+            className="bg-black text-white px-6 pt-24 pb-12 overflow-hidden" 
             style={{ backgroundColor: "#000000" }}
         >
-            <motion.div 
-                style={{ rotateX, opacity, y, transformStyle: "preserve-3d" }}
-                className="mb-10 origin-bottom perspective-1000"
+            <motion.h2 
+                className="text-[28px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8"
+                initial="hidden"
+                animate={animate ? "visible" : "hidden"}
+                variants={containerVariants}
             >
-                <h2 className="text-[28px] font-bold leading-[1.1] tracking-tight mb-6 font-sans text-white">
-                    {t("footer.cta")}
-                </h2>
-                <a
+                {characters.map((char, index) => (
+                    <motion.span
+                        key={`${char}-${index}`}
+                        variants={charVariants}
+                        className="inline-block"
+                        style={{ whiteSpace: char === " " ? "pre" : "normal" }}
+                    >
+                        {char}
+                    </motion.span>
+                ))}
+            </motion.h2>
+
+            <div className="mb-8">
+               <a
                     href="mailto:hello@synaptics.fr"
                     className="text-lg text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group font-sans"
                 >
                     hello@synaptics.fr
                     <span>→</span>
                 </a>
-            </motion.div>
+            </div>
 
             <div className="grid grid-cols-2 gap-8 mb-12">
                 <div>
