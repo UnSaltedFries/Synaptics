@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Check, Info, Minus, Plus, ShoppingCart, Tag } from "lucide-react";
@@ -45,11 +45,11 @@ export function PricingConfigurator() {
     const { t } = useLanguage();
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-    const toggleService = (id: string) => {
+    const toggleService = useCallback((id: string) => {
         setSelectedIds(prev => 
             prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
         );
-    };
+    }, []);
 
     const { totalBase, discount, finalTotal, packName } = useMemo(() => {
         const base = services
@@ -96,7 +96,7 @@ export function PricingConfigurator() {
                                         key={service.id}
                                         service={service}
                                         isSelected={selectedIds.includes(service.id)}
-                                        onToggle={() => toggleService(service.id)}
+                                        onToggle={toggleService}
                                         t={t}
                                     />
                                 ))}
@@ -111,17 +111,23 @@ export function PricingConfigurator() {
                 <div className="lg:sticky lg:top-24 transition-all duration-300">
                     <motion.div 
                         layout
-                        className="relative p-6 md:p-8 rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-2xl shadow-purple-500/5 hover:shadow-purple-500/10 transition-shadow"
+                        className="relative rounded-3xl overflow-hidden shadow-2xl shadow-purple-500/5 hover:shadow-purple-500/10 transition-shadow"
                     >
-                    {/* Background Glow */}
-                    <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/10 blur-[100px] rounded-full" />
-                    
+                        {/* Background Layer to prevent grey flicker during parent opacity animation */}
+                        <div className="absolute inset-0 border border-white/[0.08] bg-[#111111]/80 z-0" />
+                        
+                        {/* Background Glow */}
+                        <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/10 blur-[100px] rounded-full z-0" />
+                        
+                        {/* Content Wrap */}
+                        <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
+
                     <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                         <Tag className="w-6 h-6 text-purple-400" />
                         {t("config.total")}
                     </h2>
 
-                    <div className="space-y-6 relative z-10">
+                    <div className="space-y-6">
                         {/* Price Display */}
                         <div className="flex flex-col">
                             <div className="flex items-baseline gap-2">
@@ -175,7 +181,7 @@ export function PricingConfigurator() {
                                             className="flex justify-between items-center text-sm text-gray-400 bg-white/[0.03] p-2 rounded-lg border border-white/[0.05]"
                                         >
                                             <span className="line-clamp-1">{t(s?.titleKey || "")}</span>
-                                            <span className="font-mono text-xs text-white/50 whitespace-nowrap ml-4">€{s?.price}</span>
+                                            <span className="font-mono text-xs text-white/50 ml-4">€{s?.price}</span>
                                         </motion.div>
                                     );
                                 })
@@ -189,6 +195,7 @@ export function PricingConfigurator() {
                             <ShoppingCart className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                             {t("config.cta")}
                         </Button>
+                        </div>
                     </div>
                 </motion.div>
                 </div>
@@ -200,16 +207,16 @@ export function PricingConfigurator() {
 interface ServiceCardProps {
     service: Service;
     isSelected: boolean;
-    onToggle: () => void;
+    onToggle: (id: string) => void;
     t: (key: string) => string;
 }
 
-function ServiceCard({ service, isSelected, onToggle, t }: ServiceCardProps) {
+const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onToggle, t }: ServiceCardProps) {
     return (
         <motion.div
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
-            onClick={onToggle}
+            onClick={() => onToggle(service.id)}
             className={cn(
                 "group relative p-4 md:p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4",
                 isSelected 
@@ -276,9 +283,9 @@ function ServiceCard({ service, isSelected, onToggle, t }: ServiceCardProps) {
                 </div>
             </div>
 
-            <div className="text-sm font-mono text-gray-500 group-hover:text-white transition-colors">
+            <div className="text-base font-bold tracking-tighter text-gray-500 group-hover:text-white transition-colors">
                 +€{service.price}
             </div>
         </motion.div>
     );
-}
+});

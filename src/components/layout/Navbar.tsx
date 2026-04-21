@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useScroll, useMotionValueEvent } from "framer-motion";
 
 interface NavbarProps {
   variant?: "light" | "dark";
@@ -59,13 +60,10 @@ export function Navbar({ variant = "light" }: NavbarProps) {
     }
   }, [expanded]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 50);
+  });
 
   // Close manual expand on outside click (only if not on a subpage)
   useEffect(() => {

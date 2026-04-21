@@ -7,39 +7,75 @@ import { Navbar } from "@/components/layout/Navbar";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
+import { lazy } from "react";
+
 // Desktop pages
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Pricing from "./pages/Pricing";
-import Blog from "./pages/Blog";
-import NotFound from "./pages/NotFound";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfService from "./pages/TermsOfService";
-import GDPR from "./pages/GDPR";
-import LegalNotice from "./pages/LegalNotice";
-import TermsOfSale from "./pages/TermsOfSale";
-import CookiePolicy from "./pages/CookiePolicy";
-import Changelog from "./pages/Changelog";
+const Index = lazy(() => import("./pages/Index"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Blog = lazy(() => import("./pages/Blog"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const GDPR = lazy(() => import("./pages/GDPR"));
+const LegalNotice = lazy(() => import("./pages/LegalNotice"));
+const TermsOfSale = lazy(() => import("./pages/TermsOfSale"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const Changelog = lazy(() => import("./pages/Changelog"));
 import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Chatbot } from "@/components/chat/Chatbot";
 
 // Mobile pages
-import MobileIndex from "./pages/mobile/MobileIndex";
-import MobileAbout from "./pages/mobile/MobileAbout";
-import MobileContact from "./pages/mobile/MobileContact";
-import MobilePricing from "./pages/mobile/MobilePricing";
-import MobileBlog from "./pages/mobile/MobileBlog";
+const MobileIndex = lazy(() => import("./pages/mobile/MobileIndex"));
+const MobileAbout = lazy(() => import("./pages/mobile/MobileAbout"));
+const MobileContact = lazy(() => import("./pages/mobile/MobileContact"));
+const MobilePricing = lazy(() => import("./pages/mobile/MobilePricing"));
+const MobileBlog = lazy(() => import("./pages/mobile/MobileBlog"));
 import { MobileNavbar } from "./pages/mobile/MobileNavbar";
 import { Analytics } from "@vercel/analytics/react";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
+import Lenis from "lenis";
+
+function SmoothScrollManager() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.05, // Linear interpolation gives buttery physical inertia
+      smoothWheel: true,
+      wheelMultiplier: 1, // Standard wheel speed, rely on lerp for delay
+      touchMultiplier: 2,
+    });
+
+    // Expose lenis globally so the router can reset it
+    (window as any).lenis = lenis;
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+      delete (window as any).lenis;
+    };
+  }, []);
+  return null;
+}
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    // Si on a une ancre (#), on ne force pas le scroll à 0 (géré par Index.tsx)
+    if (hash) return;
+    
+    if ((window as any).lenis) {
+      (window as any).lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, [pathname, hash]);
   return null;
 }
 
@@ -73,24 +109,27 @@ function AppRoutes() {
       {/* Navbar: mobile or desktop */}
       {isMobile ? <MobileNavbar /> : <Navbar variant={navVariant} />}
 
-      <Routes>
-        {/* Main pages — conditionally rendered */}
-        <Route path="/" element={isMobile ? <MobileIndex /> : <Index />} />
-        <Route path="/about" element={isMobile ? <MobileAbout /> : <About />} />
-        <Route path="/contact" element={isMobile ? <MobileContact /> : <Contact />} />
-        <Route path="/pricing" element={isMobile ? <MobilePricing /> : <Pricing />} />
-        <Route path="/blog" element={isMobile ? <MobileBlog /> : <Blog />} />
+      <Suspense fallback={null}>
+        <Routes>
+          {/* Main pages — conditionally rendered */}
+          <Route path="/" element={isMobile ? <MobileIndex /> : <Index />} />
+          <Route path="/about" element={isMobile ? <MobileAbout /> : <About />} />
+          <Route path="/contact" element={isMobile ? <MobileContact /> : <Contact />} />
+          <Route path="/pricing" element={isMobile ? <MobilePricing /> : <Pricing />} />
+          <Route path="/blog" element={isMobile ? <MobileBlog /> : <Blog />} />
 
-        {/* Legal pages — same on all devices */}
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<TermsOfService />} />
-        <Route path="/gdpr" element={<GDPR />} />
-        <Route path="/legal" element={<LegalNotice />} />
-        <Route path="/cgv" element={<TermsOfSale />} />
-        <Route path="/cookies" element={<CookiePolicy />} />
-        <Route path="/changelog" element={<Changelog />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          {/* Legal pages — same on all devices */}
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/gdpr" element={<GDPR />} />
+          <Route path="/legal" element={<LegalNotice />} />
+          <Route path="/cgv" element={<TermsOfSale />} />
+          <Route path="/cookies" element={<CookiePolicy />} />
+          <Route path="/changelog" element={<Changelog />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+      
       <CookieBanner />
       <Chatbot />
     </>
@@ -99,6 +138,7 @@ function AppRoutes() {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <SmoothScrollManager />
     <LanguageProvider>
       <TooltipProvider>
         <Toaster />

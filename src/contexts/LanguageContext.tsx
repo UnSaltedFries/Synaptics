@@ -123,6 +123,15 @@ const translations: Record<Lang, Record<string, string>> = {
         "changelog.subtitle": "A technical journey behind Synaptics",
         "changelog.latest": "Latest",
 
+        "v1.0.5.title": "Absolute Fluidity & Pricing UX",
+        "v1.0.5.date": "April 21, 2026",
+        "v1.0.5.desc": "Complete overhaul of the quoting configurator with precise scroll physics and glitch-free component rendering.",
+        "v1.0.5.feat1": "Native integration of Lenis Smooth Scrolling engine",
+        "v1.0.5.feat2": "Dynamic Pack Pricing with automated discount scaling (-10% to -20%)",
+        "v1.0.5.feat3": "Sticky UX stabilization & WebKit backdrop-filter fixes",
+        "v1.0.5.feat4": "Synchronized entrance animations across components",
+        "v1.0.5.feat5": "React render optimization (Memoization, stable callbacks)",
+
         "v1.0.4.title": "The Rise of Zippy",
         "v1.0.4.date": "April 21, 2026",
         "v1.0.4.desc": "Major update centered on user interaction and the birth of Zippy, our first AI brand ambassador.",
@@ -562,6 +571,15 @@ const translations: Record<Lang, Record<string, string>> = {
         "changelog.title": "Dev Blog",
         "changelog.subtitle": "L'aventure technique derrière Synaptics",
         "changelog.latest": "Dernier",
+
+        "v1.0.5.title": "Fluidité Absolue & UX Pricing",
+        "v1.0.5.date": "21 Avril 2026",
+        "v1.0.5.desc": "Refonte complète du configurateur de devis dynamique avec une physique de défilement native et un rendu UI ultra-fluide.",
+        "v1.0.5.feat1": "Intégration native du moteur Lenis Smooth Scrolling",
+        "v1.0.5.feat2": "Tarification dynamique des packs avec paliers de réductions automatiques",
+        "v1.0.5.feat3": "Stabilisation du Sticky UX & correctifs WebKit backdrop-blur",
+        "v1.0.5.feat4": "Synchronisation orchestrée des animations d'apparition",
+        "v1.0.5.feat5": "Optimisation de l'arbre React (Mémoïsation, callbacks stables)",
 
         "v1.0.4.title": "L'éveil de Zippy",
         "v1.0.4.date": "21 Avril 2026",

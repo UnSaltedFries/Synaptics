@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 
 const LIGHT_ROUTES = ["/about", "/privacy", "/terms", "/gdpr"];
 
@@ -25,11 +25,10 @@ export function MobileNavbar() {
         return () => { document.body.style.overflow = ""; };
     }, [isOpen]);
 
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 30);
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    const { scrollY } = useScroll();
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        setScrolled(latest > 30);
+    });
 
     const links = [
         { label: t("nav.home"), to: "/" },

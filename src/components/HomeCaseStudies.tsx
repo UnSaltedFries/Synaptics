@@ -134,6 +134,7 @@ export function HomeCaseStudies() {
                                 <img
                                     src={study.image}
                                     alt={t(study.titleKey)}
+                                    loading="lazy"
                                     className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                                 />
                                 {/* Stat overlay */}

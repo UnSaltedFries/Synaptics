@@ -16,14 +16,12 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
   const overlayRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [footerHeight, setFooterHeight] = useState(0);
-  
-  // Track global window scroll progress
   const { scrollYProgress } = useScroll();
   
-  // ADJUSTED: 90% to match tall pages and ensure a smoother footer reveal (not too rapid)
+  // ADJUSTED: 96% to balance the delay (not too early, not broken)
   const revealProgress = useTransform(
     scrollYProgress,
-    [0.90, 1], 
+    [0.96, 1], 
     [0, 1]
   );
 

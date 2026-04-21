@@ -13,7 +13,7 @@ import { ROICalculator } from "@/components/ROICalculator";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-import { WaveBackground } from "@/components/WaveBackground";
+
 
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
@@ -36,7 +36,6 @@ const Index = () => {
   return (
     <Layout variant="dark">
       <div className="bg-black min-h-screen relative overflow-hidden" style={{ backgroundColor: "#000000" }}>
-        <WaveBackground />
 
         <div className="relative z-10">
           <HeroSection />
