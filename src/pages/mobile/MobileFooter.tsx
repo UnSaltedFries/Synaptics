@@ -15,13 +15,13 @@ interface CharProps {
 }
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
-    const endThreshold = 0.75; // Finish even earlier on mobile for snappiness
-    const revealDuration = 0.15;
+    const endThreshold = 1.0;
+    const revealDuration = 0.3; // Slower reveal for mobile too
     const start = (index / total) * (endThreshold - revealDuration);
     const end = start + revealDuration;
 
     const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
-    const y = useTransform(progress, [start, end], [12, 0], { clamp: true });
+    const y = useTransform(progress, [start, end], [10, 0], { clamp: true });
 
     return (
         <motion.span
@@ -52,7 +52,7 @@ export function MobileFooter({ progress }: MobileFooterProps) {
         { label: "Instagram", href: "https://www.instagram.com/synapticsia/", icon: <Instagram className="w-5 h-5" /> },
     ];
 
-    const secondaryOpacity = useTransform(activeProgress, [0.8, 1], [0, 1], { clamp: true });
+    const secondaryOpacity = useTransform(activeProgress, [0.85, 1], [0, 1], { clamp: true });
 
     return (
         <footer 

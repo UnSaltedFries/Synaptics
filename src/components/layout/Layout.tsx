@@ -20,14 +20,11 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
   // Track global window scroll progress
   const { scrollYProgress } = useScroll();
   
-  // We want to calculate a progress specific to the footer reveal.
-  // The reveal starts when we hit the last 'footerHeight' pixels of the total scrollable range.
-  // Instead of complex math that might break on resize, we'll use a reliable window:
-  // We'll map the last portion of the total scroll (typically the last 10-15%) to the reveal.
-  // This is much more stable than target-based tracking for reveal effects.
+  // FIXED: Wider range [0.8, 1] to ensure the animation starts well before the end
+  // and has plenty of scroll "distance" to play out elegantly.
   const revealProgress = useTransform(
     scrollYProgress,
-    [0.9, 1], // Map the last 10% of the page scroll to the footer reveal [0, 1]
+    [0.8, 1], 
     [0, 1]
   );
 

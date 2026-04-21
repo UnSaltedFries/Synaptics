@@ -16,17 +16,13 @@ interface CharProps {
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
   // CONFIGURATION:
-  // We want all letters to be fully visible (opacity 1) when scroll progress is at 0.8.
-  // This ensures they stay locked on screen for the final 20% of the movement.
-  const endThreshold = 0.8;
-  const revealDuration = 0.2; // Each letter takes 20% of the threshold to fade in
+  // We stretch the animation across the FULL [0, 1] range of the provided progress.
+  const endThreshold = 1.0; 
+  const revealDuration = 0.4; // Each letter takes 40% of the movement to appear (slow and smooth)
   
-  // Adjusted reveal logic:
-  // Letters appear sequentially but finish early.
   const start = (index / total) * (endThreshold - revealDuration);
   const end = start + revealDuration;
 
-  // CLAMP: true is essential to prevent letters from fading back out!
   const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
   const y = useTransform(progress, [start, end], [20, 0], { clamp: true });
 
@@ -82,7 +78,7 @@ export function Footer({ progress }: FooterProps) {
   ];
 
   // Secondary elements fade in at the very end
-  const secondaryOpacity = useTransform(activeProgress, [0.85, 1], [0, 1], { clamp: true });
+  const secondaryOpacity = useTransform(activeProgress, [0.8, 1], [0, 1], { clamp: true });
 
   return (
     <footer 
@@ -91,7 +87,7 @@ export function Footer({ progress }: FooterProps) {
     >
       <div className="container mx-auto px-6 pt-48 pb-16 md:pb-24">
         
-        {/* STABLE SCROLL-LINKED HEADLINE */}
+        {/* SLOWER, MORE VISIBLE SCROLL-LINKED HEADLINE */}
         <h2 className="text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight font-sans text-white mb-16 md:mb-24">
           {characters.map((char, index) => (
             <AnimatedChar 
