@@ -1,42 +1,58 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion } from "framer-motion";
+import { motion, MotionValue, useTransform } from "framer-motion";
 import { Linkedin, Twitter, Instagram } from "lucide-react";
 
 interface FooterProps {
-  animate?: boolean;
+  progress?: MotionValue<number>;
 }
 
-export function Footer({ animate = false }: FooterProps) {
+interface CharProps {
+  char: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}
+
+function AnimatedChar({ char, index, total, progress }: CharProps) {
+  // CONFIGURATION:
+  // We want all letters to be fully visible (opacity 1) when scroll progress is at 0.8.
+  // This ensures they stay locked on screen for the final 20% of the movement.
+  const endThreshold = 0.8;
+  const revealDuration = 0.2; // Each letter takes 20% of the threshold to fade in
+  
+  // Adjusted reveal logic:
+  // Letters appear sequentially but finish early.
+  const start = (index / total) * (endThreshold - revealDuration);
+  const end = start + revealDuration;
+
+  // CLAMP: true is essential to prevent letters from fading back out!
+  const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
+  const y = useTransform(progress, [start, end], [20, 0], { clamp: true });
+
+  return (
+    <motion.span
+      style={{ 
+        opacity, 
+        y, 
+        display: "inline-block",
+        whiteSpace: char === " " ? "pre" : "normal" 
+      }}
+    >
+      {char}
+    </motion.span>
+  );
+}
+
+export function Footer({ progress }: FooterProps) {
   const { t } = useLanguage();
 
-  // Split text into characters for sequential animation
   const headlineText = t("footer.cta");
   const characters = Array.from(headlineText);
 
-  // Animation Variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.025,
-        delayChildren: 0.5, // Added a 0.5s pause to ensure visibility
-      },
-    },
-  };
-
-  const charVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut",
-      },
-    },
-  };
+  // Fallback if progress is not provided
+  const staticProgress = useMotionValue(1);
+  const activeProgress = progress || staticProgress;
 
   const footerLinks = {
     product: [
@@ -65,6 +81,9 @@ export function Footer({ animate = false }: FooterProps) {
     { label: "Instagram", href: "https://www.instagram.com/synapticsia/", icon: <Instagram className="w-5 h-5" /> },
   ];
 
+  // Secondary elements fade in at the very end
+  const secondaryOpacity = useTransform(activeProgress, [0.85, 1], [0, 1], { clamp: true });
+
   return (
     <footer 
       className="bg-black text-white w-full overflow-hidden" 
@@ -72,33 +91,22 @@ export function Footer({ animate = false }: FooterProps) {
     >
       <div className="container mx-auto px-6 pt-48 pb-16 md:pb-24">
         
-        {/* CHARACTER-BY-CHARACTER ANIMATED HEADLINE */}
-        <motion.h2 
-          className="text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight font-sans text-white mb-16 md:mb-24"
-          initial="hidden"
-          animate={animate ? "visible" : "hidden"}
-          variants={containerVariants}
-        >
+        {/* STABLE SCROLL-LINKED HEADLINE */}
+        <h2 className="text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight font-sans text-white mb-16 md:mb-24">
           {characters.map((char, index) => (
-            <motion.span
-              key={`${char}-${index}`}
-              variants={charVariants}
-              className="inline-block"
-              style={{ whiteSpace: char === " " ? "pre" : "normal" }}
-            >
-              {char}
-            </motion.span>
+            <AnimatedChar 
+              key={`${index}-${char}`}
+              char={char}
+              index={index}
+              total={characters.length}
+              progress={activeProgress}
+            />
           ))}
-        </motion.h2>
+        </h2>
 
-        {/* DETAILS BELOW (emails) */}
-        <div className="mb-16">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={animate ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 1.8, duration: 1 }} // Increased delay to follow the text reveal
-            className="flex flex-col items-start gap-4"
-          >
+        {/* DETAILS BELOW */}
+        <motion.div style={{ opacity: secondaryOpacity }} className="mb-16">
+          <div className="flex flex-col items-start gap-4">
             <a
               href="mailto:hello@synaptics.fr"
               className="text-xl md:text-2xl text-gray-400 hover:text-white transition-all duration-300 flex items-center gap-2 group font-sans"
@@ -106,11 +114,11 @@ export function Footer({ animate = false }: FooterProps) {
               hello@synaptics.fr
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
 
         {/* 4 COLUMNS GRID */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 mb-20">
+        <motion.div style={{ opacity: secondaryOpacity }} className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 mb-20">
           <div>
             <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-sans">
               {t("footer.col.product")}
@@ -184,10 +192,10 @@ export function Footer({ animate = false }: FooterProps) {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* BOTTOM BAR */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <motion.div style={{ opacity: secondaryOpacity }} className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex items-center gap-3">
             <span className="text-sm font-bold tracking-[0.2em] font-sans">SYNAPTICS</span>
             <span className="text-sm shadow-sm text-gray-500">·</span>
@@ -197,7 +205,7 @@ export function Footer({ animate = false }: FooterProps) {
             <span>© {new Date().getFullYear()} Synaptics.</span>
             <span>{t("footer.copyright")}</span>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

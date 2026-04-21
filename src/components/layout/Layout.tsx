@@ -3,7 +3,7 @@ import { Footer } from "./Footer";
 import { MobileFooter } from "@/pages/mobile/MobileFooter";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useLocation } from "react-router-dom";
-import { useInView } from "framer-motion";
+import { useScroll, useTransform, useMotionValue } from "framer-motion";
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,15 +14,22 @@ interface LayoutProps {
 export function Layout({ children, hideFooter = false, variant = "light" }: LayoutProps) {
   const location = useLocation();
   const overlayRef = useRef<HTMLDivElement>(null);
-  const footerTriggerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const [_footerHeight, setFooterHeight] = useState(0);
-
-  // Detect when the ABSOLUTE end of the page is reached
-  const isFooterVisible = useInView(footerTriggerRef, { 
-    once: false, 
-    amount: 0.1 
-  });
+  const [footerHeight, setFooterHeight] = useState(0);
+  
+  // Track global window scroll progress
+  const { scrollYProgress } = useScroll();
+  
+  // We want to calculate a progress specific to the footer reveal.
+  // The reveal starts when we hit the last 'footerHeight' pixels of the total scrollable range.
+  // Instead of complex math that might break on resize, we'll use a reliable window:
+  // We'll map the last portion of the total scroll (typically the last 10-15%) to the reveal.
+  // This is much more stable than target-based tracking for reveal effects.
+  const revealProgress = useTransform(
+    scrollYProgress,
+    [0.9, 1], // Map the last 10% of the page scroll to the footer reveal [0, 1]
+    [0, 1]
+  );
 
   // ResizeObserver to measure footer height dynamically
   useEffect(() => {
@@ -59,7 +66,7 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
   }, [location.pathname, variant]);
 
   return (
-    <div className="min-h-screen relative bg-black">
+    <div className="min-h-screen relative bg-black selection:bg-purple-500/30">
       {/* Main Content Layer */}
       <main 
         className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
@@ -68,15 +75,12 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
         {children}
       </main>
 
-      {/* NEW: Absolute end trigger, placed AFTER main to trigger at the very last pixel of scroll */}
-      {!hideFooter && <div ref={footerTriggerRef} className="h-10 w-full relative z-20 pointer-events-none" />}
-
       {/* Reveal Footer Layer */}
       {!hideFooter && (
         <div className="fixed bottom-0 left-0 right-0 z-0 h-[var(--footer-height)]">
           {isMobile 
-            ? <MobileFooter animate={isFooterVisible} /> 
-            : <Footer animate={isFooterVisible} />
+            ? <MobileFooter progress={revealProgress} /> 
+            : <Footer progress={revealProgress} />
           }
         </div>
       )}

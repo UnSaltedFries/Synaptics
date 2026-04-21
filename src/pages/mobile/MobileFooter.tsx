@@ -1,40 +1,50 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion } from "framer-motion";
+import { motion, MotionValue, useTransform, useMotionValue } from "framer-motion";
 import { Linkedin, Twitter, Instagram } from "lucide-react";
 
 interface MobileFooterProps {
-    animate?: boolean;
+    progress?: MotionValue<number>;
 }
 
-export function MobileFooter({ animate = false }: MobileFooterProps) {
+interface CharProps {
+    char: string;
+    index: number;
+    total: number;
+    progress: MotionValue<number>;
+}
+
+function AnimatedChar({ char, index, total, progress }: CharProps) {
+    const endThreshold = 0.75; // Finish even earlier on mobile for snappiness
+    const revealDuration = 0.15;
+    const start = (index / total) * (endThreshold - revealDuration);
+    const end = start + revealDuration;
+
+    const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
+    const y = useTransform(progress, [start, end], [12, 0], { clamp: true });
+
+    return (
+        <motion.span
+            style={{ 
+                opacity, 
+                y, 
+                display: "inline-block",
+                whiteSpace: char === " " ? "pre" : "normal" 
+            }}
+        >
+            {char}
+        </motion.span>
+    );
+}
+
+export function MobileFooter({ progress }: MobileFooterProps) {
     const { t } = useLanguage();
 
     const headlineText = t("footer.cta");
     const characters = Array.from(headlineText);
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.015,
-                delayChildren: 0.4,
-            },
-        },
-    };
-
-    const charVariants = {
-        hidden: { opacity: 0, y: 5 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.3,
-                ease: "easeOut",
-            },
-        },
-    };
+    const staticProgress = useMotionValue(1);
+    const activeProgress = progress || staticProgress;
 
     const socialLinks = [
         { label: "LinkedIn", href: "https://linkedin.com", icon: <Linkedin className="w-5 h-5" /> },
@@ -42,30 +52,26 @@ export function MobileFooter({ animate = false }: MobileFooterProps) {
         { label: "Instagram", href: "https://www.instagram.com/synapticsia/", icon: <Instagram className="w-5 h-5" /> },
     ];
 
+    const secondaryOpacity = useTransform(activeProgress, [0.8, 1], [0, 1], { clamp: true });
+
     return (
         <footer 
             className="bg-black text-white px-6 pt-24 pb-12 overflow-hidden" 
             style={{ backgroundColor: "#000000" }}
         >
-            <motion.h2 
-                className="text-[28px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8"
-                initial="hidden"
-                animate={animate ? "visible" : "hidden"}
-                variants={containerVariants}
-            >
+            <h2 className="text-[28px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8">
                 {characters.map((char, index) => (
-                    <motion.span
-                        key={`${char}-${index}`}
-                        variants={charVariants}
-                        className="inline-block"
-                        style={{ whiteSpace: char === " " ? "pre" : "normal" }}
-                    >
-                        {char}
-                    </motion.span>
+                    <AnimatedChar 
+                        key={`${index}-${char}`}
+                        char={char}
+                        index={index}
+                        total={characters.length}
+                        progress={activeProgress}
+                    />
                 ))}
-            </motion.h2>
+            </h2>
 
-            <div className="mb-8">
+            <motion.div style={{ opacity: secondaryOpacity }} className="mb-8">
                <a
                     href="mailto:hello@synaptics.fr"
                     className="text-lg text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2 group font-sans"
@@ -73,9 +79,9 @@ export function MobileFooter({ animate = false }: MobileFooterProps) {
                     hello@synaptics.fr
                     <span>→</span>
                 </a>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-2 gap-8 mb-12">
+            <motion.div style={{ opacity: secondaryOpacity }} className="grid grid-cols-2 gap-8 mb-12">
                 <div>
                     <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 mb-4 font-sans">{t("footer.col.product")}</h4>
                     <ul className="space-y-3">
@@ -92,9 +98,9 @@ export function MobileFooter({ animate = false }: MobileFooterProps) {
                         <li><Link to="/changelog" className="text-sm text-gray-300 font-sans">{t("footer.link.changelog")}</Link></li>
                     </ul>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="flex gap-4 mb-12">
+            <motion.div style={{ opacity: secondaryOpacity }} className="flex gap-4 mb-12">
                 {socialLinks.map((link) => (
                     <a
                         key={link.label}
@@ -104,15 +110,15 @@ export function MobileFooter({ animate = false }: MobileFooterProps) {
                         {link.icon}
                     </a>
                 ))}
-            </div>
+            </motion.div>
 
-            <div className="pt-8 border-t border-white/10 flex flex-col gap-4 text-xs text-gray-500 font-sans">
+            <motion.div style={{ opacity: secondaryOpacity }} className="pt-8 border-t border-white/10 flex flex-col gap-4 text-xs text-gray-500 font-sans">
                 <div className="flex justify-between items-center">
                     <span className="font-bold tracking-[0.2em] text-white font-sans uppercase">SYNAPTICS</span>
                     <span>Paris, FR</span>
                 </div>
                 <p>© {new Date().getFullYear()} Synaptics. {t("footer.copyright")}</p>
-            </div>
+            </motion.div>
         </footer>
     );
 }
