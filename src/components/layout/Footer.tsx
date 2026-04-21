@@ -1,13 +1,25 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import { Linkedin, Twitter, Instagram } from "lucide-react";
 
 export function Footer() {
   const { t } = useLanguage();
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const containerRef = useRef<HTMLElement>(null);
+  
+  // Track scroll progress of the footer reveal
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  });
+
+  // Create smooth 3D rotation and scale
+  const springScroll = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const rotateX = useTransform(springScroll, [0, 1], [70, 0]);
+  const opacity = useTransform(springScroll, [0, 0.5, 1], [0, 0.5, 1]);
+  const scale = useTransform(springScroll, [0, 1], [0.8, 1]);
+  const y = useTransform(springScroll, [0, 1], [50, 0]);
 
   const footerLinks = {
     product: [
@@ -38,75 +50,74 @@ export function Footer() {
 
   return (
     <footer 
-      ref={ref}
-      className="bg-black text-white w-full overflow-hidden" 
+      ref={containerRef}
+      className="bg-black text-white w-full overflow-hidden perspective-2000" 
       style={{ backgroundColor: "#000000" }}
     >
       <div className="container mx-auto px-6 py-16 md:py-24">
-        {/* BIG HEADLINE with Shimmer */}
+        {/* BIG HEADLINE with 3D Scroll Rotation and Syne font */}
         <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           animate={isInView ? { opacity: 1, y: 0 } : {}}
-           transition={{ duration: 0.8, ease: "easeOut" }}
-           className="mb-12 md:mb-20"
+           style={{ 
+             rotateX,
+             opacity,
+             scale,
+             y,
+             transformStyle: "preserve-3d"
+           }}
+           className="mb-12 md:mb-20 origin-bottom"
         >
-          <h2 className="text-[40px] md:text-[80px] font-extrabold leading-[1.1] tracking-tight mb-8 animate-shimmer max-w-4xl">
-            {t("footer.cta.main") || "Arrêtez de perdre du temps sur les tâches manuelles."}
+          <h2 className="text-[42px] md:text-[90px] font-extrabold leading-[0.9] tracking-tight mb-8 animate-shimmer max-w-5xl font-syne uppercase">
+            {t("footer.cta")}
           </h2>
           
-          <div className="flex flex-col items-start gap-4">
+          <motion.div 
+            style={{ opacity }}
+            className="flex flex-col items-start gap-4"
+          >
             <a
               href="mailto:hello@synaptics.fr"
-              className="text-xl md:text-2xl text-gray-400 hover:text-white transition-all duration-300 flex items-center gap-2 group"
+              className="text-xl md:text-2xl text-gray-400 hover:text-white transition-all duration-300 flex items-center gap-2 group font-syne"
             >
               hello@synaptics.fr
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* 4 COLUMNS GRID */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 mb-20">
           {/* PRODUIT */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6">
-              {t("footer.col.product").toUpperCase()}
+          <div>
+            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-syne">
+              {t("footer.col.product")}
             </p>
             <ul className="flex flex-col gap-4">
               {footerLinks.product.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.to} className="text-[15px] text-[#D0D0D8] hover:text-white transition-colors relative group inline-block">
+                  <Link to={link.to} className="text-[15px] text-[#D0D0D8] hover:text-white transition-colors relative group inline-block font-sans">
                     {link.label}
                     <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
                   </Link>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
           {/* ENTREPRISE */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6">
-               {t("footer.col.company").toUpperCase()}
+          <div>
+            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-syne">
+               {t("footer.col.company")}
             </p>
             <ul className="flex flex-col gap-4">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
                   {link.to ? (
-                    <Link to={link.to} className="text-[15px] text-[#D0D0D8] hover:text-white transition-colors relative group inline-block">
+                    <Link to={link.to} className="text-[15px] text-[#D0D0D8] hover:text-white transition-colors relative group inline-block font-sans">
                       {link.label}
                       <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
                     </Link>
                   ) : (
-                    <a href={link.href} className="text-[15px] text-[#D0D0D8] hover:text-white transition-colors relative group inline-block">
+                    <a href={link.href} className="text-[15px] text-[#D0D0D8] hover:text-white transition-colors relative group inline-block font-sans">
                       {link.label}
                       <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
                     </a>
@@ -114,37 +125,29 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
           {/* LÉGAL */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6">
-              {t("footer.col.legal").toUpperCase()}
+          <div>
+            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-syne">
+              {t("footer.col.legal")}
             </p>
             <ul className="flex flex-col gap-4">
               {footerLinks.legal.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.to} className="text-[15px] text-[#D0D0D8] hover:text-white transition-colors relative group inline-block">
+                  <Link to={link.to} className="text-[15px] text-[#D0D0D8] hover:text-white transition-colors relative group inline-block font-sans">
                     {link.label}
                     <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
                   </Link>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
           {/* SUIVEZ-NOUS */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6">
-              {t("footer.col.social").toUpperCase()}
+          <div>
+            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-syne">
+              {t("footer.col.social")}
             </p>
             <div className="flex gap-4">
               {socialLinks.map((link) => (
@@ -153,34 +156,30 @@ export function Footer() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-500 hover:border-white hover:shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)] bg-white/5"
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-500 hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] bg-white/5"
                   aria-label={link.label}
                 >
                   {link.icon}
                 </a>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* BOTTOM BAR */}
-        <motion.div 
-           initial={{ opacity: 0 }}
-           animate={isInView ? { opacity: 1 } : {}}
-           transition={{ duration: 1, delay: 0.6 }}
+        <div 
            className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
         >
           <div className="flex items-center gap-3">
-            <span className="text-sm font-bold tracking-[0.2em]">SYNAPTICS</span>
-            <span className="text-sm text-gray-500">·</span>
-            <span className="text-sm text-gray-500 italic">Paris, France</span>
+            <span className="text-sm font-bold tracking-[0.2em] font-syne">SYNAPTICS</span>
+            <span className="text-sm shadow-sm text-gray-500">·</span>
+            <span className="text-sm text-gray-500 italic font-sans">Paris, France</span>
           </div>
-          <div className="text-sm text-gray-500 flex flex-wrap gap-2">
+          <div className="text-sm text-gray-500 flex flex-wrap gap-2 font-sans">
             <span>© {new Date().getFullYear()} Synaptics.</span>
             <span>{t("footer.copyright")}</span>
-            <span className="italic">{t("footer.credit")}</span>
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
