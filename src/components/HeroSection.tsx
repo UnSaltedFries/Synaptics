@@ -14,7 +14,7 @@ export function HeroSection() {
   const imageOffset = useTransform(scrollY, [0, 800], [0, 120]);
 
   return (
-    <section ref={containerRef} className="min-h-screen flex flex-col justify-center bg-black text-white relative overflow-hidden pt-20" style={{ backgroundColor: "#000000" }}>
+    <section ref={containerRef} className="min-h-screen flex flex-col justify-center text-white relative overflow-hidden pt-20">
 
       <div className="container relative z-10 flex-1 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

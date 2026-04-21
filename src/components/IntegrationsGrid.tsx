@@ -17,7 +17,7 @@ export function IntegrationsGrid() {
     const { t } = useLanguage();
 
     return (
-        <section className="py-24 md:py-32 bg-black relative overflow-hidden">
+        <section className="py-24 md:py-32 relative overflow-hidden">
             <div className="container relative">
                 <div className="text-center mb-16">
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-[-0.03em] mb-4">

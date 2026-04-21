@@ -20,6 +20,7 @@ import GDPR from "./pages/GDPR";
 import LegalNotice from "./pages/LegalNotice";
 import TermsOfSale from "./pages/TermsOfSale";
 import CookiePolicy from "./pages/CookiePolicy";
+import Changelog from "./pages/Changelog";
 import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Chatbot } from "@/components/chat/Chatbot";
 
@@ -87,6 +88,7 @@ function AppRoutes() {
         <Route path="/legal" element={<LegalNotice />} />
         <Route path="/cgv" element={<TermsOfSale />} />
         <Route path="/cookies" element={<CookiePolicy />} />
+        <Route path="/changelog" element={<Changelog />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <CookieBanner />
