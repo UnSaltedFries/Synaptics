@@ -119,7 +119,7 @@ export default function Changelog() {
                                                 <ul className={`space-y-4 ${
                                                     idx % 2 === 0 ? "md:items-end text-right" : "md:items-start text-left"
                                                 }`}>
-                                                    {[1, 2, 3, 4, 5].map(f => {
+                                                    {[1, 2, 3, 4, 5, 6, 7, 8].map(f => {
                                                         const feat = t(`v${v}.feat${f}`);
                                                         if (feat === `v${v}.feat${f}` || !feat) return null; 
                                                         return (

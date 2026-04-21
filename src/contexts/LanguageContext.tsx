@@ -131,6 +131,8 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.5.feat3": "Sticky UX stabilization & WebKit backdrop-filter fixes",
         "v1.0.5.feat4": "Synchronized entrance animations across components",
         "v1.0.5.feat5": "React render optimization (Memoization, stable callbacks)",
+        "v1.0.5.feat6": "Dynamic JavaScript Code-Splitting (Lazy chunking)",
+        "v1.0.5.feat7": "Lenis overrides on React-Router to patch Scroll Restoration",
 
         "v1.0.4.title": "The Rise of Zippy",
         "v1.0.4.date": "April 21, 2026",
@@ -580,6 +582,8 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.5.feat3": "Stabilisation du Sticky UX & correctifs WebKit backdrop-blur",
         "v1.0.5.feat4": "Synchronisation orchestrée des animations d'apparition",
         "v1.0.5.feat5": "Optimisation de l'arbre React (Mémoïsation, callbacks stables)",
+        "v1.0.5.feat6": "Code-Splitting asynchrone fractionnant le poids du Javascript au montage",
+        "v1.0.5.feat7": "Patch algorithmique du Footer & Restauration de Scroll du React-Router par Lenis",
 
         "v1.0.4.title": "L'éveil de Zippy",
         "v1.0.4.date": "21 Avril 2026",
