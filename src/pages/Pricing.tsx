@@ -48,9 +48,14 @@ const Pricing = () => {
                                 direction="bottom"
                             />
                         </div>
-                        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+                        <motion.p 
+                            initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+                            animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+                            className="text-gray-400 max-w-2xl mx-auto text-lg"
+                        >
                             {t("pricing.subtitle")}
-                        </p>
+                        </motion.p>
                     </div>
 
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 items-start">
