@@ -390,6 +390,63 @@ const translations: Record<Lang, Record<string, string>> = {
         "chat.bubble": "I'm here if you need help.",
         "chat.error": "Oops! Connection lost with my central brain. Try again?",
         "chat.assistantError": "Sorry, I encountered a small error in my thinking.",
+
+        // Configurator Details
+        "config.title": "Automation Configurator",
+        "config.subtitle": "Build your own custom AI workforce",
+        "config.total": "Monthly total",
+        "config.perMonth": "/month",
+        "config.discount": "Discount applied",
+        "config.cta": "Order this Pack →",
+        "config.category.client": "CLIENT SERVICE",
+        "config.category.admin": "ADMIN / BILLING",
+        "config.category.sales": "SALES / ACQUISITION",
+        "config.category.rh": "HR / OPERATIONS",
+
+        "config.pack.standard": "Standard Price",
+        "config.pack.starter": "Starter Pack",
+        "config.pack.growth": "Growth Pack",
+        "config.pack.full": "Full Automation Pack",
+
+        "config.currentTier": "Current Tier",
+        "config.emptyState": "Select services to start building your pack...",
+        "config.modal.manual": "Current manual task",
+        "config.modal.synaptics": "The Synaptics approach",
+        "config.modal.remove": "Remove",
+        "config.modal.add": "Add to Pack",
+        "config.mo": "/mo",
+
+        "config.s1.title": "Intelligent Support Chatbot & FAQ",
+        "config.s1.manual": "Team manually answers the same 20 questions (hours, rates, deadlines) multiple times a day.",
+        "config.s1.argument": "Your team spends 2h a day onrepetitive questions. This chatbot frees them for high-value tasks — and your clients get an answer in 3 seconds, at 3 AM.",
+        
+        "config.s2.title": "Automated Customer Satisfaction (NPS)",
+        "config.s2.manual": "No one follows up after service. Google reviews are never requested. Satisfaction is never measured.",
+        "config.s2.argument": "Businesses with 50+ 5-star Google reviews convert 3x more. This system turns happy clients into a referral machine — without you lifting a finger.",
+
+        "config.s3.title": "Auto Quote & Invoice Generation",
+        "config.s3.manual": "Manager manually creates every quote in Word/Excel, sends via email, follows up by hand, then recreates the invoice.",
+        "config.s3.argument": "A quote sent in 5 minutes vs 45 today. Every hour saved on admin is an hour billed to a client. Over a year, that's tens of thousands of euros saved.",
+
+        "config.s4.title": "Automated Unpaid Invoice Follow-up",
+        "config.s4.manual": "Accountant manually tracks dates, writes awkward emails, and sometimes forgets — creating significant cash flow delays.",
+        "config.s4.argument": "In Europe, SMEs lose an average of 8% of revenue to unpaid invoices due to lack of follow-up. This workflow is literally a machine to recover money that is already yours.",
+
+        "config.s5.title": "Auto Document Filing & Sorting",
+        "config.s5.manual": "Invoices and bank statements arrive by email or paper. Someone sorts, renames, and files them manually every week.",
+        "config.s5.argument": "Your accountant bills €80/h. Every hour spent sorting documents is wasted money. This system does in 3 seconds what takes them 3 hours a week.",
+
+        "config.s6.title": "Competitor Watch & Auto Alerts",
+        "config.s6.manual": "No one monitors competitor reviews, new market players, or price changes. Strategic info is not collected.",
+        "config.s6.argument": "Knowing your competitors' weaknesses before your prospects do is a measurable advantage. This system gives you the intelligence of a market analyst for less than €200/month.",
+
+        "config.s7.title": "Fully Automated Client Onboarding",
+        "config.s7.manual": "When a client signs, manual welcome emails, tool access, and kick-off planning must be done every time.",
+        "config.s7.argument": "A client's first impression determines long-term loyalty. A chaotic onboarding creates doubt immediately. This system makes you look 10x more professional than a larger firm.",
+
+        "config.s8.title": "Automated Leave & Absence Management",
+        "config.s8.manual": "Leave requests arrive by email or word of mouth. Manager validates mentally without centralized tracking. Scheduling conflicts are found too late.",
+        "config.s8.argument": "For a SME manager, managing leave represents 3-4h a month of pure friction. This system makes the experience seamless for employees and frees you from invisible mental load.",
     },
 
     fr: {
@@ -773,6 +830,63 @@ const translations: Record<Lang, Record<string, string>> = {
         "chat.bubble": "Je suis là si besoin d'aide.",
         "chat.error": "Oups ! Connexion perdue avec mon cerveau central. Réessayez ?",
         "chat.assistantError": "Désolé, j'ai rencontré une petite erreur dans ma réflexion.",
+
+        // Détails du Configurateur
+        "config.title": "Configurateur d'Automatisation",
+        "config.subtitle": "Composez votre propre main-d'œuvre IA",
+        "config.total": "Total mensuel",
+        "config.perMonth": "/mois",
+        "config.discount": "Remise appliquée",
+        "config.cta": "Commander ce Pack →",
+        "config.category.client": "SERVICE CLIENT",
+        "config.category.admin": "ADMIN / FACTURATION",
+        "config.category.sales": "VENTES / ACQUISITION",
+        "config.category.rh": "RH / OPÉRATIONS",
+
+        "config.pack.standard": "Prix standard",
+        "config.pack.starter": "Pack Starter",
+        "config.pack.growth": "Pack Croissance",
+        "config.pack.full": "Pack Full Automation",
+
+        "config.currentTier": "Niveau actuel",
+        "config.emptyState": "Sélectionnez des services pour construire votre pack...",
+        "config.modal.manual": "Tâche manuelle actuelle",
+        "config.modal.synaptics": "L'approche Synaptics",
+        "config.modal.remove": "Retirer",
+        "config.modal.add": "Ajouter au Pack",
+        "config.mo": "/mois",
+
+        "config.s1.title": "Chatbot de Support & FAQ intelligent",
+        "config.s1.manual": "L'équipe répond manuellement aux mêmes 20 questions (horaires, tarifs, délais) plusieurs fois par jour.",
+        "config.s1.argument": "Votre équipe passe 2h par jour à répondre aux mêmes questions. Ce chatbot les libère pour des tâches à valeur ajoutée — et vos clients obtiennent une réponse en 3 secondes, à 3h du matin.",
+        
+        "config.s2.title": "Suivi de satisfaction client (NPS)",
+        "config.s2.manual": "Personne ne relance les clients après une prestation. Les avis Google ne sont jamais demandés. La satisfaction n'est jamais mesurée.",
+        "config.s2.argument": "Les cabinets avec 50+ avis Google 5 étoiles convertissent 3x plus. Ce système transforme vos clients satisfaits en machine à recommandations — sans que vous n'ayez à lever le petit doigt.",
+
+        "config.s3.title": "Génération & Envoi auto de devis/factures",
+        "config.s3.manual": "Le gérant crée chaque devis manuellement, l'envoie, relance à la main, puis re-crée la facture.",
+        "config.s3.argument": "Un devis envoyé en moins de 5 minutes contre 45 minutes aujourd'hui. Chaque heure économisée sur l'administratif, c'est une heure facturée à un client. Sur un an, c'est plusieurs dizaines de milliers d'euros récupérés.",
+
+        "config.s4.title": "Relance automatique des impayés",
+        "config.s4.manual": "La comptable surveille manuellement les échéances, rédige des relances embarrassantes, et oublie parfois — créant des retards de trésorerie.",
+        "config.s4.argument": "En France, les PME perdent en moyenne 8% de leur CA en impayés faute de relances. Ce workflow est littéralement une machine à récupérer de l'argent qui vous appartient déjà.",
+
+        "config.s5.title": "Classement automatique des documents entrants",
+        "config.s5.manual": "Les factures et relevés arrivent par email ou papier. Quelqu'un les trie, les renomme, et les dépose manuellement.",
+        "config.s5.argument": "Votre comptable facture €80/h. Chaque heure passée à trier des documents est de l'argent gaspillé. Ce système fait en 3 secondes ce qui lui prend 3 heures par semaine.",
+
+        "config.s6.title": "Veille concurrentielle & alertes automatiques",
+        "config.s6.manual": "Personne ne surveille les avis clients des concurrents, les nouveaux acteurs ou les tarifs. L'information n'est pas collectée.",
+        "config.s6.argument": "Connaître les faiblesses de vos concurrents avant vos prospects, c'est un avantage concurrentiel mesurable. Ce système vous donne l'intelligence d'un analyste marché pour moins de €200/mois.",
+
+        "config.s7.title": "Onboarding client automatisé",
+        "config.s7.manual": "Quand un client signe, il faut envoyer les documents, créer les accès et planifier le kick-off manuellement.",
+        "config.s7.argument": "La première impression d'un client détermine sa fidélité. Un onboarding chaotique crée des doutes immédiatement. Ce système vous fait paraître 10x plus professionnel qu'un cabinet de taille supérieure.",
+
+        "config.s8.title": "Gestion automatisée des congés et absences",
+        "config.s8.manual": "Les demandes arrivent par email ou verbalement. Le gérant valide sans suivi centralisé. Les conflits sont découverts trop tard.",
+        "config.s8.argument": "Pour un gérant de PME, gérer les congés représente 3-4h par mois de friction. Ce système rend l'expérience fluide et vous libère d'une charge mentale invisible mais réelle.",
     },
 };
 
