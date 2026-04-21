@@ -20,11 +20,10 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
   // Track global window scroll progress
   const { scrollYProgress } = useScroll();
   
-  // FIXED: Wider range [0.8, 1] to ensure the animation starts well before the end
-  // and has plenty of scroll "distance" to play out elegantly.
+  // ADJUSTED: Starting even LATER (93% of the page) as requested.
   const revealProgress = useTransform(
     scrollYProgress,
-    [0.8, 1], 
+    [0.93, 1], 
     [0, 1]
   );
 
