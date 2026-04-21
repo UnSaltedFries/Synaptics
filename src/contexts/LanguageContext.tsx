@@ -133,7 +133,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.4.feat5": "Ready-to-Deploy GPT-4o API Service Architecture",
 
         "v1.0.3.title": "Global Reach",
-        "v1.0.3.date": "April 20, 2026",
+        "v1.0.3.date": "March 25, 2026",
         "v1.0.3.desc": "Preparation for international scaling by making the entire platform bilingual.",
         "v1.0.3.feat1": "Dynamic Translation Routing (English / French)",
         "v1.0.3.feat2": "Smooth Cross-Language Fade Transitions",
@@ -141,7 +141,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.3.feat4": "Localization of SEO Metadata and Alt-Tags",
 
         "v1.0.2.title": "Infrastructure & CRM",
-        "v1.0.2.date": "April 15, 2026",
+        "v1.0.2.date": "March 05, 2026",
         "v1.0.2.desc": "Hardening the backend systems to support large-scale AI operations.",
         "v1.0.2.feat1": "Optimized Firestore Document Sync (Reducing Latency)",
         "v1.0.2.feat2": "Targeted UI Re-rendering for CRM Management",
@@ -149,7 +149,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.2.feat4": "System-wide Build & Linting Stabilization",
 
         "v1.0.1.title": "The Nexus Project",
-        "v1.0.1.date": "April 10, 2026",
+        "v1.0.1.date": "February 12, 2026",
         "v1.0.1.desc": "Initial reveal of the Synaptics premium design system and core tools.",
         "v1.0.1.feat1": "Interactive 3D WebGL Globe & Particle Systems",
         "v1.0.1.feat2": "Advanced AI ROI Estimator Calculator",
@@ -516,7 +516,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.4.feat5": "Architecture Service API GPT-4o prête pour le déploiement",
 
         "v1.0.3.title": "Rayonnement Global",
-        "v1.0.3.date": "20 Avril 2026",
+        "v1.0.3.date": "25 Mars 2026",
         "v1.0.3.desc": "Préparation à l'expansion internationale en rendant toute la plateforme bilingue.",
         "v1.0.3.feat1": "Routage de Traduction Dynamique (Anglais / Français)",
         "v1.0.3.feat2": "Transitions de Fondu Fluides lors du changement de langue",
@@ -524,7 +524,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.3.feat4": "Localisation des Métadonnées SEO et Alt-Tags",
 
         "v1.0.2.title": "Infrastructure & CRM",
-        "v1.0.2.date": "15 Avril 2026",
+        "v1.0.2.date": "05 Mars 2026",
         "v1.0.2.desc": "Renforcement des systèmes backend pour supporter des opérations IA à grande échelle.",
         "v1.0.2.feat1": "Synchronisation Optimisée des Documents Firestore (Réduction Latence)",
         "v1.0.2.feat2": "Rendu UI Ciblé pour la gestion du CRM",
@@ -532,7 +532,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.2.feat4": "Stabilisation Globale du Build & Linting",
 
         "v1.0.1.title": "Projet Nexus",
-        "v1.0.1.date": "10 Avril 2026",
+        "v1.0.1.date": "12 Février 2026",
         "v1.0.1.desc": "Révélation initiale du design system premium de Synaptics et des outils cœurs.",
         "v1.0.1.feat1": "Globe WebGL 3D Interactif & Systèmes de Particules",
         "v1.0.1.feat2": "Calculateur d'Estimateur de ROI IA Avancé",
