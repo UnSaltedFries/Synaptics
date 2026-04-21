@@ -412,7 +412,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "about.hero.highlight1": "agents\u00a0IA",
         "about.hero.line2": "qui automatisent ",
         "about.hero.highlight2": "chaque\u00a0tâche",
-        "about.hero.sub1": "Synaptics — Agence IA parisienne",
+        "about.hero.sub1": "Synaptics — Agence IA française",
         "about.hero.sub2": "qui automatise vos opérations avec des",
         "about.hero.highlight3": "agents",
         "about.hero.sub3": " intelligents.",

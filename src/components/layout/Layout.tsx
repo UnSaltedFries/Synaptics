@@ -3,6 +3,7 @@ import { Footer } from "./Footer";
 import { MobileFooter } from "@/pages/mobile/MobileFooter";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useLocation } from "react-router-dom";
+import { useScroll } from "framer-motion";
 
 interface LayoutProps {
   children: ReactNode;
@@ -13,9 +14,15 @@ interface LayoutProps {
 export function Layout({ children, hideFooter = false, variant = "light" }: LayoutProps) {
   const location = useLocation();
   const overlayRef = useRef<HTMLDivElement>(null);
-  const footerRef = useRef<HTMLElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [footerHeight, setFooterHeight] = useState(0);
+
+  // High-precision scroll tracking for the footer reveal
+  const { scrollYProgress } = useScroll({
+    target: triggerRef,
+    offset: ["start end", "end end"]
+  });
 
   // ResizeObserver to measure footer height dynamically
   useEffect(() => {
@@ -57,14 +64,18 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
       <main 
         className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         style={{ marginBottom: hideFooter ? 0 : "var(--footer-height)" }}
-      >
         {children}
+        {/* Trigger for footer animations - same height as footer for perfect mapping */}
+        {!hideFooter && <div ref={triggerRef} style={{ height: "var(--footer-height)" }} className="w-full absolute bottom-0 pointer-events-none" />}
       </main>
 
       {/* Reveal Footer Layer */}
       {!hideFooter && (
         <div className="fixed bottom-0 left-0 right-0 z-0 h-[var(--footer-height)]">
-          {isMobile ? <MobileFooter /> : <Footer />}
+          {isMobile 
+             ? <MobileFooter progress={scrollYProgress} /> 
+             : <Footer progress={scrollYProgress} />
+          }
         </div>
       )}
 

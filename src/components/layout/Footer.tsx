@@ -1,25 +1,23 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { motion, useTransform, useSpring, MotionValue } from "framer-motion";
 import { Linkedin, Twitter, Instagram } from "lucide-react";
 
-export function Footer() {
-  const { t } = useLanguage();
-  const containerRef = useRef<HTMLElement>(null);
-  
-  // Track scroll progress of the footer reveal
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"]
-  });
+interface FooterProps {
+  progress?: MotionValue<number>;
+}
 
-  // Create smooth 3D rotation and scale
-  const springScroll = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-  const rotateX = useTransform(springScroll, [0, 1], [70, 0]);
-  const opacity = useTransform(springScroll, [0, 0.5, 1], [0, 0.5, 1]);
-  const scale = useTransform(springScroll, [0, 1], [0.8, 1]);
-  const y = useTransform(springScroll, [0, 1], [50, 0]);
+export function Footer({ progress }: FooterProps) {
+  const { t } = useLanguage();
+
+  // Use a smooth spring based on the progress passed from Layout
+  const smoothProgress = useSpring(progress || 0, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  // 3D Cylinder Rotation: starts at 70deg (tilted back) and comes to 0 (facing user)
+  const rotateX = useTransform(smoothProgress, [0, 1], [70, 0]);
+  const opacity = useTransform(smoothProgress, [0, 0.3, 1], [0, 0.5, 1]);
+  const scale = useTransform(smoothProgress, [0, 1], [0.85, 1]);
+  const y = useTransform(smoothProgress, [0, 1], [60, 0]);
 
   const footerLinks = {
     product: [
@@ -50,12 +48,11 @@ export function Footer() {
 
   return (
     <footer 
-      ref={containerRef}
-      className="bg-black text-white w-full overflow-hidden perspective-2000" 
+      className="bg-black text-white w-full overflow-hidden preserve-3d" 
       style={{ backgroundColor: "#000000" }}
     >
-      <div className="container mx-auto px-6 py-16 md:py-24">
-        {/* BIG HEADLINE with 3D Scroll Rotation and Syne font */}
+      <div className="container mx-auto px-6 pt-32 pb-16 md:pb-24 perspective-2000">
+        {/* REVISED BIG HEADLINE: Outfit font, normal case */}
         <motion.div
            style={{ 
              rotateX,
@@ -64,9 +61,9 @@ export function Footer() {
              y,
              transformStyle: "preserve-3d"
            }}
-           className="mb-12 md:mb-20 origin-bottom"
+           className="mb-12 md:mb-16 origin-bottom"
         >
-          <h2 className="text-[42px] md:text-[90px] font-extrabold leading-[0.9] tracking-tight mb-8 animate-shimmer max-w-5xl font-syne uppercase">
+          <h2 className="text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight mb-8 font-sans text-white">
             {t("footer.cta")}
           </h2>
           
@@ -76,7 +73,7 @@ export function Footer() {
           >
             <a
               href="mailto:hello@synaptics.fr"
-              className="text-xl md:text-2xl text-gray-400 hover:text-white transition-all duration-300 flex items-center gap-2 group font-syne"
+              className="text-xl md:text-2xl text-gray-400 hover:text-white transition-all duration-300 flex items-center gap-2 group font-sans"
             >
               hello@synaptics.fr
               <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -85,10 +82,9 @@ export function Footer() {
         </motion.div>
 
         {/* 4 COLUMNS GRID */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 mb-20">
-          {/* PRODUIT */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 mb-20 translate-z-10">
           <div>
-            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-syne">
+            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-sans">
               {t("footer.col.product")}
             </p>
             <ul className="flex flex-col gap-4">
@@ -103,9 +99,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* ENTREPRISE */}
           <div>
-            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-syne">
+            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-sans">
                {t("footer.col.company")}
             </p>
             <ul className="flex flex-col gap-4">
@@ -127,9 +122,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* LÉGAL */}
           <div>
-            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-syne">
+            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-sans">
               {t("footer.col.legal")}
             </p>
             <ul className="flex flex-col gap-4">
@@ -144,9 +138,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* SUIVEZ-NOUS */}
           <div>
-            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-syne">
+            <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-sans">
               {t("footer.col.social")}
             </p>
             <div className="flex gap-4">
@@ -156,8 +149,7 @@ export function Footer() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-500 hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] bg-white/5"
-                  aria-label={link.label}
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-500 hover:border-white bg-white/5"
                 >
                   {link.icon}
                 </a>
@@ -167,11 +159,9 @@ export function Footer() {
         </div>
 
         {/* BOTTOM BAR */}
-        <div 
-           className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
-        >
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 translate-z-10">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-bold tracking-[0.2em] font-syne">SYNAPTICS</span>
+            <span className="text-sm font-bold tracking-[0.2em] font-sans">SYNAPTICS</span>
             <span className="text-sm shadow-sm text-gray-500">·</span>
             <span className="text-sm text-gray-500 italic font-sans">Paris, France</span>
           </div>
