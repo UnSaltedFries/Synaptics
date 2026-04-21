@@ -118,7 +118,7 @@
   html {
     scroll-behavior: smooth;
     transition: background-color 0.6s ease;
-    overflow-x: hidden;
+    overflow-x: clip;
     /* Hidden Scrollbar */
     scrollbar-width: none;
     /* Firefox */
@@ -136,7 +136,7 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Outfit', system-ui, sans-serif;
     font-size: 1.0625rem;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   /* Typography utilities */
