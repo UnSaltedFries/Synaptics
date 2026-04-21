@@ -467,3 +467,33 @@ html.lang-transitioning body {
     padding-right: 1.25rem;
   }
 }
+
+/* Footer Reveal & Shimmer animations */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(110deg, #fff 0%, #fff 40%, rgba(255,255,255,0.3) 50%, #fff 60%, #fff 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 7s linear infinite;
+}
+
+.footer-reveal-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.footer-reveal-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}

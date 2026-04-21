@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Footer } from "./Footer";
 import { MobileFooter } from "@/pages/mobile/MobileFooter";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -13,30 +13,61 @@ interface LayoutProps {
 export function Layout({ children, hideFooter = false, variant = "light" }: LayoutProps) {
   const location = useLocation();
   const overlayRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
   const isMobile = useIsMobile();
+  const [footerHeight, setFooterHeight] = useState(0);
+
+  // ResizeObserver to measure footer height dynamically
+  useEffect(() => {
+    if (hideFooter) {
+      document.documentElement.style.setProperty("--footer-height", "0px");
+      return;
+    }
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const height = entry.contentRect.height;
+        setFooterHeight(height);
+        document.documentElement.style.setProperty("--footer-height", `${height}px`);
+      }
+    });
+
+    const footerEl = document.querySelector('footer');
+    if (footerEl) {
+      observer.observe(footerEl);
+    }
+
+    return () => observer.disconnect();
+  }, [hideFooter, isMobile, location.pathname]);
 
   useEffect(() => {
     if (variant === "light" && overlayRef.current) {
       const el = overlayRef.current;
-      // Ensure overlay is opaque (black) first
       el.style.transition = "none";
       el.style.opacity = "1";
-
-      // Force a reflow so the browser paints the black overlay
       el.getBoundingClientRect();
-
-      // Now enable the transition and fade to transparent
       el.style.transition = "opacity 0.8s ease";
       el.style.opacity = "0";
     }
   }, [location.pathname, variant]);
 
   return (
-    <div className="min-h-screen flex flex-col relative">
-      <main className="flex-1">
+    <div className="min-h-screen relative bg-black">
+      {/* Main Content Layer */}
+      <main 
+        className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+        style={{ marginBottom: hideFooter ? 0 : "var(--footer-height)" }}
+      >
         {children}
       </main>
-      {!hideFooter && (isMobile ? <MobileFooter /> : <Footer />)}
+
+      {/* Reveal Footer Layer */}
+      {!hideFooter && (
+        <div className="fixed bottom-0 left-0 right-0 z-0 h-[var(--footer-height)]">
+          {isMobile ? <MobileFooter /> : <Footer />}
+        </div>
+      )}
+
       {/* Black overlay for smooth dark→light transition */}
       {variant === "light" && (
         <div

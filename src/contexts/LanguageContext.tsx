@@ -159,6 +159,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "footer.nav.work": "Work",
         "footer.nav.about": "About",
         "footer.nav.contact": "Contact",
+        "footer.cta.main": "Stop wasting time on manual tasks.",
 
         // Project Detail
         "projectDetail.notFound": "Project not found",
@@ -542,6 +543,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "footer.nav.work": "Projets",
         "footer.nav.about": "À propos",
         "footer.nav.contact": "Contact",
+        "footer.cta.main": "Arrêtez de perdre du temps sur les tâches manuelles.",
 
         // Project Detail
         "projectDetail.notFound": "Projet introuvable",
