@@ -106,18 +106,25 @@ const Pricing = () => {
                         </ScrollReveal>
 
                         {/* RIGHT: The Configurator */}
-                        <ScrollReveal delay={0.6} className="w-full">
+                        <motion.div 
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                            className="w-full"
+                        >
                             <div className="space-y-6">
                                 <h3 className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase">
                                     02. WORKFLOW BACK-OFFICE
                                 </h3>
-                                <div className="p-1 rounded-[2.5rem] bg-gradient-to-br from-white/[0.08] to-transparent">
-                                    <div className="rounded-[2.4rem] bg-black/40 backdrop-blur-sm p-4 md:p-8">
+                                <div className="relative p-1 rounded-[2.5rem] bg-gradient-to-br from-white/[0.08] to-transparent">
+                                    <div className="absolute inset-1 rounded-[2.4rem] bg-black/40 backdrop-blur-md z-0" />
+                                    <div className="relative z-10 p-2 sm:p-4 md:p-8">
                                         <PricingConfigurator />
                                     </div>
                                 </div>
                             </div>
-                        </ScrollReveal>
+                        </motion.div>
                     </div>
                 </div>
             </section>
