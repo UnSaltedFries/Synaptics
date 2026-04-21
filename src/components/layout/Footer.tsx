@@ -15,10 +15,8 @@ interface CharProps {
 }
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
-  // CONFIGURATION:
-  // We stretch the animation across the FULL [0, 1] range of the provided progress.
   const endThreshold = 1.0; 
-  const revealDuration = 0.4; // Each letter takes 40% of the movement to appear (slow and smooth)
+  const revealDuration = 0.4; 
   
   const start = (index / total) * (endThreshold - revealDuration);
   const end = start + revealDuration;
@@ -46,7 +44,6 @@ export function Footer({ progress }: FooterProps) {
   const headlineText = t("footer.cta");
   const characters = Array.from(headlineText);
 
-  // Fallback if progress is not provided
   const staticProgress = useMotionValue(1);
   const activeProgress = progress || staticProgress;
 
@@ -77,9 +74,6 @@ export function Footer({ progress }: FooterProps) {
     { label: "Instagram", href: "https://www.instagram.com/synapticsia/", icon: <Instagram className="w-5 h-5" /> },
   ];
 
-  // Secondary elements fade in at the very end
-  const secondaryOpacity = useTransform(activeProgress, [0.8, 1], [0, 1], { clamp: true });
-
   return (
     <footer 
       className="bg-black text-white w-full overflow-hidden" 
@@ -87,7 +81,7 @@ export function Footer({ progress }: FooterProps) {
     >
       <div className="container mx-auto px-6 pt-48 pb-16 md:pb-24">
         
-        {/* SLOWER, MORE VISIBLE SCROLL-LINKED HEADLINE */}
+        {/* ONLY THE HEADLINE ANIMATES */}
         <h2 className="text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight font-sans text-white mb-16 md:mb-24">
           {characters.map((char, index) => (
             <AnimatedChar 
@@ -100,8 +94,8 @@ export function Footer({ progress }: FooterProps) {
           ))}
         </h2>
 
-        {/* DETAILS BELOW */}
-        <motion.div style={{ opacity: secondaryOpacity }} className="mb-16">
+        {/* REST OF FOOTER IS STATIC FOR "FIXED" EFFECT */}
+        <div className="mb-16">
           <div className="flex flex-col items-start gap-4">
             <a
               href="mailto:hello@synaptics.fr"
@@ -111,10 +105,9 @@ export function Footer({ progress }: FooterProps) {
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </div>
-        </motion.div>
+        </div>
 
-        {/* 4 COLUMNS GRID */}
-        <motion.div style={{ opacity: secondaryOpacity }} className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 mb-20">
           <div>
             <p className="text-[12px] uppercase tracking-[0.15em] font-bold text-[#8A8AA0] mb-6 font-sans">
               {t("footer.col.product")}
@@ -188,10 +181,9 @@ export function Footer({ progress }: FooterProps) {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* BOTTOM BAR */}
-        <motion.div style={{ opacity: secondaryOpacity }} className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex items-center gap-3">
             <span className="text-sm font-bold tracking-[0.2em] font-sans">SYNAPTICS</span>
             <span className="text-sm shadow-sm text-gray-500">·</span>
@@ -201,7 +193,7 @@ export function Footer({ progress }: FooterProps) {
             <span>© {new Date().getFullYear()} Synaptics.</span>
             <span>{t("footer.copyright")}</span>
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
