@@ -20,10 +20,10 @@ export function Layout({ children, hideFooter = false, variant = "light" }: Layo
   // Track global window scroll progress
   const { scrollYProgress } = useScroll();
   
-  // ADJUSTED: A tiny bit LATER (95% of the page) instead of 94%
+  // ADJUSTED: A tiny tiny tiny bit LATER (96% of the page) instead of 95%
   const revealProgress = useTransform(
     scrollYProgress,
-    [0.95, 1], 
+    [0.96, 1], 
     [0, 1]
   );
 
