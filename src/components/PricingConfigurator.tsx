@@ -108,7 +108,7 @@ export function PricingConfigurator() {
 
             {/* Summary Sticky Panel */}
             <div className="lg:col-span-5 relative">
-                <div className="lg:sticky lg:top-32 transition-all duration-300">
+                <div className="lg:sticky lg:top-24 transition-all duration-300">
                     <motion.div 
                         layout
                         className="relative p-6 md:p-8 rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-2xl shadow-purple-500/5 hover:shadow-purple-500/10 transition-shadow"
