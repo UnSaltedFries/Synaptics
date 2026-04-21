@@ -76,8 +76,8 @@ export function Footer({ progress }: FooterProps) {
 
   return (
     <footer 
-      className="bg-black text-white w-full overflow-hidden" 
-      style={{ backgroundColor: "#000000" }}
+      className="text-white w-full overflow-hidden" 
+      style={{ backgroundColor: "#161616" }}
     >
       <div className="container mx-auto px-6 pt-48 pb-16 md:pb-24">
         

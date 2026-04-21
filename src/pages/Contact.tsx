@@ -532,10 +532,6 @@ const Contact = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Bottom text */}
-              <p className="text-xs text-gray-600 mt-6 text-center">
-                © {new Date().getFullYear()} Synaptics. {t("footer.copyright")} <span className="italic">{t("footer.credit")}</span>
-              </p>
             </motion.div>
           </div>
         </motion.div>

@@ -54,8 +54,8 @@ export function MobileFooter({ progress }: MobileFooterProps) {
 
     return (
         <footer 
-            className="bg-black text-white px-6 pt-24 pb-12 overflow-hidden" 
-            style={{ backgroundColor: "#000000" }}
+            className="text-white px-6 pt-24 pb-12 overflow-hidden" 
+            style={{ backgroundColor: "#161616" }}
         >
             <h2 className="text-[28px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8">
                 {characters.map((char, index) => (
