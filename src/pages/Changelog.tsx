@@ -35,7 +35,7 @@ export default function Changelog() {
         <Layout variant="dark">
             <div className="min-h-screen bg-black text-white font-sans">
                 {/* Hero Section */}
-                <section className="pt-32 pb-20 px-6 relative overflow-hidden">
+                <section className="pt-32 pb-24 px-6 relative overflow-hidden">
                     <div className="container mx-auto text-center relative z-10">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -54,7 +54,10 @@ export default function Changelog() {
                         </motion.div>
                     </div>
 
-                    {/* Decorative glow */}
+                    {/* Gradient Transition Bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none" />
+
+                    {/* Decorative glow Top */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-blue-600/10 blur-[120px] pointer-events-none" />
                 </section>
 
