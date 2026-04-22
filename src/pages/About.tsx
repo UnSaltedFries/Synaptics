@@ -42,9 +42,9 @@ const About = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
-        start: "top 80%",
-        end: "bottom 60%",
-        scrub: 0.5, // Smoother scrub
+        start: "top 95%",
+        end: "bottom 70%",
+        scrub: 1, 
       }
     });
 
@@ -71,7 +71,7 @@ const About = () => {
           force3D: true,
           scrollTrigger: {
             trigger: block,
-            start: "top bottom",
+            start: "top 98%",
             end: "top 40%",
             scrub: true,
           }
