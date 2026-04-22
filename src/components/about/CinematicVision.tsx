@@ -17,17 +17,19 @@ export const CinematicVision = () => {
     const words = text.split(" ");
 
     return (
-        <section ref={containerRef} className="h-[300vh] bg-black relative z-[9999] text-white">
+        <section ref={containerRef} className="h-[300vh] bg-black relative z-10 text-white">
             <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-6 md:px-20">
                 <div className="absolute inset-0 bg-black pointer-events-none" />
                 
-                <div className="w-full max-w-5xl relative z-10">
-                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold text-center tracking-tight leading-[1.2] flex flex-wrap justify-center text-white">
+                {/* Perfect center with explicit Navbar clearance */}
+                <div className="w-full max-w-5xl relative z-10 translate-y-[80px]">
+                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold text-center tracking-tight leading-[1.1] flex flex-wrap justify-center text-white">
                         {words.map((word, wordIndex) => (
                             <span key={wordIndex} className="inline-flex mx-[0.15em] my-1">
                                 {word.split("").map((char, charIndex) => {
                                     const charGlobalIndex = text.split(" ").slice(0, wordIndex).join(" ").length + wordIndex + charIndex;
-                                    const start = (charGlobalIndex / text.length) * 0.7;
+                                    // Faster reveal (0.5 instead of 0.7)
+                                    const start = (charGlobalIndex / text.length) * 0.5;
                                     const end = start + 0.15;
                                     
                                     return (

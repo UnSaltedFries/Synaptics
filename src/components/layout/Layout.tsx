@@ -16,15 +16,14 @@ export function Layout({
   children, 
   hideFooter = false, 
   variant = "light",
-  footerThreshold = 0.88 
+  footerThreshold = 0.80 
 }: LayoutProps) {
   const location = useLocation();
-  const overlayRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [footerHeight, setFooterHeight] = useState(0);
   const { scrollYProgress } = useScroll();
   
-  // Use custom threshold if provided, otherwise use the balanced 92% default
+  // Use custom threshold if provided, otherwise use the balanced 80% default
   const revealProgress = useTransform(
     scrollYProgress,
     [footerThreshold, 1], 
@@ -54,17 +53,6 @@ export function Layout({
     return () => observer.disconnect();
   }, [hideFooter, isMobile, location.pathname]);
 
-  useEffect(() => {
-    if (variant === "light" && overlayRef.current) {
-      const el = overlayRef.current;
-      el.style.transition = "none";
-      el.style.opacity = "1";
-      el.getBoundingClientRect();
-      el.style.transition = "opacity 0.8s ease";
-      el.style.opacity = "0";
-    }
-  }, [location.pathname, variant]);
-
   return (
     <div className="min-h-screen relative bg-black selection:bg-purple-500/30 overflow-x-hidden">
       {/* Main Content Layer */}
@@ -83,21 +71,6 @@ export function Layout({
             : <Footer progress={revealProgress} />
           }
         </div>
-      )}
-
-      {/* Black overlay for smooth dark→light transition */}
-      {variant === "light" && (
-        <div
-          ref={overlayRef}
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "#000",
-            opacity: 1,
-            pointerEvents: "none",
-            zIndex: 9991,
-          }}
-        />
       )}
     </div>
   );
