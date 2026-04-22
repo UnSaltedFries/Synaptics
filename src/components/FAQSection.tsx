@@ -74,6 +74,7 @@ export function FAQSection() {
                             </div>
                         );
                     })}
+                    </div>
                 </div>
             </ScrollReveal>
         </section>
