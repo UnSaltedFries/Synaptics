@@ -18,11 +18,11 @@ export const CinematicVision = () => {
 
     return (
         <section ref={containerRef} className="h-[300vh] bg-black relative z-[100] text-white">
-            <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-10 md:px-20">
+            <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-10 md:px-20 pt-20">
                 <div className="absolute inset-0 bg-black" />
                 
-                <div className="w-full max-w-7xl relative z-10">
-                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold text-center tracking-tight leading-[1.1] flex flex-wrap justify-center text-white">
+                <div className="w-full max-w-5xl relative z-10">
+                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold text-center tracking-tight leading-[1.3] flex flex-wrap justify-center text-white">
                         {words.map((word, wordIndex) => (
                             <span key={wordIndex} className="inline-flex whitespace-nowrap mr-[0.3em]">
                                 {word.split("").map((char, charIndex) => {
@@ -55,7 +55,7 @@ const Letter = ({ children, progress, range }: { children: string; progress: any
     const y = useTransform(progress, range, ["150%", "0%"], { clamp: true });
     
     return (
-        <span className="relative inline-block overflow-hidden py-4 z-10" style={{ isolation: "isolate" }}>
+        <span className="relative inline-block overflow-hidden py-8 z-10" style={{ isolation: "isolate" }}>
             <motion.span 
                 style={{ 
                     y, 
