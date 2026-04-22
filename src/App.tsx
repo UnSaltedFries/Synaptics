@@ -40,15 +40,23 @@ import Lenis from "lenis";
 
 function SmoothScrollManager() {
   useEffect(() => {
+    // Force scroll to top on refresh by disabling browser scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
     const lenis = new Lenis({
-      lerp: 0.05, // Linear interpolation gives buttery physical inertia
+      lerp: 0.05, 
       smoothWheel: true,
-      wheelMultiplier: 1, // Standard wheel speed, rely on lerp for delay
+      wheelMultiplier: 1, 
       touchMultiplier: 2,
     });
 
-    // Expose lenis globally so the router can reset it
+    // Expose lenis globally
     (window as any).lenis = lenis;
+
+    // Hard scroll to top on initial mount
+    lenis.scrollTo(0, { immediate: true });
 
     function raf(time: number) {
       lenis.raf(time);
