@@ -15,11 +15,12 @@ interface CharProps {
 }
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
-  const endThreshold = 0.9; 
-  const revealDuration = 0.5; 
+  const endThreshold = 1.0; 
+  const revealDuration = 0.4; 
   
-  const start = (index / total) * (endThreshold - revealDuration);
-  const end = start + revealDuration;
+  // Start much later (starts at 0.6 progress)
+  const start = 0.6 + (index / total) * (endThreshold - 0.6 - 0.2);
+  const end = Math.min(start + revealDuration, 1.0);
 
   const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
   const y = useTransform(progress, [start, end], [20, 0], { clamp: true });
