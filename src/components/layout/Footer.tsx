@@ -15,8 +15,8 @@ interface CharProps {
 }
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
-  const endThreshold = 1.0; 
-  const revealDuration = 0.4; 
+  const endThreshold = 0.9; 
+  const revealDuration = 0.5; 
   
   const start = (index / total) * (endThreshold - revealDuration);
   const end = start + revealDuration;
@@ -77,7 +77,7 @@ export function Footer({ progress }: FooterProps) {
   return (
     <footer 
       className="text-white w-full overflow-hidden" 
-      style={{ backgroundColor: "#080808" }}
+      style={{ backgroundColor: "#161616" }}
     >
       <div className="container mx-auto px-6 pt-48 pb-16 md:pb-24">
         

@@ -158,16 +158,87 @@ export function PricingConfigurator() {
                             )}
                         </div>
 
-                        {/* Selected Pack Badge */}
-                        <div className="py-4 border-y border-white/[0.06]">
-                            <p className="text-xs uppercase tracking-widest text-gray-500 mb-2 font-semibold">{t("config.currentTier")}</p>
-                            <div className="text-lg font-bold text-white">
-                                {t(packName)}
+                        {/* Discount Tier Progress */}
+                        <div className="py-4 border-y border-white/[0.06] space-y-3">
+                            <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold">
+                                {t("config.currentTier")} — <span className="text-white">{t(packName)}</span>
+                            </p>
+
+                            {/* Progress bar */}
+                            <div className="relative h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                                <motion.div
+                                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-purple-500 to-violet-400"
+                                    animate={{ width: `${Math.min((selectedIds.length / 8) * 100, 100)}%` }}
+                                    transition={{ duration: 0.4, ease: "easeOut" }}
+                                />
+                                {/* Tick marks at thresholds */}
+                                {[3, 5, 8].map(n => (
+                                    <div
+                                        key={n}
+                                        className="absolute top-0 bottom-0 w-px bg-black/40"
+                                        style={{ left: `${(n / 8) * 100}%` }}
+                                    />
+                                ))}
+                            </div>
+
+                            {/* Tier labels */}
+                            <div className="flex items-end justify-between gap-2">
+                                {[
+                                    { threshold: 3, discount: "10%", label: t("config.pack.starter") },
+                                    { threshold: 5, discount: "15%", label: t("config.pack.growth") },
+                                    { threshold: 8, discount: "20%", label: t("config.pack.full") },
+                                ].map(({ threshold, discount: pct, label }) => {
+                                    const reached = selectedIds.length >= threshold;
+                                    const isNext = !reached && (
+                                        threshold === 3 ? selectedIds.length < 3 :
+                                        threshold === 5 ? selectedIds.length >= 3 && selectedIds.length < 5 :
+                                        selectedIds.length >= 5 && selectedIds.length < 8
+                                    );
+                                    return (
+                                        <motion.div
+                                            key={threshold}
+                                            animate={{ opacity: 1 }}
+                                            className={cn(
+                                                "flex flex-col items-center gap-1 flex-1 text-center",
+                                                reached ? "opacity-100" : "opacity-40"
+                                            )}
+                                        >
+                                            <motion.span
+                                                className={cn(
+                                                    "text-base font-bold font-mono",
+                                                    reached ? "text-green-400" : isNext ? "text-purple-400" : "text-gray-500"
+                                                )}
+                                                animate={{ scale: reached ? [1, 1.2, 1] : 1 }}
+                                                transition={{ duration: 0.3 }}
+                                            >
+                                                -{pct}
+                                            </motion.span>
+                                            <span className="text-[9px] uppercase tracking-wider text-gray-500 leading-tight">
+                                                {threshold} {t("config.services.label")}
+                                            </span>
+                                            {reached && (
+                                                <motion.span
+                                                    initial={{ scale: 0 }}
+                                                    animate={{ scale: 1 }}
+                                                    className="w-1.5 h-1.5 rounded-full bg-green-400"
+                                                />
+                                            )}
+                                            {!reached && isNext && (
+                                                <span className="text-[8px] text-purple-400/70">
+                                                    +{threshold - selectedIds.length}
+                                                </span>
+                                            )}
+                                        </motion.div>
+                                    );
+                                })}
                             </div>
                         </div>
 
                         {/* Selected Items List */}
-                        <div className="space-y-2 max-h-[200px] overflow-y-auto no-scrollbar pr-2">
+                        <div 
+                            className="space-y-2 max-h-[200px] overflow-y-auto pr-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                            data-lenis-prevent="true"
+                        >
                             {selectedIds.length === 0 ? (
                                 <p className="text-sm text-gray-500 italic">{t("config.emptyState")}</p>
                             ) : (

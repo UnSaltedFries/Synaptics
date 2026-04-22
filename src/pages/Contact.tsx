@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,529 +11,392 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, Mail, Phone, MapPin, Briefcase, Rocket, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import BlurText from "@/components/BlurText";
 
 const formSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100),
-  email: z.string().trim().email("Invalid email").max(255),
-  company: z.string().trim().min(1, "Company required").max(100),
-  projectType: z.string().min(1, "Please select"),
-  otherDetail: z.string().optional(),
-  description: z.string().trim().min(1, "Required").max(2000),
-  budget: z.string().min(1, "Please select"),
-  timeline: z.string().trim().min(1, "Required").max(200),
-  referral: z.string().trim().min(1, "Required").max(200)
+  name: z.string().trim().min(1, "Nom requis").max(100),
+  email: z.string().trim().email("Email invalide").max(255),
+  company: z.string().trim().min(1, "Entreprise requise").max(100),
+  industry: z.string().min(1, "Secteur requis"),
+  description: z.string().trim().min(1, "Description requise").max(2000),
+  budget: z.string().min(1, "Budget requis"),
+  deadline: z.string().trim().min(1, "Délai requis").max(200),
+  referral: z.string().trim().min(1, "Champ requis").max(200),
+  industryDetails: z.string().optional()
 });
 
 type FormData = z.infer<typeof formSchema>;
 
+const INPUT_CLASS = "bg-white/[0.03] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-11 px-4 focus:border-purple-500/50 focus:bg-white/[0.06] focus-visible:ring-0 focus-visible:ring-offset-0 transition-all text-sm w-full outline-none";
+const LABEL_CLASS = "text-[10px] uppercase tracking-[0.15em] font-bold text-gray-500 mb-2 block";
+
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [selectedProjectType, setSelectedProjectType] = useState<string>("");
-  const [open, setOpen] = useState(false);
   const { t } = useLanguage();
 
-  const projectTypes = [
-    t("project.type.medical"),
-    t("project.type.realestate"),
-    t("project.type.law"),
-    t("project.type.restaurant"),
-    t("project.type.plumber"),
-    t("project.type.tiling"),
-    t("project.type.plasterer"),
-    t("project.type.electrician"),
-    t("project.type.accountant"),
-    t("project.type.other"),
+  const industries = [
+    "Santé & Médical",
+    "Immobilier",
+    "Juridique",
+    "Restauration",
+    "BTP / Artisanat",
+    "Comptabilité",
+    "E-commerce",
+    "Autre"
   ];
 
   const budgetOptions = [
-    { value: "starter", label: t("contact.budget.starter") },
-    { value: "growth", label: t("contact.budget.growth") },
-    { value: "enterprise", label: t("contact.budget.enterprise") },
+    { value: "starter", label: "Moins de 1k€ / mois" },
+    { value: "growth", label: "1k€ - 5k€ / mois" },
+    { value: "enterprise", label: "Plus de 5k€ / mois" },
   ];
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      company: "",
-      projectType: "",
-      description: "",
-      budget: "",
-      timeline: "",
-      referral: "",
-      otherDetail: ""
+      description: "", budget: "", deadline: "", referral: "",
+      industryDetails: ""
     }
   });
+
+  const selectedIndustry = form.watch("industry");
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("send-contact-email", {
-        body: data
+      const { error } = await supabase.functions.invoke("send-contact-email", { 
+        body: {
+          ...data,
+          projectType: data.industry, // Mapping for backward compatibility if needed
+          timeline: data.deadline
+        } 
       });
-
-      // If there's an error but it's a network/unreachable error, we still show success 
-      // for the demo as the user requested "make a page saying your request was received"
-      if (error) {
-        console.warn("Supabase function error (proceeding to success state for demo):", error);
-      }
-
+      if (error) console.warn("Supabase function error:", error);
       setIsSubmitted(true);
       form.reset();
-      setSelectedProjectType("");
     } catch (error) {
-      console.error("Critical error sending form (simulation mode active):", error);
-      // Even on critical error, show success to show the UI result as requested
+      console.error("Critical error:", error);
       setIsSubmitted(true);
       form.reset();
-      setSelectedProjectType("");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleProjectTypeClick = (type: string) => {
-    setSelectedProjectType(type);
-    form.setValue("projectType", type);
-  };
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 50,
-        damping: 20
-      }
-    }
-  };
-
   return (
-    <Layout hideFooter variant="dark">
-      <section className="h-screen bg-black text-white pt-24 overflow-hidden flex flex-col">
-        <motion.div
-          className="container h-full flex flex-col justify-center"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 h-full items-center">
+    <Layout variant="dark" footerThreshold={0.80}>
+      <section className="min-h-screen bg-black text-white pt-32 pb-24 relative overflow-hidden">
+        {/* Ambient background rays */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-20">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-500/20 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/20 blur-[120px] rounded-full" />
+        </div>
 
-            {/* LEFT: Headline + Info */}
-            <motion.div variants={itemVariants} className="md:sticky md:top-24 md:self-start h-fit">
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-[0.9] tracking-[-0.03em] mb-6">
-                {t("contact.title.line1")}
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-[length:200%_auto] animate-gradient">
-                  {t("contact.title.line2")}
-                </span>
-              </h1>
-
-              <p className="text-base text-gray-400 mb-8 leading-relaxed max-w-md">
-                {t("contact.desc")}
-              </p>
-
-              {/* Info Cards - Now Priority */}
-              <div className="grid grid-cols-1 gap-3 mb-10">
-                <div className="group p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-300">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-400">
-                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-white font-medium text-sm mb-1">{t("contact.useCase")}</h3>
-                      <p className="text-gray-500 text-xs leading-relaxed">{t("contact.useCase.desc")}</p>
-                    </div>
-                  </div>
+        <div className="container relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            
+            {/* LEFT COLUMN */}
+            <div className="lg:col-span-5 space-y-12">
+              <div>
+                <div className="mb-6">
+                    <BlurText
+                        text="Contactez"
+                        className="text-6xl md:text-7xl font-bold tracking-[-0.04em] leading-[0.9] text-white"
+                        delay={100}
+                        animateBy="words"
+                        direction="bottom"
+                    />
+                    <BlurText
+                        text="l'Équipe"
+                        className="text-6xl md:text-7xl font-bold tracking-[-0.04em] leading-[0.9] text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
+                        delay={300}
+                        animateBy="words"
+                        direction="bottom"
+                    />
                 </div>
-
-                <div className="group p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-300">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-purple-400">
-                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-white font-medium text-sm mb-1">{t("contact.onboarding")}</h3>
-                      <p className="text-gray-500 text-xs leading-relaxed">{t("contact.onboarding.desc")}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="group p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-300">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-gray-500/10 flex items-center justify-center flex-shrink-0">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
-                        <rect x="2" y="4" width="20" height="16" rx="2" />
-                        <line x1="2" y1="10" x2="22" y2="10" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-white font-medium text-sm mb-1">{t("contact.pricing")}</h3>
-                      <p className="text-gray-500 text-xs leading-relaxed">{t("contact.pricing.desc")}</p>
-                    </div>
-                  </div>
-                </div>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="text-gray-400 text-lg max-w-md leading-relaxed"
+                >
+                  Une question ou envie de voir Synaptics en action ? Utilisez le formulaire ou contactez-nous directement.
+                </motion.p>
               </div>
 
-              {/* Direct Contact section - Horizontal & Compact */}
-              <div className="pt-6 border-t border-white/[0.08]">
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                  {/* Email */}
-                  <a
-                    href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@synaptics.fr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-2.5 transition-colors"
+              {/* Info Cards */}
+              <div className="space-y-4">
+                {[
+                  {
+                    icon: <Briefcase className="w-5 h-5 text-blue-400" />,
+                    title: "Cas d'usage",
+                    desc: "Agents IA pour appels, emails, documents, facturation et workflows personnalisés.",
+                  },
+                  {
+                    icon: <Rocket className="w-5 h-5 text-purple-400" />,
+                    title: "Déploiement",
+                    desc: "Le déploiement s'effectue après le développement (la durée dépendra de votre projet).",
+                  },
+                  {
+                    icon: <CreditCard className="w-5 h-5 text-gray-400" />,
+                    title: "Tarifs",
+                    desc: "Forfaits mensuels fixes selon le nombre de fonctionnalités et le volume. Sans frais cachés.",
+                  },
+                ].map((card, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className="relative rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md p-5 group hover:bg-white/[0.05] transition-all duration-300"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-400">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                        <polyline points="22,6 12,13 2,6" />
-                      </svg>
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                        {card.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-white font-bold text-sm mb-1">{card.title}</h3>
+                        <p className="text-gray-500 text-xs leading-relaxed">{card.desc}</p>
+                      </div>
                     </div>
-                    <p className="text-white text-xs font-medium group-hover:text-blue-400 transition-colors">hello@synaptics.fr</p>
-                  </a>
+                  </motion.div>
+                ))}
+              </div>
 
-                  {/* Phone */}
-                  <a
-                    href="tel:+33672627040"
-                    className="group flex items-center gap-2.5 transition-colors"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-purple-500/20 transition-colors">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-purple-400">
-                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-white text-xs font-medium group-hover:text-purple-400 transition-colors">+33 6 72 62 70 40</p>
-                      <p className="text-[10px] text-gray-500 italic mt-0.5 whitespace-nowrap">disponible de 8h à 20h</p>
-                    </div>
-                  </a>
-
-                  {/* Location */}
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-gray-500/10 flex items-center justify-center flex-shrink-0">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
-                    </div>
-                    <p className="text-white text-xs font-medium italic">Paris, France</p>
+              {/* Contact Footer */}
+              <div className="pt-8 border-t border-white/[0.08] flex flex-wrap gap-x-8 gap-y-4">
+                <a href="mailto:hello@synaptics.fr" className="flex items-center gap-2 group text-gray-400 hover:text-white transition-colors">
+                  <Mail className="w-4 h-4 group-hover:text-blue-400 transition-colors" />
+                  <span className="text-xs font-medium">hello@synaptics.fr</span>
+                </a>
+                <a href="tel:+33672627040" className="flex items-center gap-2 group text-gray-400 hover:text-white transition-colors">
+                  <Phone className="w-4 h-4 group-hover:text-purple-400 transition-colors" />
+                  <div className="flex flex-col">
+                    <span className="text-xs font-medium">+33 6 72 62 70 40</span>
+                    <span className="text-[10px] text-gray-600">Disponible de 8h à 20h</span>
                   </div>
+                </a>
+                <div className="flex items-center gap-2 text-gray-400">
+                  <MapPin className="w-4 h-4" />
+                  <span className="text-xs font-medium italic">Paris, France</span>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-
-            {/* RIGHT: Form Card / Success View */}
-            <motion.div variants={itemVariants} className="h-full overflow-y-auto no-scrollbar py-6">
-              <div className="rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm p-6 md:p-8 min-h-[400px] flex flex-col justify-center">
+            {/* RIGHT COLUMN: FORM CARD */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:col-span-7"
+            >
+              <div className="relative rounded-[2.5rem] border border-white/[0.1] bg-white/[0.02] backdrop-blur-xl p-8 md:p-10 overflow-hidden shadow-2xl">
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent opacity-50" />
+                
                 <AnimatePresence mode="wait">
                   {!isSubmitted ? (
-                    <motion.div
-                      key="contact-form"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                          {/* Name & Email Row */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <FormField control={form.control} name="name" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                                  {t("contact.form.name")} <span className="text-purple-400">*</span>
-                                </FormLabel>
-                                <FormControl>
-                                  <Input placeholder="Jane Doe" className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
-                                </FormControl>
-                                <FormMessage className="text-red-400 text-xs" />
-                              </FormItem>
-                            )} />
-                            <FormField control={form.control} name="email" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                                  {t("contact.form.email")} <span className="text-purple-400">*</span>
-                                </FormLabel>
-                                <FormControl>
-                                  <Input type="email" placeholder="jane@clinic.com" className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
-                                </FormControl>
-                                <FormMessage className="text-red-400 text-xs" />
-                              </FormItem>
-                            )} />
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        
+                        <motion.div 
+                          variants={{
+                            hidden: { opacity: 0 },
+                            show: {
+                              opacity: 1,
+                              transition: {
+                                staggerChildren: 0.1,
+                                delayChildren: 0.4
+                              }
+                            }
+                          }}
+                          initial="hidden"
+                          animate="show"
+                          className="space-y-6"
+                        >
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                              <FormField control={form.control} name="name" render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className={LABEL_CLASS}>Nom <span className="text-blue-400">*</span></FormLabel>
+                                  <FormControl><Input placeholder="Jane Doe" className={INPUT_CLASS} {...field} /></FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )} />
+                            </motion.div>
+                            <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                              <FormField control={form.control} name="email" render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className={LABEL_CLASS}>Email <span className="text-blue-400">*</span></FormLabel>
+                                  <FormControl><Input type="email" placeholder="jane@clinic.com" className={INPUT_CLASS} {...field} /></FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )} />
+                            </motion.div>
                           </div>
 
-                          {/* Company Name */}
-                          <FormField control={form.control} name="company" render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                                {t("contact.form.company")} <span className="text-purple-400">*</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Input placeholder={t("contact.form.company")} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
-                              </FormControl>
-                              <FormMessage className="text-red-400 text-xs" />
-                            </FormItem>
-                          )} />
+                          <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                            <FormField control={form.control} name="company" render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className={LABEL_CLASS}>Nom de l'entreprise <span className="text-blue-400">*</span></FormLabel>
+                                <FormControl><Input placeholder="Nom de l'entreprise" className={INPUT_CLASS} {...field} /></FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )} />
+                          </motion.div>
 
-                          {/* Use Case Chips */}
-                          <FormField control={form.control} name="projectType" render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                                {t("contact.form.useCase")} <span className="text-purple-400">*</span>
-                              </FormLabel>
-                              <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild>
-                                  <FormControl>
-                                    <Button
-                                      variant="outline"
-                                      role="combobox"
-                                      aria-expanded={open}
-                                      className={cn(
-                                        "w-full justify-between bg-white/[0.04] border-white/[0.08] text-white rounded-xl h-10 px-4 hover:bg-white/[0.06] hover:text-white hover:border-white/[0.15]",
-                                        !field.value && "text-muted-foreground"
-                                      )}
-                                    >
-                                      {field.value
-                                        ? projectTypes.find(
-                                          (type) => type === field.value
-                                        )
-                                        : t("contact.form.useCase")}
-                                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                    </Button>
-                                  </FormControl>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-[--radix-popover-trigger-width] p-0 bg-gray-900 border-gray-700 rounded-xl">
-                                  <Command className="bg-transparent">
-                                    <CommandInput placeholder={t("contact.form.useCase") + "..."} className="text-white" />
-                                    <CommandList>
-                                      <CommandEmpty className="py-0 text-left">
-                                        <div
-                                          onClick={() => {
-                                            form.setValue("projectType", t("project.type.other"));
-                                            handleProjectTypeClick(t("project.type.other"));
-                                            setOpen(false);
-                                          }}
-                                          className="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none text-white hover:bg-gray-800"
-                                        >
-                                          <Check
-                                            className={cn(
-                                              "mr-2 h-4 w-4",
-                                              field.value === t("project.type.other")
-                                                ? "opacity-100"
-                                                : "opacity-0"
-                                            )}
-                                          />
-                                          {t("project.type.other")}
-                                        </div>
-                                      </CommandEmpty>
-                                      <CommandGroup>
-                                        {projectTypes.map((type) => (
-                                          <CommandItem
-                                            value={type}
-                                            key={type}
-                                            onSelect={() => {
-                                              form.setValue("projectType", type);
-                                              handleProjectTypeClick(type);
-                                              setOpen(false);
-                                            }}
-                                            className="text-white hover:bg-gray-800 focus:bg-gray-800 cursor-pointer"
-                                          >
-                                            <Check
-                                              className={cn(
-                                                "mr-2 h-4 w-4",
-                                                type === field.value
-                                                  ? "opacity-100"
-                                                  : "opacity-0"
-                                              )}
-                                            />
-                                            {type}
-                                          </CommandItem>
+                          <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                            <FormField control={form.control} name="industry" render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className={LABEL_CLASS}>Secteurs d'activité <span className="text-blue-400">*</span></FormLabel>
+                                <div className="flex flex-col md:flex-row gap-4 items-start">
+                                  <div className={cn("transition-all duration-500 w-full", selectedIndustry === "Autre" ? "md:w-1/2" : "w-full")}>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                      <FormControl>
+                                        <SelectTrigger className={INPUT_CLASS}>
+                                          <SelectValue placeholder="Secteurs d'activité" />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent className="bg-neutral-900 border-white/10 text-white rounded-xl">
+                                        {industries.map(ind => (
+                                          <SelectItem key={ind} value={ind} className="hover:bg-white/5 cursor-pointer">{ind}</SelectItem>
                                         ))}
-                                      </CommandGroup>
-                                    </CommandList>
-                                  </Command>
-                                </PopoverContent>
-                              </Popover>
-                              <AnimatePresence>
-                                {selectedProjectType === t("project.type.other") && (
-                                  <motion.div
-                                    key="other-detail-input"
-                                    initial={{ height: 0, opacity: 0, marginTop: 0 }}
-                                    animate={{ height: "auto", opacity: 1, marginTop: 12 }}
-                                    exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                                    transition={{ duration: 0.3, ease: "easeOut" }}
-                                    className="overflow-hidden p-[1px]"
-                                  >
-                                    <FormField
-                                      control={form.control}
-                                      name="otherDetail"
-                                      render={({ field }) => (
-                                        <Input
-                                          {...field}
-                                          placeholder={t("contact.form.otherDetail.placeholder")}
-                                          className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-500 rounded-xl h-10 px-4 text-sm focus:border-blue-400/50 focus:bg-white/[0.06] transition-all w-full"
-                                        />
-                                      )}
-                                    />
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                              <FormMessage className="text-red-400 text-xs" />
-                            </FormItem>
-                          )} />
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
 
-                          {/* Description */}
-                          <FormField control={form.control} name="description" render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                                {t("contact.form.tellMore")} <span className="text-purple-400">*</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Textarea placeholder={t("contact.form.tellMore.placeholder")} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl min-h-[80px] px-4 py-3 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm resize-none" {...field} />
-                              </FormControl>
-                              <FormMessage className="text-red-400 text-xs" />
-                            </FormItem>
-                          )} />
-
-                          {/* Budget & Timeline Row */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <FormField control={form.control} name="budget" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                                  {t("contact.form.budget")} <span className="text-purple-400">*</span>
-                                </FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                  <FormControl>
-                                    <SelectTrigger className="bg-white/[0.04] border-white/[0.08] text-white rounded-xl h-10 px-4 focus:ring-blue-400/50 focus:border-blue-400/50 text-sm [&>span]:text-left">
-                                      <SelectValue placeholder={t("contact.form.budgetPlaceholder")} />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent className="bg-gray-900 border-gray-700 rounded-xl">
-                                    {budgetOptions.map(option => (
-                                      <SelectItem key={option.value} value={option.value} className="text-white hover:bg-gray-800 focus:bg-gray-800 text-sm">
-                                        {option.label}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage className="text-red-400 text-xs" />
+                                  <AnimatePresence>
+                                    {selectedIndustry === "Autre" && (
+                                      <motion.div 
+                                        initial={{ opacity: 0, x: 20, width: 0 }}
+                                        animate={{ opacity: 1, x: 0, width: "100%" }}
+                                        exit={{ opacity: 0, x: 20, width: 0 }}
+                                        className="md:w-1/2 overflow-hidden"
+                                      >
+                                        <FormField control={form.control} name="industryDetails" render={({ field: detailField }) => (
+                                          <FormItem className="w-full">
+                                            <FormControl>
+                                              <Input 
+                                                placeholder="Précisez votre secteur..." 
+                                                className={INPUT_CLASS} 
+                                                {...detailField} 
+                                              />
+                                            </FormControl>
+                                            <FormMessage />
+                                          </FormItem>
+                                        )} />
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                                <FormMessage />
                               </FormItem>
                             )} />
-                            <FormField control={form.control} name="timeline" render={({ field }) => (
+                          </motion.div>
+
+                          <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                            <FormField control={form.control} name="description" render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                                  {t("contact.form.timeline")} <span className="text-purple-400">*</span>
-                                </FormLabel>
+                                <FormLabel className={LABEL_CLASS}>Décrivez votre besoin <span className="text-blue-400">*</span></FormLabel>
                                 <FormControl>
-                                  <Input placeholder={t("contact.form.timelinePlaceholder")} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
+                                  <Textarea 
+                                    placeholder="Combien d'appels recevez-vous ? Quel problème souhaitez-vous résoudre ?" 
+                                    className={cn(INPUT_CLASS, "min-h-[120px] py-3 resize-none")} 
+                                    {...field} 
+                                  />
                                 </FormControl>
-                                <FormMessage className="text-red-400 text-xs" />
+                                <FormMessage />
                               </FormItem>
                             )} />
+                          </motion.div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                              <FormField control={form.control} name="budget" render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className={LABEL_CLASS}>Budget <span className="text-blue-400">*</span></FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger className={INPUT_CLASS}>
+                                        <SelectValue placeholder="Sélectionnez" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent className="bg-neutral-900 border-white/10 text-white rounded-xl">
+                                      {budgetOptions.map(opt => (
+                                        <SelectItem key={opt.value} value={opt.value} className="hover:bg-white/5 cursor-pointer">{opt.label}</SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )} />
+                            </motion.div>
+                            <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                              <FormField control={form.control} name="deadline" render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className={LABEL_CLASS}>Délai <span className="text-blue-400">*</span></FormLabel>
+                                  <FormControl><Input placeholder="ex. Urgent, 2 semaines" className={INPUT_CLASS} {...field} /></FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )} />
+                            </motion.div>
                           </div>
 
-                          {/* Referral */}
-                          <FormField control={form.control} name="referral" render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-[10px] uppercase tracking-[0.15em] font-medium text-gray-500">
-                                {t("contact.form.referral")} <span className="text-purple-400">*</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Input placeholder={t("contact.form.referralPlaceholder")} className="bg-white/[0.04] border-white/[0.08] text-white placeholder:text-gray-600 rounded-xl h-10 px-4 focus:border-blue-400/50 focus:bg-white/[0.06] transition-all text-sm" {...field} />
-                              </FormControl>
-                              <FormMessage className="text-red-400 text-xs" />
-                            </FormItem>
-                          )} />
+                          <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                            <FormField control={form.control} name="referral" render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className={LABEL_CLASS}>Comment vous nous avez trouvé <span className="text-blue-400">*</span></FormLabel>
+                                <FormControl><Input placeholder="Google, recommandation..." className={INPUT_CLASS} {...field} /></FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )} />
+                          </motion.div>
 
-                          {/* Submit Button */}
-                          <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 transition-all text-sm font-semibold uppercase tracking-widest disabled:opacity-50 shadow-[0_8px_32px_rgba(124,58,237,0.2)] hover:shadow-[0_8px_40px_rgba(124,58,237,0.3)] border-0"
-                          >
-                            {isSubmitting ? t("contact.form.submitting") : t("contact.form.submit")}
-                          </Button>
-                        </form>
-                      </Form>
-                    </motion.div>
+                          <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
+                            <Button
+                              type="submit"
+                              disabled={isSubmitting}
+                              className="w-full h-14 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_10px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_10px_40px_rgba(37,99,235,0.4)] border-0"
+                            >
+                              {isSubmitting ? "Envoi en cours..." : "Demander une démo →"}
+                            </Button>
+                          </motion.div>
+                        </motion.div>
+                      </form>
+                    </Form>
                   ) : (
                     <motion.div
-                      key="success-view"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                      className="text-center py-12"
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-center py-20"
                     >
-                      <div className="w-20 h-20 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-8 border border-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.1)]">
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 10 }}
-                        >
-                          <Check className="w-10 h-10 text-blue-400" />
-                        </motion.div>
+                      <div className="w-20 h-20 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-8">
+                        <Check className="w-10 h-10 text-green-400" />
                       </div>
-
-                      <h2 className="text-3xl font-bold text-white mb-4 tracking-tight">
-                        {t("contact.success.title")}
-                      </h2>
-
-                      <p className="text-gray-400 mb-10 leading-relaxed max-w-sm mx-auto">
-                        {t("contact.success.desc")}
+                      <h2 className="text-3xl font-bold text-white mb-4">Message envoyé !</h2>
+                      <p className="text-gray-400 max-w-sm mx-auto mb-10">
+                        Merci de nous avoir contactés. Notre équipe reviendra vers vous sous 24h.
                       </p>
-
                       <Button
-                        onClick={() => window.location.href = "/"}
-                        className="h-12 px-8 rounded-xl bg-white/[0.07] text-white border border-white/[0.1] hover:bg-white/[0.12] transition-all text-sm font-semibold uppercase tracking-widest"
+                        onClick={() => setIsSubmitted(false)}
+                        variant="outline"
+                        className="rounded-xl border-white/10 hover:bg-white/5 text-white"
                       >
-                        {t("contact.success.button")}
+                        Envoyer un autre message
                       </Button>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
-
             </motion.div>
+
           </div>
-        </motion.div>
+        </div>
       </section>
     </Layout>
   );

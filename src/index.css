@@ -506,3 +506,11 @@ html.lang-transitioning body {
   opacity: 1;
   transform: translateY(0);
 }
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

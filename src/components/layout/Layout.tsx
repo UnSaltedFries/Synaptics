@@ -9,19 +9,25 @@ interface LayoutProps {
   children: ReactNode;
   hideFooter?: boolean;
   variant?: "light" | "dark";
+  footerThreshold?: number;
 }
 
-export function Layout({ children, hideFooter = false, variant = "light" }: LayoutProps) {
+export function Layout({ 
+  children, 
+  hideFooter = false, 
+  variant = "light",
+  footerThreshold = 0.92 
+}: LayoutProps) {
   const location = useLocation();
   const overlayRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const [footerHeight, setFooterHeight] = useState(0);
   const { scrollYProgress } = useScroll();
   
-  // ADJUSTED: 96% to balance the delay (not too early, not broken)
+  // Use custom threshold if provided, otherwise use the balanced 92% default
   const revealProgress = useTransform(
     scrollYProgress,
-    [0.96, 1], 
+    [footerThreshold, 1], 
     [0, 1]
   );
 

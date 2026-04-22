@@ -79,16 +79,16 @@ function ScrollToTop() {
   return null;
 }
 
-// Light pages get white bg, everything else stays black
-const LIGHT_ROUTES = ["/about", "/privacy", "/terms", "/gdpr"];
-
+// Background always black — pages handle their own bg color
 function BackgroundManager() {
   const { pathname } = useLocation();
   useEffect(() => {
-    const isLight = LIGHT_ROUTES.includes(pathname);
-    const color = isLight ? "#ffffff" : "#000000";
-    document.body.style.backgroundColor = color;
-    document.documentElement.style.backgroundColor = color;
+    // Always keep the shell black to prevent white flash between routes.
+    // Individual pages (About, etc.) set their own bg via className/style.
+    document.body.style.backgroundColor = "#000000";
+    document.documentElement.style.backgroundColor = "#000000";
+    // Smooth transition on any residual color change
+    document.body.style.transition = "background-color 0.3s ease";
   }, [pathname]);
   return null;
 }
@@ -99,7 +99,7 @@ const queryClient = new QueryClient();
 function AppRoutes() {
   const isMobile = useIsMobile();
   const { pathname } = useLocation();
-  const navVariant = LIGHT_ROUTES.includes(pathname) ? "light" : "dark";
+  const navVariant = ['/about', '/privacy', '/terms', '/gdpr'].includes(pathname) ? 'light' : 'dark';
 
   return (
     <>

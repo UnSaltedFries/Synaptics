@@ -15,8 +15,8 @@ interface CharProps {
 }
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
-    const endThreshold = 1.0;
-    const revealDuration = 0.3; 
+    const endThreshold = 0.9;
+    const revealDuration = 0.5; 
     const start = (index / total) * (endThreshold - revealDuration);
     const end = start + revealDuration;
 
@@ -55,7 +55,7 @@ export function MobileFooter({ progress }: MobileFooterProps) {
     return (
         <footer 
             className="text-white px-6 pt-24 pb-12 overflow-hidden" 
-            style={{ backgroundColor: "#080808" }}
+            style={{ backgroundColor: "#161616" }}
         >
             <h2 className="text-[28px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8">
                 {characters.map((char, index) => (

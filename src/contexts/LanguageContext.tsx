@@ -420,6 +420,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "config.pack.full": "Full Automation Pack",
 
         "config.currentTier": "Current Tier",
+        "config.services.label": "services",
         "config.emptyState": "Select services to start building your pack...",
         "config.modal.manual": "Current manual task",
         "config.modal.synaptics": "The Synaptics approach",
@@ -871,6 +872,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "config.pack.full": "Pack Full Automation",
 
         "config.currentTier": "Niveau actuel",
+        "config.services.label": "services",
         "config.emptyState": "Sélectionnez des services pour construire votre pack...",
         "config.modal.manual": "Tâche manuelle actuelle",
         "config.modal.synaptics": "L'approche Synaptics",

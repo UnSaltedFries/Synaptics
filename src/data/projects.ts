@@ -13,8 +13,11 @@ export interface Project {
   tags_fr?: string[];
   color: string;
   heroImage?: string;
+  dashboardImage?: string;
   fullDescription: string;
   fullDescription_fr?: string;
+  review?: string;
+  review_fr?: string;
   galleryImages: string[];
 }
 
@@ -22,7 +25,7 @@ export const projects: Project[] = [
   {
     id: "medical-clinic",
     title: "Medical AI Receptionist",
-    title_fr: "Réceptionniste Médical IA",
+    title_fr: "Réceptionniste IA",
     subtitle: "An AI receptionist that books patients and triages symptoms around the clock.",
     subtitle_fr: "Un réceptionniste IA qui prend les rendez-vous et trie les symptômes 24h/24.",
     description: "Healthcare AI Receptionist",
@@ -34,8 +37,11 @@ export const projects: Project[] = [
     tags_fr: ["SANTÉ", "IA VOCALE"],
     color: "hsl(160, 50%, 45%)",
     heroImage: "/images/medical-clinic.png",
+    dashboardImage: "/images/medical-dashboard.png",
     fullDescription: "A high-volume medical clinic was drowning in appointment calls — long hold times, frustrated patients, missed bookings. We deployed a HIPAA-compliant AI receptionist that picks up every call instantly, triages symptoms with smart questioning, and books directly into their EHR calendar. The result: zero missed calls and a 40% surge in confirmed appointments.",
-    fullDescription_fr: "Un centre médical à fort volume croulait sous les appels de rendez-vous — longues attentes, patients frustrés, créneaux manqués. Nous avons déployé un réceptionniste IA conforme qui décroche instantanément, trie les symptômes avec des questions intelligentes, et réserve directement dans leur calendrier médical. Résultat : zéro appel manqué et une hausse de 40% des rendez-vous confirmés.",
+    fullDescription_fr: "Lorem ipsum dolor sit amet consectetur. Tempor ipsum odio urna arcu faucibus. Molestie suspendisse vitae quis non. Orci consequat bibendum facilisi sem viverra ipsum. Sit vitae sit magna morbi pulvinar enim. Mi enim sit pretium vel. Nisi tortor odio augue molestie commodo sit consectetur. Ac leo pellentesque cursus vulputate. Suspendisse mi tortor risus consectetur laoreet odio sollicitudin vel nibh. us. Molestie suspendisse vitae quis non. Dui amet mus rhoncus dolor feugiat sit mauris. Orci consequat",
+    review: "The AI agent has completely transformed our front-office operations.",
+    review_fr: "“Lorem ipsum dolor sit amet consectetur. Tempor ipsum odio urna arcu faucibus. Molestie suspendisse vitae quis non. Dui amet mus”",
     galleryImages: ["/images/medical-clinic.png"],
   },
   {

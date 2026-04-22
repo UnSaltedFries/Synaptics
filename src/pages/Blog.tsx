@@ -1,150 +1,116 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { projects } from "@/data/projects";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ProjectVisuals } from "@/components/blog/ProjectVisuals";
 
 const Blog = () => {
-    const { t, lang } = useLanguage();
+    const { lang } = useLanguage();
     const [selectedProjectId, setSelectedProjectId] = useState<string>(projects[0].id);
-    const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
 
-    // Find the currently selected project
     const selectedProject = projects.find(p => p.id === selectedProjectId) || projects[0];
 
-    // Language fallback for selected project
+    // Language fallback
     const selectedTitle = (lang === "fr" && selectedProject.title_fr) ? selectedProject.title_fr : selectedProject.title;
-    const selectedSubtitle = (lang === "fr" && selectedProject.subtitle_fr) ? selectedProject.subtitle_fr : selectedProject.subtitle;
     const selectedFullDescription = (lang === "fr" && selectedProject.fullDescription_fr) ? selectedProject.fullDescription_fr : selectedProject.fullDescription;
-    const selectedRole = (lang === "fr" && selectedProject.role_fr) ? selectedProject.role_fr : selectedProject.role;
-    const selectedTags = (lang === "fr" && selectedProject.tags_fr) ? selectedProject.tags_fr : selectedProject.tags;
-
-    const handleProjectClick = (projectId: string) => {
-        setSelectedProjectId(projectId);
-        setIsMobileDetailOpen(true);
-    };
+    const selectedReview = (lang === "fr" && selectedProject.review_fr) ? selectedProject.review_fr : selectedProject.review;
 
     return (
         <Layout variant="dark">
-            <div className="bg-black min-h-screen text-white">
-                <div className="container px-6 md:px-12 max-w-[1400px] mx-auto pt-24 md:pt-32 pb-20">
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="mb-12"
-                    >
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
-                            {lang === "fr" ? "Études de cas" : "Case Studies"}
-                        </h1>
-                        <p className="text-xl text-gray-400 max-w-2xl font-light">
-                            {lang === "fr"
-                                ? "Découvrez comment nous transformons les entreprises avec nos agents IA."
-                                : "Discover how we transform businesses with our AI agents."
-                            }
-                        </p>
-                    </motion.div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-                        {/* Left Column: List of Projects */}
-                        <div className={`lg:col-span-4 flex flex-col gap-2 ${isMobileDetailOpen ? 'hidden lg:flex' : 'flex'}`}>
+            <div className="bg-black h-screen overflow-hidden text-white pt-24 pb-8" data-lenis-prevent>
+                <div className="container h-full px-6 max-w-[1400px] mx-auto">
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 h-full items-start">
+                        
+                        {/* 2: COLONNE SCROLLABLE (Project List) */}
+                        <div className="lg:col-span-4 h-[calc(100vh-160px)] overflow-y-auto pr-8 space-y-6 pb-40 scrollbar-hide overscroll-contain" data-lenis-prevent>
                             {projects.map((project, index) => {
                                 const title = (lang === "fr" && project.title_fr) ? project.title_fr : project.title;
                                 const tags = (lang === "fr" && project.tags_fr) ? project.tags_fr : project.tags;
-                                const isSelected = selectedProjectId === project.id;
-
+                                
                                 return (
-                                    <motion.button
+                                    <motion.div
                                         key={project.id}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        transition={{
-                                            duration: 0.5,
-                                            delay: 0.2 + (index * 0.1),
-                                            ease: "easeOut"
-                                        }}
-                                        onClick={() => handleProjectClick(project.id)}
-                                        className={`text-left p-6 rounded-xl transition-all duration-300 border group ${isSelected
-                                            ? "bg-white/10 border-white/20 shadow-lg"
-                                            : "bg-transparent border-transparent hover:bg-white/5"
-                                            }`}
+                                        transition={{ delay: index * 0.1 }}
+                                        onClick={() => setSelectedProjectId(project.id)}
+                                        className={cn(
+                                            "cursor-pointer p-8 rounded-[2.5rem] border transition-all duration-500 relative overflow-hidden group",
+                                            selectedProjectId === project.id
+                                                ? "bg-white/[0.05] border-white/20 shadow-2xl scale-[1.02]"
+                                                : "bg-transparent border-transparent hover:bg-white/[0.02] opacity-50 hover:opacity-100"
+                                        )}
                                     >
-                                        <div className="flex flex-col gap-2">
-                                            <span className={`text-[10px] uppercase tracking-widest font-mono ${isSelected ? "text-purple-400" : "text-gray-500 group-hover:text-gray-400"}`}>
+                                        {/* Accent line for selected project */}
+                                        {selectedProjectId === project.id && (
+                                            <motion.div 
+                                                layoutId="accent-line"
+                                                className="absolute left-0 top-0 bottom-0 w-1 bg-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.5)]" 
+                                            />
+                                        )}
+
+                                        <div className="space-y-4">
+                                            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-500 group-hover:text-purple-400 transition-colors">
                                                 {tags[0]}
                                             </span>
-                                            <h3 className={`text-xl font-medium ${isSelected ? "text-white" : "text-gray-400 group-hover:text-white"}`}>
+                                            <h3 className="text-2xl font-bold tracking-tight text-white/90 group-hover:text-white transition-colors">
                                                 {title}
                                             </h3>
                                         </div>
-                                    </motion.button>
+                                    </motion.div>
                                 );
                             })}
                         </div>
 
-                        {/* Right Column: Detail View (Desktop Sticky / Mobile Overlay) */}
-                        <div className={`lg:col-span-8 ${isMobileDetailOpen ? 'fixed inset-0 z-50 bg-black overflow-y-auto lg:static lg:bg-transparent lg:z-auto lg:overflow-visible' : 'hidden lg:block relative'}`}>
-                            {isMobileDetailOpen && (
-                                <button
-                                    onClick={() => setIsMobileDetailOpen(false)}
-                                    className="lg:hidden absolute top-6 left-6 z-50 p-2 bg-white/10 backdrop-blur-md rounded-full text-white"
+                        {/* 1: CADRE FIXE (Details) */}
+                        <div className="lg:col-span-8 h-[calc(100vh-160px)] bg-zinc-900/40 rounded-[3rem] border border-white/10 overflow-hidden relative shadow-2xl backdrop-blur-sm">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={selectedProjectId}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{ duration: 0.4 }}
+                                    className="h-full"
                                 >
-                                    <ArrowLeft className="w-6 h-6" />
-                                </button>
-                            )}
-
-                            <div className="lg:sticky lg:top-32 min-h-screen lg:min-h-0 pt-20 lg:pt-0 px-6 lg:px-0 pb-10">
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={selectedProjectId}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -20 }}
-                                        transition={{ duration: 0.4, ease: "easeOut" }}
-                                        className="bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm"
-                                    >
-                                        {/* Tag & Year Banner */}
-                                        <div className="p-8 border-b border-white/5 flex items-center justify-between">
-                                            <div className="flex gap-2">
-                                                {selectedTags.map(tag => (
-                                                    <span key={tag} className="text-xs font-mono py-1 px-3 rounded-full bg-white/5 border border-white/10 text-gray-300">
-                                                        {tag}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                            <span className="text-sm text-gray-500 font-mono">{selectedProject.year}</span>
+                                    <div className="grid grid-cols-1 xl:grid-cols-5 h-full">
+                                        
+                                        {/* 3: BOXE SCROLLABLE (Visuals column) */}
+                                        <div className="xl:col-span-3 h-[calc(100vh-160px)] overflow-y-auto p-10 pr-6 scrollbar-hide overscroll-contain" data-lenis-prevent>
+                                            <ProjectVisuals project={selectedProject} />
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2">
-                                            {/* Text Content */}
-                                            <div className="p-8 md:p-10 flex flex-col justify-center order-2 md:order-1">
-                                                <h2 className="text-3xl font-bold mb-4">{selectedTitle}</h2>
-                                                <p className="text-lg text-gray-300 leading-relaxed mb-6">
+                                        {/* 4: TEXTE FIXE (Info column) */}
+                                        <div className="xl:col-span-2 h-full flex flex-col p-10 border-l border-white/5">
+                                            <div className="flex-1 space-y-8">
+                                                <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+                                                    {selectedTitle}
+                                                </h2>
+                                                <p className="text-gray-400 text-lg leading-relaxed font-light">
                                                     {selectedFullDescription}
                                                 </p>
+                                            </div>
 
-                                                <div className="pt-6 border-t border-white/5">
-                                                    <p className="text-xs uppercase tracking-widest text-gray-500 mb-2">{t("projectDetail.role")}</p>
-                                                    <p className="text-sm font-medium">{selectedRole}</p>
+                                            {/* Review Section */}
+                                            {selectedReview && (
+                                                <div className="space-y-4 pt-8 border-t border-white/5">
+                                                    <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">
+                                                        REVIEW
+                                                    </h4>
+                                                    <p className="text-purple-400 text-xl font-medium leading-relaxed italic">
+                                                        {selectedReview}
+                                                    </p>
                                                 </div>
-                                            </div>
-
-                                            {/* Image */}
-                                            <div className="h-64 md:h-auto overflow-hidden order-1 md:order-2 bg-white/5 relative">
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
-                                                <img
-                                                    src={selectedProject.heroImage}
-                                                    alt={selectedTitle}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            </div>
+                                            )}
                                         </div>
-                                    </motion.div>
-                                </AnimatePresence>
-                            </div>
+                                    </div>
+                                </motion.div>
+                            </AnimatePresence>
                         </div>
+
                     </div>
                 </div>
             </div>
