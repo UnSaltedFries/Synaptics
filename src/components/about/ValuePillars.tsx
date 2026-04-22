@@ -27,29 +27,17 @@ export const ValuePillars = () => {
                 start: "top top",
                 end: () => "+=450%", 
                 invalidateOnRefresh: true,
-                // OPTIMIZATION: Hide the entire section when it's not active to save GPU
-                onToggle: (self) => {
-                    if (!self.isActive) {
-                        gsap.set(trigger, { visibility: "hidden" });
-                    } else {
-                        gsap.set(trigger, { visibility: "visible" });
-                    }
-                },
-                onEnter: () => gsap.set(trigger, { visibility: "visible" }),
-                onLeave: () => gsap.set(trigger, { visibility: "hidden" }),
-                onEnterBack: () => gsap.set(trigger, { visibility: "visible" }),
-                onLeaveBack: () => gsap.set(trigger, { visibility: "hidden" }),
             },
         });
 
-        // Near-instant exit
+        // Revert to original sliding behavior (starting from 100vw)
         tl.fromTo(section, 
             { x: "100vw", opacity: 1 }, 
             { x: `-${totalWidth + 500}px`, ease: "none" }
-        )
-        .to(section, { opacity: 0, duration: 0.02 }); 
+        );
 
         return () => {
+            if (tl.scrollTrigger) tl.scrollTrigger.kill();
             tl.kill();
         };
     }, []);

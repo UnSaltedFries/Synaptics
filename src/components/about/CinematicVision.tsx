@@ -14,33 +14,35 @@ export const CinematicVision = () => {
     });
 
     const text = t("about.vision.text");
-    const letters = text.split("");
+    const words = text.split(" ");
 
     return (
         <section ref={containerRef} className="h-[300vh] bg-black relative z-[100] text-white">
-            <div 
-                className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-10"
-                style={{ display: isInView ? "flex" : "none" }}
-            >
+            <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-10 md:px-20">
                 <div className="absolute inset-0 bg-black" />
                 
-                <div className="w-full max-w-7xl relative z-10">
-                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold text-center tracking-tight leading-[1.1] flex flex-wrap justify-center text-white">
-                        {letters.map((char, i) => {
-                            // SLOWER REVEAL: spread over 70% of the section
-                            const start = 0.0 + (i / letters.length) * 0.7;
-                            const end = start + 0.15;
-                            
-                            return (
-                                <Letter 
-                                    key={i} 
-                                    progress={scrollYProgress} 
-                                    range={[start, end]}
-                                >
-                                    {char === " " ? "\u00A0" : char}
-                                </Letter>
-                            );
-                        })}
+                <div className="w-full max-w-6xl relative z-10">
+                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-center tracking-tight leading-[1.4] flex flex-wrap justify-center items-center gap-x-[0.4em] gap-y-4 text-white">
+                        {words.map((word, wordIndex) => (
+                            <span key={wordIndex} className="inline-flex">
+                                {word.split("").map((char, charIndex) => {
+                                    // Calculate global index for reveal timing
+                                    const charGlobalIndex = text.split(" ").slice(0, wordIndex).join(" ").length + (wordIndex > 0 ? 1 : 0) + charIndex;
+                                    const start = (charGlobalIndex / text.length) * 0.6;
+                                    const end = start + 0.12;
+                                    
+                                    return (
+                                        <Letter 
+                                            key={charIndex} 
+                                            progress={scrollYProgress} 
+                                            range={[start, end]}
+                                        >
+                                            {char}
+                                        </Letter>
+                                    );
+                                })}
+                            </span>
+                        ))}
                     </h2>
                 </div>
             </div>
@@ -49,20 +51,22 @@ export const CinematicVision = () => {
 };
 
 const Letter = ({ children, progress, range }: { children: string; progress: any; range: [number, number] }) => {
-    // Sharp reveal with 150% depth (total black at start)
-    const y = useTransform(progress, range, ["150%", "0%"], { clamp: true });
+    // Smoother reveal with blur and scale
+    const opacity = useTransform(progress, range, [0, 1]);
+    const y = useTransform(progress, range, ["30%", "0%"]);
+    const scale = useTransform(progress, range, [0.9, 1]);
+    const filter = useTransform(progress, range, ["blur(8px)", "blur(0px)"]);
     
     return (
-        <span className="relative inline-block overflow-hidden py-4 z-10" style={{ isolation: "isolate" }}>
+        <span className="relative inline-block py-1" style={{ isolation: "isolate" }}>
             <motion.span 
                 style={{ 
+                    opacity,
                     y, 
-                    opacity: 1, 
-                    color: "#FFFFFF",
+                    scale,
+                    filter,
                     WebkitFontSmoothing: "antialiased", 
-                    MozOsxFontSmoothing: "grayscale",
-                    willChange: "transform",
-                    transform: "translateZ(0)"
+                    willChange: "transform, opacity, filter",
                 }} 
                 className="inline-block font-black text-white relative z-50 brightness-110"
             >
