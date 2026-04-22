@@ -16,7 +16,7 @@ export function Layout({
   children, 
   hideFooter = false, 
   variant = "light",
-  footerThreshold = 0.98 
+  footerThreshold = 0.88 
 }: LayoutProps) {
   const location = useLocation();
   const overlayRef = useRef<HTMLDivElement>(null);
