@@ -5,7 +5,7 @@ import { Layout } from "@/components/layout/Layout";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import Lenis from "lenis";
 
-const versions = ["1.0.5", "1.0.4", "1.0.3", "1.0.2", "1.0.1"];
+const versions = ["1.0.8", "1.0.7", "1.0.6", "1.0.5", "1.0.4", "1.0.3", "1.0.2", "1.0.1"];
 
 export default function Changelog() {
     const { t } = useLanguage();

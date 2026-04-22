@@ -19,8 +19,18 @@ export function Globe({ className }: { className?: string }) {
 
     useEffect(() => {
         let phi = 0;
+        let isVisible = true;
 
         if (!canvasRef.current) return;
+
+        // Visibility observer to save performance when globe is not in view
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isVisible = entry.isIntersecting;
+            },
+            { threshold: 0 }
+        );
+        observer.observe(canvasRef.current);
 
         // Default markers (offices)
         const markers = [
@@ -49,6 +59,8 @@ export function Globe({ className }: { className?: string }) {
             glowColor: [1.2, 1.2, 1.2],
             markers: markers.map(m => ({ ...m, location: m.location as [number, number] })),
             onRender: (state) => {
+                if (!isVisible) return; // Skip rendering if not visible
+
                 state.phi = phi;
                 phi += 0.003;
 
@@ -56,10 +68,9 @@ export function Globe({ className }: { className?: string }) {
                 if (userLocation) {
                     const t = performance.now() / 1000;
                     const dotCount = 8;
-                    const ringRadius = 2 + (t % 1) * 4; // Expand from 2 to 6 degrees
-                    const ringOpacity = 1 - (t % 1); // Fade out as it expands
+                    const ringRadius = 2 + (t % 1) * 4; 
+                    const ringOpacity = 1 - (t % 1); 
 
-                    // Create ring of dots
                     const ringMarkers = [];
                     for (let i = 0; i < dotCount; i++) {
                         const angle = (i / dotCount) * Math.PI * 2;
@@ -72,10 +83,9 @@ export function Globe({ className }: { className?: string }) {
                         });
                     }
 
-                    // Static markers + dynamic user marker + ring
                     state.markers = [
-                        ...markers.slice(0, 3), // Keep first 3 static markers
-                        { location: userLocation, size: 0.08 + Math.sin(t * 5) * 0.02 }, // Pulsing core
+                        ...markers.slice(0, 3), 
+                        { location: userLocation, size: 0.08 + Math.sin(t * 5) * 0.02 }, 
                         ...ringMarkers
                     ];
                 }
@@ -84,6 +94,7 @@ export function Globe({ className }: { className?: string }) {
 
         return () => {
             globe.destroy();
+            observer.disconnect();
         };
     }, [userLocation]);
 

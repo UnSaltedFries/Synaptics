@@ -66,7 +66,7 @@ export function Layout({
   }, [location.pathname, variant]);
 
   return (
-    <div className="min-h-screen relative bg-black selection:bg-purple-500/30">
+    <div className="min-h-screen relative bg-black selection:bg-purple-500/30 overflow-x-hidden">
       {/* Main Content Layer */}
       <main 
         className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"

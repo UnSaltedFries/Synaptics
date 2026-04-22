@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { projects } from "@/data/projects";
@@ -18,14 +18,13 @@ const Blog = () => {
     const selectedReview = (lang === "fr" && selectedProject.review_fr) ? selectedProject.review_fr : selectedProject.review;
 
     return (
-        <Layout variant="dark">
-            <div className="bg-black h-screen overflow-hidden text-white pt-24 pb-8" data-lenis-prevent>
-                <div className="container h-full px-6 max-w-[1400px] mx-auto">
-                    
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 h-full items-start">
+        <Layout variant="dark" footerThreshold={0.8}>
+            <div className="bg-black text-white pt-24 pb-8">
+                <div className="container px-6 max-w-[1400px] mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                         
                         {/* 2: COLONNE SCROLLABLE (Project List) */}
-                        <div className="lg:col-span-4 h-[calc(100vh-160px)] overflow-y-auto pr-8 space-y-6 pb-40 scrollbar-hide overscroll-contain" data-lenis-prevent>
+                        <div className="lg:col-span-4 h-[calc(100vh-120px)] sticky top-24 overflow-y-auto pr-8 space-y-6 pb-20 scrollbar-hide" data-lenis-prevent>
                             {projects.map((project, index) => {
                                 const title = (lang === "fr" && project.title_fr) ? project.title_fr : project.title;
                                 const tags = (lang === "fr" && project.tags_fr) ? project.tags_fr : project.tags;
@@ -66,7 +65,7 @@ const Blog = () => {
                         </div>
 
                         {/* 1: CADRE FIXE (Details) */}
-                        <div className="lg:col-span-8 h-[calc(100vh-160px)] bg-zinc-900/40 rounded-[3rem] border border-white/10 overflow-hidden relative shadow-2xl backdrop-blur-sm">
+                        <div className="lg:col-span-8 sticky top-24 h-[calc(100vh-120px)] bg-zinc-900/40 rounded-[3rem] border border-white/10 overflow-hidden relative shadow-2xl backdrop-blur-sm">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={selectedProjectId}
@@ -79,7 +78,7 @@ const Blog = () => {
                                     <div className="grid grid-cols-1 xl:grid-cols-5 h-full">
                                         
                                         {/* 3: BOXE SCROLLABLE (Visuals column) */}
-                                        <div className="xl:col-span-3 h-[calc(100vh-160px)] overflow-y-auto p-10 pr-6 scrollbar-hide overscroll-contain" data-lenis-prevent>
+                                        <div className="xl:col-span-3 h-full overflow-y-auto p-10 pr-6 scrollbar-hide" data-lenis-prevent>
                                             <ProjectVisuals project={selectedProject} />
                                         </div>
 

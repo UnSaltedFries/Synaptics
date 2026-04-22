@@ -168,23 +168,48 @@ const Contact = () => {
               </div>
 
               {/* Contact Footer */}
-              <div className="pt-8 border-t border-white/[0.08] flex flex-wrap gap-x-8 gap-y-4">
-                <a href="mailto:hello@synaptics.fr" className="flex items-center gap-2 group text-gray-400 hover:text-white transition-colors">
-                  <Mail className="w-4 h-4 group-hover:text-blue-400 transition-colors" />
-                  <span className="text-xs font-medium">hello@synaptics.fr</span>
-                </a>
-                <a href="tel:+33672627040" className="flex items-center gap-2 group text-gray-400 hover:text-white transition-colors">
-                  <Phone className="w-4 h-4 group-hover:text-purple-400 transition-colors" />
-                  <div className="flex flex-col">
-                    <span className="text-xs font-medium">+33 6 72 62 70 40</span>
-                    <span className="text-[10px] text-gray-600">Disponible de 8h à 20h</span>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="pt-8 border-t border-white/[0.08] flex flex-wrap gap-x-8 gap-y-6"
+              >
+                <motion.a 
+                  whileHover={{ x: 5 }}
+                  href="mailto:hello@synaptics.fr" 
+                  className="flex items-center gap-3 group text-gray-400 hover:text-white transition-all duration-300"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:border-blue-500/50 group-hover:bg-blue-500/10 transition-all duration-500">
+                    <Mail className="w-4 h-4 group-hover:text-blue-400 transition-colors" />
                   </div>
-                </a>
-                <div className="flex items-center gap-2 text-gray-400">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-xs font-medium italic">Paris, France</span>
-                </div>
-              </div>
+                  <span className="text-xs font-medium tracking-wide">hello@synaptics.fr</span>
+                </motion.a>
+
+                <motion.a 
+                  whileHover={{ x: 5 }}
+                  href="tel:+33672627040" 
+                  className="flex items-center gap-3 group text-gray-400 hover:text-white transition-all duration-300"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:border-purple-500/50 group-hover:bg-purple-500/10 transition-all duration-500">
+                    <Phone className="w-4 h-4 group-hover:text-purple-400 transition-colors" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xs font-medium tracking-wide">+33 6 72 62 70 40</span>
+                    <span className="text-[10px] text-gray-600 font-medium">Disponible de 8h à 20h</span>
+                  </div>
+                </motion.a>
+
+                <motion.div 
+                  whileHover={{ x: 5 }}
+                  className="flex items-center gap-3 group text-gray-400 transition-all duration-300 cursor-default"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:border-green-500/50 group-hover:bg-green-500/10 transition-all duration-500">
+                    <MapPin className="w-4 h-4 group-hover:text-green-400 transition-colors" />
+                  </div>
+                  <span className="text-xs font-medium italic tracking-wide">Paris, France</span>
+                </motion.div>
+              </motion.div>
             </div>
 
             {/* RIGHT COLUMN: FORM CARD */}

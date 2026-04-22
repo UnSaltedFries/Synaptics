@@ -6,6 +6,8 @@ import { Globe } from "@/components/Globe";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ValuePillars } from "@/components/about/ValuePillars";
+import { CinematicVision } from "@/components/about/CinematicVision";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,41 +39,40 @@ const About = () => {
     const words = container.querySelectorAll(".reveal-word");
     const blocks = container.querySelectorAll(".reveal-text-block");
 
-    // Master Timeline for Word Reveal (Blur/Opacity)
-    // Finishes much lower (80% from top) so the text is fully clear almost immediately after entering
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
-        start: "top center",
-        end: "bottom 80%",
-        scrub: true,
+        start: "top 80%",
+        end: "bottom 60%",
+        scrub: 0.5, // Smoother scrub
       }
     });
 
     tl.to(words, {
       opacity: 1,
+      y: 0,
       filter: "blur(0px)",
-      stagger: {
-        each: 0.1,
-        ease: "none"
-      },
-      ease: "none",
+      stagger: 0.02, // Much tighter stagger for performance
+      duration: 0.4,
+      ease: "power2.out",
+      force3D: true, // Force GPU acceleration
     });
 
     // Individual Rotation for each block
-    // Ensures each paragraph straightens out exactly as it hits the center line
     blocks.forEach((block) => {
       gsap.fromTo(
         block,
-        { rotate: 10, y: 20, transformOrigin: '0% 0%' },
+        { rotate: 5, y: 30, opacity: 0.5 },
         {
           rotate: 0,
           y: 0,
+          opacity: 1,
           ease: "none",
+          force3D: true,
           scrollTrigger: {
             trigger: block,
             start: "top bottom",
-            end: "top center", // Becomes straight exactly at the center line
+            end: "top 40%",
             scrub: true,
           }
         }
@@ -90,7 +91,7 @@ const About = () => {
     { name: t("about.service.crm"), description: t("about.service.crm.desc") },
   ];
 
-  return <Layout variant="light">
+  return <Layout variant="light" footerThreshold={0.99}>
     <div className="bg-black min-h-screen">
       {/* White content wrapper */}
       <div className="bg-white">
@@ -161,97 +162,73 @@ const About = () => {
                   {/* Custom Continuous Animation Implementation */}
 
                   {/* Bio 1 */}
-                  <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-black leading-[1.05] tracking-[-0.03em] mb-24 reveal-text-block origin-top-left will-change-transform">
-                    {t("about.bio1").split(/(\s+)/).map((word, i) => {
-                      if (word.match(/^\s+$/)) return <span key={i} className="whitespace-pre">{word}</span>;
-                      return <span key={i} className="reveal-word inline-block will-change-[opacity,filter] opacity-[0.05] blur-[10px]">{word}</span>;
-                    })}
+                  <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-black leading-[1.05] tracking-[-0.03em] mb-24 reveal-text-block origin-top-left">
+                    {t("about.bio1").split(" ").map((word, i) => (
+                      <span key={i} className="reveal-word inline-block mr-[0.2em] opacity-0 translate-y-4 blur-[4px]">
+                        {word}
+                      </span>
+                    ))}
                   </h2>
 
                   {/* Bio 2 */}
-                  <p className="text-xl md:text-2xl font-medium text-gray-600 leading-relaxed mb-12 reveal-text-block origin-top-left will-change-transform">
-                    {`${t("about.bio2.pre")} ${t("about.bio2.highlight")} ${t("about.bio2.post")}`.split(/(\s+)/).map((word, i) => {
-                      if (word.match(/^\s+$/)) return <span key={i} className="whitespace-pre">{word}</span>;
-                      return <span key={i} className="reveal-word inline-block will-change-[opacity,filter] opacity-[0.05] blur-[10px]">{word}</span>;
-                    })}
+                  <p className="text-xl md:text-2xl font-medium text-gray-600 leading-relaxed mb-12 reveal-text-block origin-top-left">
+                    {`${t("about.bio2.pre")} ${t("about.bio2.highlight")} ${t("about.bio2.post")}`.split(" ").map((word, i) => (
+                      <span key={i} className="reveal-word inline-block mr-[0.2em] opacity-0 translate-y-2 blur-[4px]">
+                        {word}
+                      </span>
+                    ))}
                   </p>
 
                   {/* Bio 3 */}
-                  <p className="text-xl md:text-2xl font-medium text-gray-600 leading-relaxed mb-12 reveal-text-block origin-top-left will-change-transform">
-                    {`${t("about.bio3.pre")} ${t("about.bio3.highlight")} ${t("about.bio3.post")}`.split(/(\s+)/).map((word, i) => {
-                      if (word.match(/^\s+$/)) return <span key={i} className="whitespace-pre">{word}</span>;
-                      return <span key={i} className="reveal-word inline-block will-change-[opacity,filter] opacity-[0.05] blur-[10px]">{word}</span>;
-                    })}
+                  <p className="text-xl md:text-2xl font-medium text-gray-600 leading-relaxed mb-12 reveal-text-block origin-top-left">
+                    {`${t("about.bio3.pre")} ${t("about.bio3.highlight")} ${t("about.bio3.post")}`.split(" ").map((word, i) => (
+                      <span key={i} className="reveal-word inline-block mr-[0.2em] opacity-0 translate-y-2 blur-[4px]">
+                        {word}
+                      </span>
+                    ))}
                   </p>
 
                   {/* Bio 4 */}
-                  <p className="text-2xl md:text-3xl font-semibold text-black leading-relaxed mb-24 reveal-text-block origin-top-left will-change-transform">
-                    {`${t("about.bio4.pre")} ${t("about.bio4.highlight")} ${t("about.bio4.post")}`.split(/(\s+)/).map((word, i) => {
-                      if (word.match(/^\s+$/)) return <span key={i} className="whitespace-pre">{word}</span>;
-                      return <span key={i} className="reveal-word inline-block will-change-[opacity,filter] opacity-[0.05] blur-[10px]">{word}</span>;
-                    })}
+                  <p className="text-2xl md:text-3xl font-semibold text-black leading-relaxed mb-24 reveal-text-block origin-top-left">
+                    {`${t("about.bio4.pre")} ${t("about.bio4.highlight")} ${t("about.bio4.post")}`.split(" ").map((word, i) => (
+                      <span key={i} className="reveal-word inline-block mr-[0.2em] opacity-0 translate-y-2 blur-[4px]">
+                        {word}
+                      </span>
+                    ))}
                   </p>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </section>      </div>
 
-        {/* Organic Wave Transition */}
-        {/* Organic Wave Transition */}
-        {/* Increased height for more dramatic waves */}
-        <div className="relative w-full h-[200px] md:h-[300px] overflow-hidden leading-[0] bg-white">
+      {/* Organic Wave Transition (White to Black) */}
+      <div className="relative w-full h-[200px] md:h-[300px] overflow-hidden leading-[0] bg-white">
+        {/* Layer 1: Back (Light Gray) */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <svg className="block w-[200%] h-full animate-wave-slower" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 300" preserveAspectRatio="none">
+            <path d="M0,150 C400,50 800,250 1200,150 C1600,50 2000,250 2400,150 L2400,300 L0,300 Z" fill="#e5e7eb"></path>
+          </svg>
+        </div>
 
-          {/* Layer 1: Back (Light Gray) - Slowest */}
-          <div className="absolute top-0 left-0 w-full h-full">
-            <svg
-              className="block w-[200%] h-full animate-wave-slower"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 2400 300"
-              preserveAspectRatio="none"
-            >
-              {/* Curve: 0-1200 repeats at 1200-2400. Y values match at 0, 1200, 2400. */}
-              <path
-                d="M0,150 C400,50 800,250 1200,150 C1600,50 2000,250 2400,150 L2400,300 L0,300 Z"
-                fill="#e5e7eb"
-              ></path>
-            </svg>
-          </div>
+        {/* Layer 2: Middle (Dark Gray) */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <svg className="block w-[200%] h-full animate-wave-slow" style={{ animationDuration: '20s' }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 300" preserveAspectRatio="none">
+            <path d="M0,180 C300,80 900,280 1200,180 C1500,80 2100,280 2400,180 L2400,300 L0,300 Z" fill="#9ca3af"></path>
+          </svg>
+        </div>
 
-          {/* Layer 2: Middle (Dark Gray) - Medium Speed */}
-          <div className="absolute top-0 left-0 w-full h-full">
-            <svg
-              className="block w-[200%] h-full animate-wave-slow"
-              style={{ animationDuration: '20s' }}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 2400 300"
-              preserveAspectRatio="none"
-            >
-              {/* Phase shifted curve */}
-              <path
-                d="M0,180 C300,80 900,280 1200,180 C1500,80 2100,280 2400,180 L2400,300 L0,300 Z"
-                fill="#9ca3af"
-              ></path>
-            </svg>
-          </div>
-
-          {/* Layer 3: Front (Solid Black) - Standard Speed */}
-          <div className="absolute top-0 left-0 w-full h-full z-10">
-            <svg
-              className="block w-[200%] h-full animate-wave-slow"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 2400 300"
-              preserveAspectRatio="none"
-            >
-              {/* Main curve */}
-              <path
-                d="M0,220 C400,120 800,320 1200,220 C1600,120 2000,320 2400,220 L2400,300 L0,300 Z"
-                fill="#000000"
-              ></path>
-            </svg>
-          </div>
+        {/* Layer 3: Front (Solid Black) */}
+        <div className="absolute top-0 left-0 w-full h-full z-10">
+          <svg className="block w-[200%] h-full animate-wave-slow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 300" preserveAspectRatio="none">
+            <path d="M0,220 C400,120 800,320 1200,220 C1600,120 2000,320 2400,220 L2400,300 L0,300 Z" fill="#000000"></path>
+          </svg>
         </div>
       </div>
+
+      {/* New Immersive Sections (Black Background) */}
+      <ValuePillars />
+      <CinematicVision />
 
       <FAQSection />
     </div>
