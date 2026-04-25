@@ -16,8 +16,8 @@ interface CharProps {
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
   // Full range timing: staggered reveal stretched across the entire progress
-  const start = (index / total) * 0.7; 
-  const end = Math.min(start + 0.3, 1);
+  const start = (index / total) * 0.5; 
+  const end = Math.min(start + 0.4, 1);
 
   const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
   const y = useTransform(progress, [start, end], [60, 0], { clamp: true });
