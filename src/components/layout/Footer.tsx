@@ -16,8 +16,8 @@ interface CharProps {
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
   // Full range timing: staggered reveal stretched across the entire progress
-  const start = (index / total) * 0.5; 
-  const end = Math.min(start + 0.4, 1);
+  const start = (index / total) * 0.3; 
+  const end = Math.min(start + 0.3, 1);
 
   const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
   const y = useTransform(progress, [start, end], [60, 0], { clamp: true });
@@ -79,7 +79,7 @@ export function Footer({ progress }: FooterProps) {
     >
       <div className="container mx-auto px-6 pt-48 pb-16 md:pb-24">
         
-        <h2 className="text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight font-sans text-white mb-16 md:mb-24">
+        <h2 className="relative text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight font-sans text-white mb-16 md:mb-24">
           {characters.map((char, index) => (
             <AnimatedChar
               key={index}

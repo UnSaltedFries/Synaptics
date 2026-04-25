@@ -23,15 +23,19 @@ export function Layout({
   // On crée une référence pour la fin du contenu principal
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // On suit le scroll par rapport à la fin du conteneur de la page
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["end 1.5", "end 0.1"]
+  const { scrollY } = useScroll();
+  
+  // On calcule la progression de la révélation manuellement
+  // Elle commence quand on arrive à la fin du contenu (scrollY + vh > mainHeight)
+  // Et elle se termine quand on a scrollé toute la hauteur du footer
+  const revealProgress = useTransform(scrollY, (value) => {
+    if (!containerRef.current || footerHeight === 0) return 0;
+    const mainHeight = containerRef.current.offsetHeight;
+    const vh = window.innerHeight;
+    const revealStart = mainHeight - vh;
+    const progress = (value - revealStart) / footerHeight;
+    return Math.max(0, Math.min(1, progress));
   });
-
-  // La progression de la révélation est maintenant calée sur la sortie du contenu principal
-  // On transforme le scrollYProgress (0 à 1) en progression de révélation
-  const revealProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   // ResizeObserver pour mesurer le footer
   useEffect(() => {
