@@ -37,9 +37,19 @@ export function Chatbot() {
   }, []);
 
   const controls = useAnimation();
+  const introPlayedRef = useRef(false);
+
+  // Reset controls to safe resting state when chat closes (prevents Zippy stuck off-screen
+  // if user opened the chat mid-intro-sequence).
+  useEffect(() => {
+    if (!isOpen && introPlayedRef.current) {
+      controls.set({ opacity: 1, x: 0, y: 0, rotate: 0, scaleX: 1, scaleY: 1 });
+    }
+  }, [isOpen, controls]);
 
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && !introPlayedRef.current) {
+      introPlayedRef.current = true;
       const sequence = async () => {
         // 1. Coup d'œil (Peek)
         await controls.start({
