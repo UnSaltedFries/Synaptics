@@ -18,10 +18,12 @@ export const CustomCursor = () => {
         const style = document.createElement("style");
         style.innerHTML = `* { cursor: none !important; }`;
         document.head.appendChild(style);
-        
-        // Optimisation GSAP quickTo (très fluide)
-        const xTo = gsap.quickTo(cursor, "x", { duration: 0.12, ease: "power2.out" });
-        const yTo = gsap.quickTo(cursor, "y", { duration: 0.12, ease: "power2.out" });
+
+        // Center cursor on pointer via percent translation (GSAP composes with x/y)
+        gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+
+        const xTo = gsap.quickTo(cursor, "x", { duration: 0.06, ease: "power3.out" });
+        const yTo = gsap.quickTo(cursor, "y", { duration: 0.06, ease: "power3.out" });
 
         const onMouseMove = (e: MouseEvent) => {
             if (!isInitialized.current) {
@@ -40,19 +42,19 @@ export const CustomCursor = () => {
             
             if (isInteractive && !isHovering.current) {
                 isHovering.current = true;
-                gsap.to(inner, { scale: 1.3, duration: 0.3, ease: "power2.out" });
+                gsap.to(inner, { scale: 1.3, duration: 0.25, ease: "power2.out", overwrite: true });
             } else if (!isInteractive && isHovering.current) {
                 isHovering.current = false;
-                gsap.to(inner, { scale: 1, duration: 0.3, ease: "power2.out" });
+                gsap.to(inner, { scale: 1, duration: 0.25, ease: "power2.out", overwrite: true });
             }
         };
 
         const onMouseDown = () => {
-            gsap.to(inner, { scale: 0.8, duration: 0.2 });
+            gsap.to(inner, { scale: 0.85, duration: 0.15, ease: "power2.out", overwrite: true });
         };
-        
+
         const onMouseUp = () => {
-            gsap.to(inner, { scale: isHovering.current ? 1.3 : 1, duration: 0.25, ease: "back.out(2)" });
+            gsap.to(inner, { scale: isHovering.current ? 1.3 : 1, duration: 0.2, ease: "power2.out", overwrite: true });
         };
 
         const onMouseEnterWindow = () => setIsVisible(true);
@@ -82,7 +84,6 @@ export const CustomCursor = () => {
             ref={cursorRef}
             className={`fixed top-0 left-0 pointer-events-none z-[9999999] transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`}
             style={{
-                transform: "translate(-5px, -5px)", 
                 willChange: "transform"
             }}
         >

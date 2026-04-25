@@ -11,18 +11,18 @@ interface LayoutProps {
   variant?: "light" | "dark";
 }
 
-export function Layout({ 
-  children, 
-  hideFooter = false, 
+export function Layout({
+  children,
+  hideFooter = false,
   variant = "light",
 }: LayoutProps) {
   const location = useLocation();
   const isMobile = useIsMobile();
   const [footerHeight, setFooterHeight] = useState(0);
-  
+
   // On crée une référence pour la fin du contenu principal
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["end 1.2", "end 0.0"]
@@ -56,7 +56,7 @@ export function Layout({
   return (
     <div className="min-h-screen relative bg-black selection:bg-purple-500/30 overflow-x-hidden">
       {/* Main Content Layer */}
-      <main 
+      <main
         ref={containerRef}
         className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         style={{ marginBottom: hideFooter ? 0 : "var(--footer-height)" }}
@@ -67,8 +67,8 @@ export function Layout({
       {/* Reveal Footer Layer */}
       {!hideFooter && (
         <div className="fixed bottom-0 left-0 right-0 z-0 h-[var(--footer-height)]">
-          {isMobile 
-            ? <MobileFooter progress={revealProgress} /> 
+          {isMobile
+            ? <MobileFooter progress={revealProgress} />
             : <Footer progress={revealProgress} />
           }
         </div>

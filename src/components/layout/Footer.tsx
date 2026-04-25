@@ -16,7 +16,7 @@ interface CharProps {
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
   // Full range timing: staggered reveal stretched across the entire progress
-  const start = (index / total) * 0.3; 
+  const start = (index / total) * 0.3;
   const end = Math.min(start + 0.3, 1);
 
   const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
@@ -24,14 +24,14 @@ function AnimatedChar({ char, index, total, progress }: CharProps) {
 
   return (
     <motion.span
-      style={{ 
-        opacity, 
-        y, 
+      style={{
+        opacity,
+        y,
         display: "inline-block",
         willChange: "transform, opacity"
       }}
     >
-      {char === " " ? "\u00A0" : char}
+      {char === " " ? " " : char}
     </motion.span>
   );
 }
@@ -73,22 +73,14 @@ export function Footer({ progress }: FooterProps) {
   ];
 
   return (
-    <footer 
-      className="text-white w-full overflow-hidden" 
+    <footer
+      className="text-white w-full overflow-hidden"
       style={{ backgroundColor: "#161616" }}
     >
       <div className="container mx-auto px-6 pt-48 pb-16 md:pb-24">
-        
+
         <h2 className="relative text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight font-sans text-white mb-16 md:mb-24">
-          {characters.map((char, index) => (
-            <AnimatedChar
-              key={index}
-              char={char}
-              index={index}
-              total={characters.length}
-              progress={activeProgress}
-            />
-          ))}
+          {headlineText}
         </h2>
 
         {/* REST OF FOOTER IS STATIC FOR "FIXED" EFFECT */}

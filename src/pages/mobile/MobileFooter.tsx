@@ -24,11 +24,11 @@ function AnimatedChar({ char, index, total, progress }: CharProps) {
 
     return (
         <motion.span
-            style={{ 
-                opacity, 
-                y, 
+            style={{
+                opacity,
+                y,
                 display: "inline-block",
-                whiteSpace: char === " " ? "\u00A0" : "normal",
+                whiteSpace: char === " " ? "pre" : "normal",
                 willChange: "transform, opacity"
             }}
         >
@@ -53,20 +53,12 @@ export function MobileFooter({ progress }: MobileFooterProps) {
     ];
 
     return (
-        <footer 
-            className="text-white px-6 pt-24 pb-12 overflow-hidden" 
+        <footer
+            className="text-white px-6 pt-24 pb-12 overflow-hidden"
             style={{ backgroundColor: "#161616" }}
         >
             <h2 className="text-[28px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8">
-                {characters.map((char, index) => (
-                    <AnimatedChar
-                        key={index}
-                        char={char}
-                        index={index}
-                        total={characters.length}
-                        progress={activeProgress}
-                    />
-                ))}
+                {headlineText}
             </h2>
 
             <div className="mb-8">
