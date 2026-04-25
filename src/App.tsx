@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-route
 import { useEffect, useLayoutEffect, Suspense, lazy, useRef } from "react";
 import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 import { Navbar } from "@/components/layout/Navbar";
+import { Chatbot } from "@/components/chat/Chatbot";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { AnimatePresence, motion } from "framer-motion";
 import Lenis from "lenis";
@@ -91,6 +92,7 @@ function AppRoutes() {
       <SEOManager />
       <CustomCursor />
       <Navbar variant={navVariant} />
+      <Chatbot />
 
       <Suspense fallback={<div className="bg-black min-h-screen" />}>
         <AnimatePresence mode="wait">
