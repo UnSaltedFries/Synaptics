@@ -1097,11 +1097,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         setTimeout(() => {
             setLang(newLang);
             localStorage.setItem("synaptics-lang", newLang);
+            
             // Fade back in after React re-renders
             requestAnimationFrame(() => {
                 document.documentElement.classList.remove("lang-transitioning");
             });
-        }, 200);
+
+            // Safety fallback to ensure the site is never stuck in a hidden state
+            setTimeout(() => {
+                document.documentElement.classList.remove("lang-transitioning");
+            }, 500);
+        }, 300);
     };
 
     const t = (key: string): string => {
