@@ -26,7 +26,7 @@ export function Layout({
   // On suit le scroll par rapport à la fin du conteneur de la page
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["end 1.02", "end 0.4"]
+    offset: ["end 1.1", "end 0.7"]
   });
 
   // La progression de la révélation est maintenant calée sur la sortie du contenu principal
