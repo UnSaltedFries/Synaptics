@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { X, Mic, ArrowUp, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { chatService } from '@/services/chatService';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 type Message = {
   id: string;
@@ -25,6 +26,7 @@ export function Chatbot() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { t, lang } = useLanguage();
+  const isMobile = useIsMobile();
   const [showBubble, setShowBubble] = useState(false);
 
   useEffect(() => {
@@ -198,7 +200,7 @@ export function Chatbot() {
               y: [0, -5, 0],
               transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
             }}
-            className="fixed z-[10000]"
+            className="fixed z-[9000]"
             style={{
               bottom: '82px',
               right: '65px',   // Plus centré au-dessus de Zippy
@@ -254,7 +256,7 @@ export function Chatbot() {
               boxShadow: 'none',
               zIndex: 9999,
             }}
-            className="fixed bottom-6 right-6 z-[100] cursor-pointer flex items-center justify-center w-14 h-14"
+            className="fixed bottom-6 right-6 cursor-pointer flex items-center justify-center w-14 h-14"
           >
             <motion.img
               layoutId="zippy"
@@ -276,20 +278,21 @@ export function Chatbot() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={morphTransition}
-            className="fixed bottom-6 right-6 z-[100] flex flex-col"
+            className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[9000] flex flex-col"
             style={{
-              width: 340,
-                height: 420,
-                borderRadius: 16,
+              width: isMobile ? '100%' : 340,
+              height: isMobile ? '100%' : 420,
+              maxHeight: isMobile ? '100dvh' : 'auto',
+              borderRadius: isMobile ? 0 : 16,
                 background: 'rgba(0, 0, 0, 0.9)',
                 backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255,255,255,0.12)',
+                border: isMobile ? 'none' : '1px solid rgba(255,255,255,0.12)',
                 boxShadow: `
                   0 0 0 1px rgba(255,255,255,0.1),
                   0 0 20px rgba(255,255,255,0.05),
                 0 32px 64px rgba(0,0,0,0.9)
               `,
-              transformOrigin: 'bottom right',
+              transformOrigin: isMobile ? 'center' : 'bottom right',
               fontFamily: "'Outfit', system-ui, sans-serif",
               pointerEvents: 'auto',
               willChange: 'transform, opacity', // Accélération matérielle

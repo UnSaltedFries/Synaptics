@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useScroll, useMotionValueEvent } from "framer-motion";
+import gsap from "gsap";
 
 interface NavbarProps {
   variant?: "light" | "dark";
@@ -64,6 +65,53 @@ export function Navbar({ variant = "light" }: NavbarProps) {
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
   });
+
+  const handleLanguageChange = (newLang: 'en' | 'fr') => {
+    if (newLang === lang) return;
+    
+    const overlay = document.querySelector('.global-transition-overlay');
+    const content = document.querySelector('.will-change-opacity');
+    
+    if (overlay && content) {
+      const tl = gsap.timeline();
+      
+      // Entrée (0.4s)
+      tl.to(overlay, { 
+        opacity: 1, 
+        backdropFilter: "blur(20px)",
+        webkitBackdropFilter: "blur(20px)",
+        duration: 0.4, 
+        ease: "power2.inOut",
+        onComplete: () => {
+          setLang(newLang); // Switch dans le flou noir
+        }
+      })
+      .to(content, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.inOut"
+      }, 0.1)
+      
+      // Sortie (0.5s)
+      .to(overlay, { 
+        opacity: 0, 
+        backdropFilter: "blur(0px)",
+        webkitBackdropFilter: "blur(0px)",
+        duration: 0.5, 
+        ease: "power2.inOut" 
+      })
+      .to(content, {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.inOut"
+      }, ">-0.4");
+    } else {
+      // Fallback si pas d'overlay
+      setLang(newLang);
+    }
+  };
+
+
 
   // Close manual expand on outside click (only if not on a subpage)
   useEffect(() => {
@@ -269,8 +317,8 @@ export function Navbar({ variant = "light" }: NavbarProps) {
         <div className="hidden md:flex items-center gap-4">
           {/* Language Toggle */}
           <button
-            onClick={() => setLang(lang === "en" ? "fr" : "en")}
-            className="relative flex items-center rounded-full overflow-hidden bg-white/[0.07] border border-white/[0.12] text-[10px] uppercase tracking-widest font-semibold"
+            onClick={() => handleLanguageChange(lang === "en" ? "fr" : "en")}
+            className="relative flex items-center rounded-full overflow-hidden bg-white/[0.07] border border-white/[0.12] text-[10px] uppercase tracking-widest font-semibold transition-all duration-300 hover:border-white/30 hover:shadow-[0_0_15px_rgba(255,255,255,0.15)]"
           >
             <span
               className={cn(
@@ -290,7 +338,7 @@ export function Navbar({ variant = "light" }: NavbarProps) {
             </span>
             {/* Sliding indicator */}
             <div
-              className="absolute top-[2px] bottom-[2px] w-[calc(50%-2px)] rounded-full bg-white/[0.15] transition-all duration-400 ease-spring-smooth"
+              className="absolute top-[2px] bottom-[2px] w-[calc(50%-2px)] rounded-full bg-white/[0.18] shadow-[0_0_12px_rgba(255,255,255,0.3),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all duration-400 ease-spring-smooth"
               style={{
                 left: lang === "en" ? "2px" : "calc(50%)",
               }}

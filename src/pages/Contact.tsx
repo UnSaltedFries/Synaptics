@@ -16,14 +16,14 @@ import { cn } from "@/lib/utils";
 import BlurText from "@/components/BlurText";
 
 const formSchema = z.object({
-  name: z.string().trim().min(1, "Nom requis").max(100),
-  email: z.string().trim().email("Email invalide").max(255),
-  company: z.string().trim().min(1, "Entreprise requise").max(100),
-  industry: z.string().min(1, "Secteur requis"),
-  description: z.string().trim().min(1, "Description requise").max(2000),
-  budget: z.string().min(1, "Budget requis"),
-  deadline: z.string().trim().min(1, "Délai requis").max(200),
-  referral: z.string().trim().min(1, "Champ requis").max(200),
+  name: z.string().trim().min(1, "Name required").max(100),
+  email: z.string().trim().email("Invalid email").max(255),
+  company: z.string().trim().min(1, "Company required").max(100),
+  industry: z.string().min(1, "Industry required"),
+  description: z.string().trim().min(1, "Description required").max(2000),
+  budget: z.string().min(1, "Budget required"),
+  deadline: z.string().trim().min(1, "Deadline required").max(200),
+  referral: z.string().trim().min(1, "Referral required").max(200),
   industryDetails: z.string().optional()
 });
 
@@ -35,28 +35,29 @@ const LABEL_CLASS = "text-[10px] uppercase tracking-[0.15em] font-bold text-gray
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const industries = [
-    "Santé & Médical",
-    "Immobilier",
-    "Juridique",
-    "Restauration",
-    "BTP / Artisanat",
-    "Comptabilité",
-    "E-commerce",
-    "Autre"
+    { value: "medical", label: t("contact.form.industry.medical") },
+    { value: "realestate", label: t("contact.form.industry.realestate") },
+    { value: "legal", label: t("contact.form.industry.legal") },
+    { value: "restaurant", label: t("contact.form.industry.restaurant") },
+    { value: "btp", label: t("contact.form.industry.btp") },
+    { value: "accounting", label: t("contact.form.industry.accounting") },
+    { value: "ecommerce", label: t("contact.form.industry.ecommerce") },
+    { value: "other", label: t("contact.form.industry.other") }
   ];
 
   const budgetOptions = [
-    { value: "starter", label: "Moins de 1k€ / mois" },
-    { value: "growth", label: "1k€ - 5k€ / mois" },
-    { value: "enterprise", label: "Plus de 5k€ / mois" },
+    { value: "starter", label: t("contact.form.budget.starter") },
+    { value: "growth", label: t("contact.form.budget.growth") },
+    { value: "enterprise", label: t("contact.form.budget.enterprise") },
   ];
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "", email: "", company: "", industry: "",
       description: "", budget: "", deadline: "", referral: "",
       industryDetails: ""
     }
@@ -70,7 +71,7 @@ const Contact = () => {
       const { error } = await supabase.functions.invoke("send-contact-email", { 
         body: {
           ...data,
-          projectType: data.industry, // Mapping for backward compatibility if needed
+          projectType: data.industry,
           timeline: data.deadline
         } 
       });
@@ -103,19 +104,20 @@ const Contact = () => {
               <div>
                 <div className="mb-6">
                     <BlurText
-                        text="Contactez"
+                        text={t("contact.title.line1")}
                         className="text-6xl md:text-7xl font-bold tracking-[-0.04em] leading-[0.9] text-white"
                         delay={100}
                         animateBy="words"
                         direction="bottom"
                     />
-                    <BlurText
-                        text="l'Équipe"
-                        className="text-6xl md:text-7xl font-bold tracking-[-0.04em] leading-[0.9] text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
-                        delay={300}
-                        animateBy="words"
-                        direction="bottom"
-                    />
+                    <motion.div
+                        initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        transition={{ duration: 0.8, delay: 0.3 }}
+                        className="text-6xl md:text-7xl font-bold tracking-[-0.04em] leading-[0.9] bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent py-2"
+                    >
+                        {t("contact.title.line2")}
+                    </motion.div>
                 </div>
                 <motion.p 
                   initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
@@ -123,7 +125,7 @@ const Contact = () => {
                   transition={{ duration: 0.8, delay: 0.5 }}
                   className="text-gray-400 text-lg max-w-md leading-relaxed"
                 >
-                  Une question ou envie de voir Synaptics en action ? Utilisez le formulaire ou contactez-nous directement.
+                  {t("contact.desc")}
                 </motion.p>
               </div>
 
@@ -132,18 +134,18 @@ const Contact = () => {
                 {[
                   {
                     icon: <Briefcase className="w-5 h-5 text-blue-400" />,
-                    title: "Cas d'usage",
-                    desc: "Agents IA pour appels, emails, documents, facturation et workflows personnalisés.",
+                    title: t("contact.useCase"),
+                    desc: t("contact.useCase.desc"),
                   },
                   {
                     icon: <Rocket className="w-5 h-5 text-purple-400" />,
-                    title: "Déploiement",
-                    desc: "Le déploiement s'effectue après le développement (la durée dépendra de votre projet).",
+                    title: t("contact.onboarding"),
+                    desc: t("contact.onboarding.desc"),
                   },
                   {
                     icon: <CreditCard className="w-5 h-5 text-gray-400" />,
-                    title: "Tarifs",
-                    desc: "Forfaits mensuels fixes selon le nombre de fonctionnalités et le volume. Sans frais cachés.",
+                    title: t("contact.pricing"),
+                    desc: t("contact.pricing.desc"),
                   },
                 ].map((card, i) => (
                   <motion.div
@@ -196,7 +198,7 @@ const Contact = () => {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-xs font-medium tracking-wide">+33 6 72 62 70 40</span>
-                    <span className="text-[10px] text-gray-600 font-medium">Disponible de 8h à 20h</span>
+                    <span className="text-[10px] text-gray-600 font-medium">{lang === 'fr' ? 'Disponible de 8h à 20h' : 'Available 8am to 8pm'}</span>
                   </div>
                 </motion.a>
 
@@ -247,7 +249,7 @@ const Contact = () => {
                             <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                               <FormField control={form.control} name="name" render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className={LABEL_CLASS}>Nom <span className="text-blue-400">*</span></FormLabel>
+                                  <FormLabel className={LABEL_CLASS}>{t("contact.form.name")} <span className="text-blue-400">*</span></FormLabel>
                                   <FormControl><Input placeholder="Jane Doe" className={INPUT_CLASS} {...field} /></FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -256,7 +258,7 @@ const Contact = () => {
                             <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                               <FormField control={form.control} name="email" render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className={LABEL_CLASS}>Email <span className="text-blue-400">*</span></FormLabel>
+                                  <FormLabel className={LABEL_CLASS}>{t("contact.form.email")} <span className="text-blue-400">*</span></FormLabel>
                                   <FormControl><Input type="email" placeholder="jane@clinic.com" className={INPUT_CLASS} {...field} /></FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -267,8 +269,8 @@ const Contact = () => {
                           <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                             <FormField control={form.control} name="company" render={({ field }) => (
                               <FormItem>
-                                <FormLabel className={LABEL_CLASS}>Nom de l'entreprise <span className="text-blue-400">*</span></FormLabel>
-                                <FormControl><Input placeholder="Nom de l'entreprise" className={INPUT_CLASS} {...field} /></FormControl>
+                                <FormLabel className={LABEL_CLASS}>{t("contact.form.company")} <span className="text-blue-400">*</span></FormLabel>
+                                <FormControl><Input placeholder={t("contact.form.company")} className={INPUT_CLASS} {...field} /></FormControl>
                                 <FormMessage />
                               </FormItem>
                             )} />
@@ -277,25 +279,25 @@ const Contact = () => {
                           <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                             <FormField control={form.control} name="industry" render={({ field }) => (
                               <FormItem>
-                                <FormLabel className={LABEL_CLASS}>Secteurs d'activité <span className="text-blue-400">*</span></FormLabel>
+                                <FormLabel className={LABEL_CLASS}>{t("contact.form.useCase")} <span className="text-blue-400">*</span></FormLabel>
                                 <div className="flex flex-col md:flex-row gap-4 items-start">
-                                  <div className={cn("transition-all duration-500 w-full", selectedIndustry === "Autre" ? "md:w-1/2" : "w-full")}>
+                                  <div className={cn("transition-all duration-500 w-full", selectedIndustry === "other" ? "md:w-1/2" : "w-full")}>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                       <FormControl>
                                         <SelectTrigger className={INPUT_CLASS}>
-                                          <SelectValue placeholder="Secteurs d'activité" />
+                                          <SelectValue placeholder={t("contact.form.useCase")} />
                                         </SelectTrigger>
                                       </FormControl>
                                       <SelectContent className="bg-neutral-900 border-white/10 text-white rounded-xl">
                                         {industries.map(ind => (
-                                          <SelectItem key={ind} value={ind} className="hover:bg-white/5 cursor-pointer">{ind}</SelectItem>
+                                          <SelectItem key={ind.value} value={ind.value} className="hover:bg-white/5 cursor-pointer">{ind.label}</SelectItem>
                                         ))}
                                       </SelectContent>
                                     </Select>
                                   </div>
 
                                   <AnimatePresence>
-                                    {selectedIndustry === "Autre" && (
+                                    {selectedIndustry === "other" && (
                                       <motion.div 
                                         initial={{ opacity: 0, x: 20, width: 0 }}
                                         animate={{ opacity: 1, x: 0, width: "100%" }}
@@ -306,7 +308,7 @@ const Contact = () => {
                                           <FormItem className="w-full">
                                             <FormControl>
                                               <Input 
-                                                placeholder="Précisez votre secteur..." 
+                                                placeholder={t("contact.form.otherDetail.placeholder")} 
                                                 className={INPUT_CLASS} 
                                                 {...detailField} 
                                               />
@@ -326,10 +328,10 @@ const Contact = () => {
                           <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                             <FormField control={form.control} name="description" render={({ field }) => (
                               <FormItem>
-                                <FormLabel className={LABEL_CLASS}>Décrivez votre besoin <span className="text-blue-400">*</span></FormLabel>
+                                <FormLabel className={LABEL_CLASS}>{t("contact.form.tellMore")} <span className="text-blue-400">*</span></FormLabel>
                                 <FormControl>
                                   <Textarea 
-                                    placeholder="Combien d'appels recevez-vous ? Quel problème souhaitez-vous résoudre ?" 
+                                    placeholder={t("contact.form.tellMore.placeholder")} 
                                     className={cn(INPUT_CLASS, "min-h-[120px] py-3 resize-none")} 
                                     {...field} 
                                   />
@@ -343,11 +345,11 @@ const Contact = () => {
                             <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                               <FormField control={form.control} name="budget" render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className={LABEL_CLASS}>Budget <span className="text-blue-400">*</span></FormLabel>
+                                  <FormLabel className={LABEL_CLASS}>{t("contact.form.budget")} <span className="text-blue-400">*</span></FormLabel>
                                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                       <SelectTrigger className={INPUT_CLASS}>
-                                        <SelectValue placeholder="Sélectionnez" />
+                                        <SelectValue placeholder={t("contact.form.budgetPlaceholder")} />
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent className="bg-neutral-900 border-white/10 text-white rounded-xl">
@@ -363,8 +365,8 @@ const Contact = () => {
                             <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                               <FormField control={form.control} name="deadline" render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel className={LABEL_CLASS}>Délai <span className="text-blue-400">*</span></FormLabel>
-                                  <FormControl><Input placeholder="ex. Urgent, 2 semaines" className={INPUT_CLASS} {...field} /></FormControl>
+                                  <FormLabel className={LABEL_CLASS}>{t("contact.form.timeline")} <span className="text-blue-400">*</span></FormLabel>
+                                  <FormControl><Input placeholder={t("contact.form.timelinePlaceholder")} className={INPUT_CLASS} {...field} /></FormControl>
                                   <FormMessage />
                                 </FormItem>
                               )} />
@@ -374,8 +376,8 @@ const Contact = () => {
                           <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
                             <FormField control={form.control} name="referral" render={({ field }) => (
                               <FormItem>
-                                <FormLabel className={LABEL_CLASS}>Comment vous nous avez trouvé <span className="text-blue-400">*</span></FormLabel>
-                                <FormControl><Input placeholder="Google, recommandation..." className={INPUT_CLASS} {...field} /></FormControl>
+                                <FormLabel className={LABEL_CLASS}>{t("contact.form.referral")} <span className="text-blue-400">*</span></FormLabel>
+                                <FormControl><Input placeholder={t("contact.form.referralPlaceholder")} className={INPUT_CLASS} {...field} /></FormControl>
                                 <FormMessage />
                               </FormItem>
                             )} />
@@ -387,7 +389,7 @@ const Contact = () => {
                               disabled={isSubmitting}
                               className="w-full h-14 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_10px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_10px_40px_rgba(37,99,235,0.4)] border-0"
                             >
-                              {isSubmitting ? "Envoi en cours..." : "Demander une démo →"}
+                              {isSubmitting ? t("contact.form.submitting") : t("contact.form.submit")}
                             </Button>
                           </motion.div>
                         </motion.div>
@@ -403,16 +405,16 @@ const Contact = () => {
                       <div className="w-20 h-20 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-8">
                         <Check className="w-10 h-10 text-green-400" />
                       </div>
-                      <h2 className="text-3xl font-bold text-white mb-4">Message envoyé !</h2>
+                      <h2 className="text-3xl font-bold text-white mb-4">{t("contact.success.title")}</h2>
                       <p className="text-gray-400 max-w-sm mx-auto mb-10">
-                        Merci de nous avoir contactés. Notre équipe reviendra vers vous sous 24h.
+                        {t("contact.success.desc")}
                       </p>
                       <Button
                         onClick={() => setIsSubmitted(false)}
                         variant="outline"
                         className="rounded-xl border-white/10 hover:bg-white/5 text-white"
                       >
-                        Envoyer un autre message
+                        {t("contact.success.another")}
                       </Button>
                     </motion.div>
                   )}

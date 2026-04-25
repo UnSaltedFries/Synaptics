@@ -15,13 +15,12 @@ interface CharProps {
 }
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
-    const endThreshold = 0.9;
-    const revealDuration = 0.5; 
-    const start = (index / total) * (endThreshold - revealDuration);
-    const end = start + revealDuration;
+    // Full range timing for mobile
+    const start = (index / total) * 0.7;
+    const end = Math.min(start + 0.3, 1);
 
     const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
-    const y = useTransform(progress, [start, end], [10, 0], { clamp: true });
+    const y = useTransform(progress, [start, end], [40, 0], { clamp: true });
 
     return (
         <motion.span
@@ -29,7 +28,8 @@ function AnimatedChar({ char, index, total, progress }: CharProps) {
                 opacity, 
                 y, 
                 display: "inline-block",
-                whiteSpace: char === " " ? "pre" : "normal" 
+                whiteSpace: char === " " ? "\u00A0" : "normal",
+                willChange: "transform, opacity"
             }}
         >
             {char}
@@ -59,8 +59,8 @@ export function MobileFooter({ progress }: MobileFooterProps) {
         >
             <h2 className="text-[28px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8">
                 {characters.map((char, index) => (
-                    <AnimatedChar 
-                        key={`${index}-${char}`}
+                    <AnimatedChar
+                        key={index}
                         char={char}
                         index={index}
                         total={characters.length}

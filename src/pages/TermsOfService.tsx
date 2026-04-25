@@ -1,71 +1,116 @@
 import { Layout } from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { LegalWrapper } from "@/components/layout/LegalWrapper";
 
 const TermsOfService = () => {
-    const { t } = useLanguage();
+    const { lang } = useLanguage();
+
+    const content = {
+        fr: {
+            title: "Conditions Générales d'Utilisation",
+            lastUpdate: "Dernière mise à jour : ",
+            sections: [
+                {
+                    title: "1. Acceptation des conditions",
+                    text: "En accédant au site web de Synaptics et en l'utilisant, vous acceptez d'être lié par les présentes conditions générales d'utilisation, toutes les lois et réglementations applicables, et vous acceptez d'être responsable du respect de toutes les lois locales applicables."
+                },
+                {
+                    title: "2. Description du service",
+                    text: "Synaptics fournit des solutions d'intelligence artificielle pour l'automatisation des processus d'entreprise, y compris des agents vocaux, le traitement de documents et l'automatisation des flux de travail."
+                },
+                {
+                    title: "3. Licence d'utilisation",
+                    text: "La permission est accordée de télécharger temporairement une copie des documents sur le site web de Synaptics pour une visualisation personnelle uniquement. Sous cette licence, vous ne pouvez pas :",
+                    list: [
+                        "Modifier ou copier le matériel ;",
+                        "Utiliser le matériel à des fins commerciales ;",
+                        "Tenter de décompiler tout logiciel contenu sur le site ;",
+                        "Supprimer toute mention de propriété du matériel."
+                    ]
+                },
+                {
+                    title: "4. Facturation et Paiements",
+                    text: "Les conditions de paiement pour nos services sont définies dans nos contrats de service spécifiques ou sur notre page de tarification. Tous les frais sont indiqués en Euros (€) sauf indication contraire."
+                },
+                {
+                    title: "5. Limitation de responsabilité",
+                    text: "En aucun cas, Synaptics ne sera responsable de tout dommage découlant de l'utilisation ou de l'incapacité d'utiliser le matériel sur le site web de Synaptics."
+                }
+            ],
+            contact: "Pour toute question concernant ces Conditions d'Utilisation, veuillez nous contacter à : hello@synaptics.fr"
+        },
+        en: {
+            title: "Terms of Service",
+            lastUpdate: "Last updated: ",
+            sections: [
+                {
+                    title: "1. Acceptance of Terms",
+                    text: "By accessing and using the Synaptics website, you agree to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws."
+                },
+                {
+                    title: "2. Description of Service",
+                    text: "Synaptics provides artificial intelligence solutions for business process automation, including voice agents, document processing, and workflow automation."
+                },
+                {
+                    title: "3. Use License",
+                    text: "Permission is granted to temporarily download one copy of the materials on Synaptics' website for personal viewing only. Under this license, you may not:",
+                    list: [
+                        "Modify or copy the materials;",
+                        "Use the materials for any commercial purpose;",
+                        "Attempt to decompile any software contained on the site;",
+                        "Remove any copyright or other proprietary notations."
+                    ]
+                },
+                {
+                    title: "4. Billing and Payments",
+                    text: "Payment terms for our services are defined in our specific service contracts or on our pricing page. All fees are listed in Euros (€) unless stated otherwise."
+                },
+                {
+                    title: "5. Limitation of Liability",
+                    text: "In no event shall Synaptics be liable for any damages arising out of the use or inability to use the materials on Synaptics' website."
+                }
+            ],
+            contact: "For any questions regarding these Terms of Service, please contact us at: hello@synaptics.fr"
+        }
+    };
+
+    const t = content[lang as keyof typeof content];
 
     return (
         <Layout variant="light">
-            <div className="bg-white min-h-screen pt-24 pb-16 md:pt-40 md:pb-32">
-                <div className="container max-w-4xl px-5 md:px-0">
-                    <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-black">Conditions Générales d'Utilisation</h1>
-                    <p className="text-gray-500 mb-12">Dernière mise à jour : {new Date().toLocaleDateString()}</p>
+            <LegalWrapper>
+                <div className="bg-white min-h-screen pt-24 pb-16 md:pt-40 md:pb-32">
+                    <div className="container max-w-4xl px-5 md:px-0 text-black">
+                        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-black">{t.title}</h1>
+                        <p className="text-gray-500 mb-12">{t.lastUpdate}{new Date().toLocaleDateString()}</p>
 
-                    <div className="prose prose-lg max-w-none text-gray-600">
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">1. Acceptation des conditions</h2>
-                        <p className="mb-6">
-                            En accédant au site web de Synaptics et en l'utilisant, vous acceptez d'être lié par les présentes conditions générales d'utilisation, toutes les lois et réglementations applicables, et vous acceptez d'être responsable du respect de toutes les lois locales applicables. Si vous n'êtes pas d'accord avec l'une de ces conditions, il vous est interdit d'utiliser ou d'accéder à ce site.
-                        </p>
-
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">2. Description du service</h2>
-                        <p className="mb-6">
-                            Synaptics fournit des solutions d'intelligence artificielle pour l'automatisation des processus d'entreprise, y compris des agents vocaux, le traitement de documents et l'automatisation des flux de travail. L'utilisation de ces services peut être soumise à des contrats de service spécifiques supplémentaires.
-                        </p>
-
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">3. Licence d'utilisation</h2>
-                        <p className="mb-6">
-                            La permission est accordée de télécharger temporairement une copie des documents (informations ou logiciels) sur le site web de Synaptics pour une visualisation transitoire personnelle et non commerciale uniquement. Il s'agit de l'octroi d'une licence, et non d'un transfert de titre, et sous cette licence, vous ne pouvez pas :
-                        </p>
-                        <ul className="list-disc pl-6 mb-6 space-y-2">
-                            <li>Modifier ou copier le matériel ;</li>
-                            <li>Utiliser le matériel à des fins commerciales ou pour toute présentation publique (commerciale ou non commerciale) ;</li>
-                            <li>Tenter de décompiler ou de faire de l'ingénierie inverse sur tout logiciel contenu sur le site web de Synaptics ;</li>
-                            <li>Supprimer tout droit d'auteur ou autre mention de propriété du matériel ; ou</li>
-                            <li>Transférer le matériel à une autre personne ou "miroir" du matériel sur tout autre serveur.</li>
-                        </ul>
-
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">4. Facturation et Paiements</h2>
-                        <p className="mb-6">
-                            Les conditions de paiement pour nos services sont définies dans nos contrats de service spécifiques ou sur notre page de tarification. Tous les frais sont indiqués en Euros (€) sauf indication contraire.
-                        </p>
-
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">5. Limitation de responsabilité</h2>
-                        <p className="mb-6">
-                            En aucun cas, Synaptics ou ses fournisseurs ne seront responsables de tout dommage (y compris, sans limitation, les dommages pour perte de données ou de profit, ou en raison d'une interruption d'activité) découlant de l'utilisation ou de l'incapacité d'utiliser le matériel sur le site web de Synaptics, même si Synaptics ou un représentant autorisé de Synaptics a été informé oralement ou par écrit de la possibilité de tels dommages.
-                        </p>
-
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">6. Exactitude des matériaux</h2>
-                        <p className="mb-6">
-                            Le matériel apparaissant sur le site web de Synaptics pourrait inclure des erreurs techniques, typographiques ou photographiques. Synaptics ne garantit pas que les documents de son site web sont exacts, complets ou à jour. Synaptics peut apporter des modifications au matériel contenu sur son site web à tout moment et sans préavis.
-                        </p>
-
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">7. Liens</h2>
-                        <p className="mb-6">
-                            Synaptics n'a pas examiné tous les sites liés à son site web et n'est pas responsable du contenu de ces sites liés. L'inclusion de tout lien n'implique pas l'approbation du site par Synaptics. L'utilisation de tout site web lié est aux risques et périls de l'utilisateur.
-                        </p>
-
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">8. Loi applicable</h2>
-                        <p className="mb-6">
-                            Ces termes et conditions sont régis et interprétés conformément aux lois de la France et vous vous soumettez irrévocablement à la juridiction exclusive des tribunaux de cet État ou de cet endroit.
-                        </p>
-
-                        <h2 className="text-2xl font-semibold text-black mt-12 mb-6">9. Nous contacter</h2>
-                        <p className="mb-6">
-                            Pour toute question concernant ces Conditions d'Utilisation, veuillez nous contacter à : hello@synaptics.fr
-                        </p>
+                        <div className="prose prose-lg max-w-none text-gray-600">
+                            {t.sections.map((section, idx) => (
+                                <div key={idx} className="mb-12">
+                                    <h2 className="text-2xl font-semibold text-black mb-6">{section.title}</h2>
+                                    <p className="mb-6">{section.text}</p>
+                                    {section.list && (
+                                        <ul className="list-disc pl-6 mb-6 space-y-2">
+                                            {section.list.map((item, i) => (
+                                                <li key={i}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            ))}
+                            
+                            <div className="pt-8 border-t border-gray-100">
+                                <p className="mb-6 font-medium text-black">{t.contact}</p>
+                                <p className="font-medium text-black">
+                                    Synaptics AI<br />
+                                    Paris, France<br />
+                                    Email: hello@synaptics.fr
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </LegalWrapper>
         </Layout>
     );
 };

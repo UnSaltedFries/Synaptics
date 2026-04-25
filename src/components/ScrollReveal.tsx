@@ -10,7 +10,7 @@ interface ScrollRevealProps {
 export const ScrollReveal = ({ children, className = "", delay = 0 }: ScrollRevealProps) => {
     const ref = useRef(null);
     // Trigger entrance animation only once
-    const hasRevealed = useInView(ref, { once: true, margin: "-20px" });
+    const hasRevealed = useInView(ref, { once: true, margin: "100px" });
     // Toggle visibility for performance whenever it's far from viewport
     const isPresent = useInView(ref, { once: false, margin: "600px 0px 600px 0px" });
 

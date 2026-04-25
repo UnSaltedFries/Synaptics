@@ -2,151 +2,130 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { useEffect, useLayoutEffect, Suspense, lazy, useRef } from "react";
+import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 import { Navbar } from "@/components/layout/Navbar";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { AnimatePresence, motion } from "framer-motion";
+import Lenis from "lenis";
 
-import { lazy } from "react";
-
-// Desktop pages
+// Pages
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Blog = lazy(() => import("./pages/Blog"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const Changelog = lazy(() => import("./pages/Changelog"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
-const GDPR = lazy(() => import("./pages/GDPR"));
-const LegalNotice = lazy(() => import("./pages/LegalNotice"));
 const TermsOfSale = lazy(() => import("./pages/TermsOfSale"));
+const LegalNotice = lazy(() => import("./pages/LegalNotice"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
-const Changelog = lazy(() => import("./pages/Changelog"));
-import { CookieBanner } from "@/components/layout/CookieBanner";
-import { Chatbot } from "@/components/chat/Chatbot";
+const GDPR = lazy(() => import("./pages/GDPR"));
 
-// Mobile pages
-const MobileIndex = lazy(() => import("./pages/mobile/MobileIndex"));
-const MobileAbout = lazy(() => import("./pages/mobile/MobileAbout"));
-const MobileContact = lazy(() => import("./pages/mobile/MobileContact"));
-const MobilePricing = lazy(() => import("./pages/mobile/MobilePricing"));
-const MobileBlog = lazy(() => import("./pages/mobile/MobileBlog"));
-import { MobileNavbar } from "./pages/mobile/MobileNavbar";
-import { Analytics } from "@vercel/analytics/react";
-
-import { useEffect, Suspense } from "react";
-import Lenis from "lenis";
-
-function SmoothScrollManager() {
-  useEffect(() => {
-    // Force scroll to top on refresh by disabling browser scroll restoration
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
-
-    const lenis = new Lenis({
-      lerp: 0.05, 
-      smoothWheel: true,
-      wheelMultiplier: 1, 
-      touchMultiplier: 2,
-    });
-
-    // Expose lenis globally
-    (window as any).lenis = lenis;
-
-    // Hard scroll to top on initial mount
-    lenis.scrollTo(0, { immediate: true });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-      delete (window as any).lenis;
-    };
-  }, []);
-  return null;
-}
-
-function ScrollToTop() {
-  const { pathname, hash } = useLocation();
-  useEffect(() => {
-    // Si on a une ancre (#), on ne force pas le scroll à 0 (géré par Index.tsx)
-    if (hash) return;
-    
-    if ((window as any).lenis) {
-      (window as any).lenis.scrollTo(0, { immediate: true });
-    } else {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    }
-  }, [pathname, hash]);
-  return null;
-}
-
-// Background always black — pages handle their own bg color
-function BackgroundManager() {
+function SEOManager() {
   const { pathname } = useLocation();
+  const { lang } = useLanguage();
+
   useEffect(() => {
-    // Always keep the shell black to prevent white flash between routes.
-    // Individual pages (About, etc.) set their own bg via className/style.
-    document.body.style.backgroundColor = "#000000";
-    document.documentElement.style.backgroundColor = "#000000";
-    // Smooth transition on any residual color change
-    document.body.style.transition = "background-color 0.3s ease";
-  }, [pathname]);
+    const titles: Record<string, string> = {
+      "/": "Synaptics — AI Agency Paris",
+      "/about": "About — Synaptics",
+      "/contact": "Contact — Synaptics",
+      "/pricing": "Pricing — Synaptics",
+      "/blog": "Case Studies — Synaptics",
+    };
+    document.title = titles[pathname] || "Synaptics";
+  }, [pathname, lang]);
+
   return null;
 }
 
 const queryClient = new QueryClient();
 
-/* ─── Responsive App Shell ───────────────────────────────────── */
 function AppRoutes() {
-  const isMobile = useIsMobile();
-  const { pathname } = useLocation();
-  const navVariant = ['/about', '/privacy', '/terms', '/gdpr'].includes(pathname) ? 'light' : 'dark';
+  const location = useLocation();
+  const lenisRef = useRef<Lenis | null>(null);
+  
+  // GLOBAL LENIS SETUP
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+
+    lenisRef.current = lenis;
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+  // Instant Scroll Reset and Lenis Sync
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+  }, [location.pathname]);
+  
+  const lightVariantRoutes = ['/about', '/privacy', '/terms', '/cgv', '/legal', '/cookies', '/gdpr', '/changelog'];
+  const navVariant = lightVariantRoutes.includes(location.pathname) ? 'light' : 'dark';
 
   return (
-    <>
-      <ScrollToTop />
-      <BackgroundManager />
+    <div className="min-h-screen bg-black">
+      <SEOManager />
+      <CustomCursor />
+      <Navbar variant={navVariant} />
 
-      {/* Navbar: mobile or desktop */}
-      {isMobile ? <MobileNavbar /> : <Navbar variant={navVariant} />}
-
-      <Suspense fallback={null}>
-        <Routes>
-          {/* Main pages — conditionally rendered */}
-          <Route path="/" element={isMobile ? <MobileIndex /> : <Index />} />
-          <Route path="/about" element={isMobile ? <MobileAbout /> : <About />} />
-          <Route path="/contact" element={isMobile ? <MobileContact /> : <Contact />} />
-          <Route path="/pricing" element={isMobile ? <MobilePricing /> : <Pricing />} />
-          <Route path="/blog" element={isMobile ? <MobileBlog /> : <Blog />} />
-
-          {/* Legal pages — same on all devices */}
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          <Route path="/gdpr" element={<GDPR />} />
-          <Route path="/legal" element={<LegalNotice />} />
-          <Route path="/cgv" element={<TermsOfSale />} />
-          <Route path="/cookies" element={<CookiePolicy />} />
-          <Route path="/changelog" element={<Changelog />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <Suspense fallback={<div className="bg-black min-h-screen" />}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="bg-black"
+          >
+            <Routes location={location}>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/changelog" element={<Changelog />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/cgv" element={<TermsOfSale />} />
+              <Route path="/legal" element={<LegalNotice />} />
+              <Route path="/cookies" element={<CookiePolicy />} />
+              <Route path="/gdpr" element={<GDPR />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </motion.div>
+        </AnimatePresence>
       </Suspense>
-      
-      <CookieBanner />
-      <Chatbot />
-    </>
+    </div>
   );
 }
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <SmoothScrollManager />
     <LanguageProvider>
       <TooltipProvider>
         <Toaster />
@@ -154,7 +133,6 @@ const App = () => (
         <BrowserRouter>
           <AppRoutes />
         </BrowserRouter>
-        <Analytics />
       </TooltipProvider>
     </LanguageProvider>
   </QueryClientProvider>

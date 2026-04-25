@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,39 +10,8 @@ export const ValuePillars = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const section = sectionRef.current;
-        const trigger = triggerRef.current;
-        if (!section || !trigger) return;
-
-        // Calculate total horizontal scroll distance
-        const totalWidth = section.scrollWidth;
-        const viewportWidth = window.innerWidth;
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: trigger,
-                pin: true,
-                scrub: 1,
-                start: "top top",
-                end: () => "+=450%", 
-                invalidateOnRefresh: true,
-            },
-        });
-
-        // Revert to original sliding behavior (starting from 100vw)
-        tl.fromTo(section, 
-            { x: "100vw", opacity: 1 }, 
-            { x: `-${totalWidth + 500}px`, ease: "none" }
-        );
-
-        return () => {
-            if (tl.scrollTrigger) tl.scrollTrigger.kill();
-            tl.kill();
-        };
-    }, []);
-
-    const pillars = [
+    // Optimisation 1 : Mémoïser la liste des piliers
+    const pillars = useMemo(() => [
         {
             id: "01",
             title: t("about.pillars.p1.title"),
@@ -64,19 +33,63 @@ export const ValuePillars = () => {
             stat: t("about.pillars.p3.stat"),
             label: t("about.pillars.p3.label"),
         },
-    ];
+    ], [t]);
+
+    useEffect(() => {
+        const section = sectionRef.current;
+        const trigger = triggerRef.current;
+        if (!section || !trigger) return;
+
+        // Optimisation 2 : GSAP Context pour isolation et nettoyage
+        const ctx = gsap.context(() => {
+            const totalWidth = section.scrollWidth;
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: trigger,
+                    pin: true,
+                    scrub: 1,
+                    start: "top top",
+                    end: () => "+=450%", 
+                    invalidateOnRefresh: true, // Recalcule si la fenêtre change de taille
+                },
+            });
+
+            tl.fromTo(section, 
+                { x: "100vw" }, 
+                { 
+                    x: `-${totalWidth + 500}px`, 
+                    ease: "none",
+                    force3D: true // Accélération matérielle
+                }
+            );
+        }, triggerRef);
+
+        return () => ctx.revert();
+    }, [pillars]); // Dépendance sur pillars pour recalculer si la langue change
 
     return (
         <div ref={triggerRef} className="bg-black overflow-hidden relative">
-            {/* The actual sliding container */}
-            <div ref={sectionRef} className="flex h-screen items-center gap-10 pr-[10vw]" style={{ willChange: "transform" }}>
+            <div 
+                ref={sectionRef} 
+                className="flex h-screen items-center gap-10 pr-[10vw]" 
+                style={{ 
+                    willChange: "transform",
+                }}
+            >
                 {pillars.map((pillar) => (
                     <div 
                         key={pillar.id} 
                         className="w-[85vw] md:w-[70vw] lg:w-[65vw] h-full flex items-center justify-center flex-shrink-0 px-4"
                     >
-                        <div className="w-full h-[70vh] rounded-[3.5rem] border border-white/10 bg-white/[0.02] backdrop-blur-sm relative overflow-hidden p-8 md:p-16 flex flex-col justify-center">
-                            {/* Background Number - Large & Subtle */}
+                        <div 
+                            className="w-full h-[70vh] rounded-[3.5rem] border border-white/10 bg-white/[0.02] backdrop-blur-sm relative overflow-hidden p-8 md:p-16 flex flex-col justify-center"
+                            style={{ 
+                                // Optimisation 4 : Isoler le rendu de la carte (Backface visibility hidden pour GPU)
+                                backfaceVisibility: "hidden",
+                                transform: "translateZ(0)"
+                            }}
+                        >
                             <div className="absolute top-[10%] right-[5%] text-[15vw] font-bold text-white/[0.02] select-none pointer-events-none leading-none tracking-tighter">
                                 {pillar.id}
                             </div>
@@ -107,7 +120,6 @@ export const ValuePillars = () => {
                                 </div>
                             </div>
 
-                            {/* Bottom progress bar placeholder */}
                             <div className="absolute bottom-12 left-12 right-12 h-px bg-white/5 overflow-hidden">
                                 <div className="h-full w-1/3 bg-blue-500/20" />
                             </div>

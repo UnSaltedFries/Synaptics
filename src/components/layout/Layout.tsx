@@ -3,34 +3,37 @@ import { Footer } from "./Footer";
 import { MobileFooter } from "@/pages/mobile/MobileFooter";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useLocation } from "react-router-dom";
-import { useScroll, useTransform, useMotionValue } from "framer-motion";
+import { useScroll, useTransform } from "framer-motion";
 
 interface LayoutProps {
   children: ReactNode;
   hideFooter?: boolean;
   variant?: "light" | "dark";
-  footerThreshold?: number;
 }
 
 export function Layout({ 
   children, 
   hideFooter = false, 
   variant = "light",
-  footerThreshold = 0.80 
 }: LayoutProps) {
   const location = useLocation();
   const isMobile = useIsMobile();
   const [footerHeight, setFooterHeight] = useState(0);
-  const { scrollYProgress } = useScroll();
   
-  // Use custom threshold if provided, otherwise use the balanced 80% default
-  const revealProgress = useTransform(
-    scrollYProgress,
-    [footerThreshold, 1], 
-    [0, 1]
-  );
+  // On crée une référence pour la fin du contenu principal
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // On suit le scroll par rapport à la fin du conteneur de la page
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["end 3.0", "end 0.1"]
+  });
 
-  // ResizeObserver to measure footer height dynamically
+  // La progression de la révélation est maintenant calée sur la sortie du contenu principal
+  // On transforme le scrollYProgress (0 à 1) en progression de révélation
+  const revealProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  // ResizeObserver pour mesurer le footer
   useEffect(() => {
     if (hideFooter) {
       document.documentElement.style.setProperty("--footer-height", "0px");
@@ -57,6 +60,7 @@ export function Layout({
     <div className="min-h-screen relative bg-black selection:bg-purple-500/30 overflow-x-hidden">
       {/* Main Content Layer */}
       <main 
+        ref={containerRef}
         className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         style={{ marginBottom: hideFooter ? 0 : "var(--footer-height)" }}
       >

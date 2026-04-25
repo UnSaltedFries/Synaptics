@@ -15,15 +15,12 @@ interface CharProps {
 }
 
 function AnimatedChar({ char, index, total, progress }: CharProps) {
-  const endThreshold = 0.9; 
-  const revealDuration = 0.5; 
-  
-  // Start much earlier (starts at 0.1 progress)
-  const start = 0.1 + (index / total) * (endThreshold - 0.1 - revealDuration);
-  const end = start + revealDuration;
+  // Full range timing: staggered reveal stretched across the entire progress
+  const start = (index / total) * 0.7; 
+  const end = Math.min(start + 0.3, 1);
 
   const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
-  const y = useTransform(progress, [start, end], [20, 0], { clamp: true });
+  const y = useTransform(progress, [start, end], [60, 0], { clamp: true });
 
   return (
     <motion.span
@@ -31,10 +28,10 @@ function AnimatedChar({ char, index, total, progress }: CharProps) {
         opacity, 
         y, 
         display: "inline-block",
-        whiteSpace: char === " " ? "pre" : "normal" 
+        willChange: "transform, opacity"
       }}
     >
-      {char}
+      {char === " " ? "\u00A0" : char}
     </motion.span>
   );
 }
@@ -82,11 +79,10 @@ export function Footer({ progress }: FooterProps) {
     >
       <div className="container mx-auto px-6 pt-48 pb-16 md:pb-24">
         
-        {/* ONLY THE HEADLINE ANIMATES */}
         <h2 className="text-[32px] md:text-[68px] font-bold leading-[1.05] tracking-tight font-sans text-white mb-16 md:mb-24">
           {characters.map((char, index) => (
-            <AnimatedChar 
-              key={`${index}-${char}`}
+            <AnimatedChar
+              key={index}
               char={char}
               index={index}
               total={characters.length}

@@ -51,7 +51,7 @@ export function MobileNavbar() {
             {/* Fixed Header Bar */}
             <header
                 className={cn(
-                    "fixed top-0 left-0 right-0 z-[100] px-5 py-4 flex items-center justify-between transition-all duration-300",
+                    "fixed top-0 left-0 right-0 z-[10001] px-5 py-4 flex items-center justify-between transition-all duration-300",
                     barColor
                 )}
             >
@@ -106,7 +106,7 @@ export function MobileNavbar() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="fixed inset-0 z-[99] flex flex-col justify-center items-center"
+                        className="fixed inset-0 z-[10000] flex flex-col justify-center items-center"
                         style={{ backgroundColor: "#000000" }}
                     >
                         <nav className="flex flex-col items-center gap-6">
