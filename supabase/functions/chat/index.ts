@@ -33,6 +33,7 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.error('OpenAI API Error Details:', errorData);
       throw new Error(errorData.error?.message || 'OpenAI API error');
     }
 

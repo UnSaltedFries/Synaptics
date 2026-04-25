@@ -59,8 +59,9 @@ Projets sur mesure uniquement. Réponds : "Nos solutions sont personnalisées se
 Invite régulièrement à réserver un appel découverte gratuit de 20 minutes : [LIEN_CALENDLY]`
     };
 
-    // 2. Fusion avec l'historique
-    const fullMessages = [systemPrompt, ...messages];
+    // 2. Fusion avec l'historique (on nettoie les objets pour OpenAI qui n'accepte pas de champs extra comme 'id')
+    const cleanedMessages = messages.map(({ role, content }) => ({ role, content }));
+    const fullMessages = [systemPrompt, ...cleanedMessages];
 
     try {
       const { data, error } = await supabase.functions.invoke('chat', {
