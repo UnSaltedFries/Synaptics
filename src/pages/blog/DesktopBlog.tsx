@@ -5,7 +5,7 @@ import { projects } from "@/data/projects";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ProjectVisuals } from "@/components/blog/ProjectVisuals";
-import ChromeWord from "@/components/ChromeWord";
+import ChromeWord from "@/components/visuals/ChromeWord";
 
 const Blog = () => {
     const { lang } = useLanguage();

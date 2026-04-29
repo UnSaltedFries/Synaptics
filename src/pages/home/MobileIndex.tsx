@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Layout } from "@/components/layout/Layout";
 import { motion } from "framer-motion";
-import ScrollReveal from "@/components/ScrollReveal";
-import BlurText from "@/components/BlurText";
+import ScrollReveal from "@/components/visuals/ScrollReveal";
+import BlurText from "@/components/visuals/BlurText";
 
 /* ─── Animated Counter ──────────────────────────────────────────── */
 function AnimatedCounter({ end, suffix = "", duration = 2000, decimals = 0 }: { end: number; suffix?: string; duration?: number; decimals?: number }) {

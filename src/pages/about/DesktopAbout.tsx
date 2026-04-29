@@ -1,16 +1,16 @@
 import { Layout } from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { FAQSection } from "@/components/FAQSection";
-import InfiniteMarquee from "@/components/InfiniteMarquee";
-import { Globe } from "@/components/Globe";
+import { FAQSection } from "@/components/sections/FAQSection";
+import InfiniteMarquee from "@/components/visuals/InfiniteMarquee";
+import { Globe } from "@/components/visuals/Globe";
 import { useRef, useEffect, useMemo, memo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ValuePillars } from "@/components/about/ValuePillars";
 import { CinematicVision } from "@/components/about/CinematicVision";
-import ScrollReveal from "@/components/ScrollReveal";
-import BlurText from "@/components/BlurText";
-import ChromeWord from "@/components/ChromeWord";
+import ScrollReveal from "@/components/visuals/ScrollReveal";
+import BlurText from "@/components/visuals/BlurText";
+import ChromeWord from "@/components/visuals/ChromeWord";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -1,14 +1,14 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { FAQSection } from "@/components/FAQSection";
+import { FAQSection } from "@/components/sections/FAQSection";
 import { Layout } from "@/components/layout/Layout";
-import BlurText from "@/components/BlurText";
-import ScrollReveal from "@/components/ScrollReveal";
+import BlurText from "@/components/visuals/BlurText";
+import ScrollReveal from "@/components/visuals/ScrollReveal";
 import { motion } from "framer-motion";
-import InfiniteMarquee from "@/components/InfiniteMarquee";
+import InfiniteMarquee from "@/components/visuals/InfiniteMarquee";
 import { ValuePillars } from "@/components/about/ValuePillars";
 import { CinematicVision } from "@/components/about/CinematicVision";
-import ChromeWord from "@/components/ChromeWord";
-import { Globe } from "@/components/Globe";
+import ChromeWord from "@/components/visuals/ChromeWord";
+import { Globe } from "@/components/visuals/Globe";
 
 const technologies = [
     { name: "OpenAI / Anthropic" },

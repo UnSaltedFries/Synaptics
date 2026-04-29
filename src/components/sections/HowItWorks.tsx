@@ -1,5 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import ScrollStack, { ScrollStackItem } from "./ScrollStack";
+import ScrollStack, { ScrollStackItem } from "@/components/visuals/ScrollStack";
 
 const steps = [
     {

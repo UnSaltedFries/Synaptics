@@ -4,9 +4,9 @@ import { projects } from "@/data/projects";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
-import BlurText from "@/components/BlurText";
-import ScrollReveal from "@/components/ScrollReveal";
-import ChromeWord from "@/components/ChromeWord";
+import BlurText from "@/components/visuals/BlurText";
+import ScrollReveal from "@/components/visuals/ScrollReveal";
+import ChromeWord from "@/components/visuals/ChromeWord";
 
 const MobileBlog = () => {
     const { t, lang } = useLanguage();

@@ -13,7 +13,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Mail, Phone, MapPin, Briefcase, Rocket, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
-import BlurText from "@/components/BlurText";
+import BlurText from "@/components/visuals/BlurText";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name required").max(100),

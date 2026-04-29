@@ -1,15 +1,15 @@
 import { Layout } from "@/components/layout/Layout";
-import { HeroSection } from "@/components/HeroSection";
+import { HeroSection } from "@/components/sections/HeroSection";
 
-import { FloatingCTA } from "@/components/FloatingCTA";
-import { ScrollReveal } from "@/components/ScrollReveal";
-import { HowItWorks } from "@/components/HowItWorks";
-import { StatsSection } from "@/components/StatsSection";
+import { FloatingCTA } from "@/components/shared/FloatingCTA";
+import { ScrollReveal } from "@/components/visuals/ScrollReveal";
+import { HowItWorks } from "@/components/sections/HowItWorks";
+import { StatsSection } from "@/components/sections/StatsSection";
 
-import { AudioDemo } from "@/components/AudioDemo";
-import { Testimonials } from "@/components/Testimonials";
-import { IntegrationsGrid } from "@/components/IntegrationsGrid";
-import { ROICalculator } from "@/components/ROICalculator";
+import { AudioDemo } from "@/components/media/AudioDemo";
+import { Testimonials } from "@/components/sections/Testimonials";
+import { IntegrationsGrid } from "@/components/sections/IntegrationsGrid";
+import { ROICalculator } from "@/components/pricing/ROICalculator";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 

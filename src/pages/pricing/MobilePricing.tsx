@@ -2,10 +2,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
-import LightRays from "@/components/LightRays";
-import BlurText from "@/components/BlurText";
-import ScrollReveal from "@/components/ScrollReveal";
-import { PricingConfigurator } from "@/components/PricingConfigurator";
+import LightRays from "@/components/visuals/LightRays";
+import BlurText from "@/components/visuals/BlurText";
+import ScrollReveal from "@/components/visuals/ScrollReveal";
+import { PricingConfigurator } from "@/components/pricing/PricingConfigurator";
 
 const CheckIcon = () => (
     <svg className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

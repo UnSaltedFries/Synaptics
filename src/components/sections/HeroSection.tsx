@@ -1,5 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import BlurText from "./BlurText";
+import BlurText from "@/components/visuals/BlurText";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";

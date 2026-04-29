@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { Footer } from "./Footer";
-import { MobileFooter } from "@/pages/mobile/MobileFooter";
+import { Footer } from "@/components/layout/Footer";
+import { MobileFooter } from "@/components/layout/MobileFooter";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useLocation } from "react-router-dom";
 import { useScroll, useTransform, motion, AnimatePresence } from "framer-motion";

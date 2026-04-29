@@ -16,11 +16,11 @@ import {
     Clock,
     Zap
 } from "lucide-react";
-import BlurText from "@/components/BlurText";
-import ScrollReveal from "@/components/ScrollReveal";
+import BlurText from "@/components/visuals/BlurText";
+import ScrollReveal from "@/components/visuals/ScrollReveal";
 import { cn } from "@/lib/utils";
-import ChromeWord from "@/components/ChromeWord";
-import { Globe } from "@/components/Globe";
+import ChromeWord from "@/components/visuals/ChromeWord";
+import { Globe } from "@/components/visuals/Globe";
 
 // ... (existing services data)
 const allServices = [

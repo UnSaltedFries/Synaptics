@@ -7,8 +7,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Layout } from "@/components/layout/Layout";
-import BlurText from "@/components/BlurText";
-import ScrollReveal from "@/components/ScrollReveal";
+import BlurText from "@/components/visuals/BlurText";
+import ScrollReveal from "@/components/visuals/ScrollReveal";
 
 const formSchema = z.object({
     name: z.string().trim().min(1, "Name is required").max(100),
