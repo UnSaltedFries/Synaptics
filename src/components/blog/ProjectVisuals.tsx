@@ -45,6 +45,8 @@ export function ProjectVisuals({ project }: ProjectVisualsProps) {
         <img 
           src={project.dashboardImage || project.heroImage} 
           alt={`${project.title} Dashboard`} 
+          loading="lazy"
+          decoding="async"
           className="w-full h-auto opacity-90 hover:opacity-100 transition-opacity"
         />
       </div>

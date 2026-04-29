@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 type Lang = "en" | "fr";
 
@@ -1112,6 +1112,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         const saved = localStorage.getItem("synaptics-lang");
         return (saved === "fr" || saved === "en") ? saved : "en";
     });
+
+    // Sync HTML lang attribute
+    useEffect(() => {
+        document.documentElement.lang = lang;
+    }, [lang]);
 
     const handleSetLang = (newLang: Lang) => {
         // Fade out → swap → fade in

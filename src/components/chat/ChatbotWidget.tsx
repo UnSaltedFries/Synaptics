@@ -13,6 +13,7 @@ export function ChatbotWidget({ onClick, isOpen }: ChatbotWidgetProps) {
       <img
         src="/images/chatbot/zippy.png"
         alt="Zippy"
+        decoding="async"
         className="w-full h-full object-contain rounded-full"
       />
     </button>

@@ -113,40 +113,13 @@ const PrivacyPolicy = () => {
     const t = content[lang as keyof typeof content];
 
     return (
-        <Layout variant="light">
-            <LegalWrapper>
-                <div className="bg-white min-h-screen pt-24 pb-16 md:pt-40 md:pb-32">
-                    <div className="container max-w-4xl px-5 md:px-0 text-black">
-                        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-black">{t.title}</h1>
-                        <p className="text-gray-500 mb-12">{t.lastUpdate}{new Date().toLocaleDateString()}</p>
-
-                        <div className="prose prose-lg max-w-none text-gray-600">
-                            {t.sections.map((section, idx) => (
-                                <div key={idx} className="mb-12">
-                                    <h2 className="text-2xl font-semibold text-black mb-6">{section.title}</h2>
-                                    <p className="mb-6">{section.text}</p>
-                                    {section.list && (
-                                        <ul className="list-disc pl-6 mb-6 space-y-2">
-                                            {section.list.map((item, i) => (
-                                                <li key={i}>{item}</li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </div>
-                            ))}
-                            
-                            <div className="pt-8 border-t border-gray-100">
-                                <p className="mb-6 font-medium text-black">{t.contact}</p>
-                                <p className="font-medium text-black">
-                                    Synaptics AI<br />
-                                    Paris, France<br />
-                                    Email: hello@synaptics.fr
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </LegalWrapper>
+        <Layout variant="dark">
+            <LegalWrapper 
+                title={t.title}
+                lastUpdate={`${t.lastUpdate}${new Date().toLocaleDateString()}`}
+                sections={t.sections}
+                contact={t.contact}
+            />
         </Layout>
     );
 };

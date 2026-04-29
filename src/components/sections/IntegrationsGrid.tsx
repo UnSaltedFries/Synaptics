@@ -37,6 +37,8 @@ export function IntegrationsGrid() {
                             <img
                                 src={integration.logo}
                                 alt={integration.name}
+                                loading="lazy"
+                                decoding="async"
                                 className="w-8 h-8 group-hover:scale-110 transition-transform duration-300"
                             />
                             <span className="text-xs text-gray-400 font-medium tracking-wide text-center group-hover:text-white transition-colors duration-300">

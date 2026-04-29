@@ -8,7 +8,6 @@ import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 import { Navbar } from "@/components/layout/Navbar";
 import { MobileNavbar } from "@/components/layout/MobileNavbar";
 import { Chatbot } from "@/components/chat/Chatbot";
-import { CustomCursor } from "@/components/ui/CustomCursor";
 import { AnimatePresence, motion } from "framer-motion";
 import Lenis from "lenis";
 
@@ -97,7 +96,6 @@ function AppRoutes() {
   return (
     <div className="min-h-screen bg-black">
       <SEOManager />
-      {/* <CustomCursor /> */}
       
       {/* Desktop Navigation */}
       <div className="hidden md:block">

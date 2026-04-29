@@ -1,72 +1,77 @@
 import { Layout } from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { LegalWrapper } from "@/components/layout/LegalWrapper";
 
 const LegalNotice = () => {
-    const { t } = useLanguage();
-    const lastUpdated = new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+    const { lang } = useLanguage();
+
+    const content = {
+        fr: {
+            title: "Mentions Légales",
+            lastUpdate: "Dernière mise à jour : ",
+            sections: [
+                {
+                    title: "1. Éditeur du site",
+                    text: "Le présent site web est édité par AVARİN LTD (Synaptics). Pour toute demande, vous pouvez nous contacter par email à hello@synaptics.fr."
+                },
+                {
+                    title: "2. Hébergement",
+                    text: "Le site est hébergé par Vercel Inc., dont le siège social est situé au 340 S Lemon Ave #1192, Walnut, CA 91789, USA. Site web : https://vercel.com"
+                },
+                {
+                    title: "3. Propriété intellectuelle",
+                    text: "L'ensemble des contenus présents sur ce site (textes, images, graphismes, logo, icônes, etc.) est la propriété exclusive de Synaptics. Toute reproduction, même partielle, est strictement interdite sans accord préalable."
+                },
+                {
+                    title: "4. Limitation de responsabilité",
+                    text: "Synaptics s'efforce de fournir des informations précises mais ne peut être tenue responsable des omissions ou inexactitudes. L'utilisateur utilise le site à ses seuls risques."
+                },
+                {
+                    title: "5. Droit applicable",
+                    text: "Tout litige en relation avec l'utilisation du site est soumis au droit français. Juridiction exclusive aux tribunaux de Paris."
+                }
+            ],
+            contact: "Synaptics AI Lab, Paris, France"
+        },
+        en: {
+            title: "Legal Notice",
+            lastUpdate: "Last updated: ",
+            sections: [
+                {
+                    title: "1. Site Editor",
+                    text: "This website is edited by AVARİN LTD (Synaptics). For any inquiries, you can contact us via email at hello@synaptics.fr."
+                },
+                {
+                    title: "2. Hosting",
+                    text: "The site is hosted by Vercel Inc., with its headquarters located at 340 S Lemon Ave #1192, Walnut, CA 91789, USA. Website: https://vercel.com"
+                },
+                {
+                    title: "3. Intellectual Property",
+                    text: "All content on this site (texts, images, graphics, logo, icons, etc.) is the exclusive property of Synaptics. Any reproduction, even partial, is strictly prohibited without prior agreement."
+                },
+                {
+                    title: "4. Limitation of Liability",
+                    text: "Synaptics strives to provide accurate information but cannot be held responsible for omissions or inaccuracies. The user uses the site at their own risk."
+                },
+                {
+                    title: "5. Governing Law",
+                    text: "Any dispute in connection with the use of the site is subject to French law. Exclusive jurisdiction to the courts of Paris."
+                }
+            ],
+            contact: "Synaptics AI Lab, Paris, France"
+        }
+    };
+
+    const t = content[lang as keyof typeof content];
 
     return (
-        <Layout variant="light">
-            <div className="pt-24 pb-16 md:pt-32 md:pb-20 bg-white min-h-screen">
-                <div className="container max-w-4xl mx-auto px-5 md:px-4">
-                    <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-6 text-black tracking-tight">
-                        Mentions Légales
-                    </h1>
-                    <p className="text-gray-500 mb-12">
-                        Dernière mise à jour : {lastUpdated}
-                    </p>
-
-                    <div className="prose prose-lg max-w-none text-gray-600 prose-headings:text-black prose-headings:font-bold">
-                        <section className="mb-12">
-                            <h2>1. Éditeur du site</h2>
-                            <p>
-                                Le présent site web, accessible à l'adresse synaptics.fr, est édité par :
-                            </p>
-                            <div className="mt-4 p-6 bg-gray-50 rounded-lg border border-gray-100">
-                                <p className="font-semibold text-black">AVARİN LTD</p>
-                                <p>Email : <a href="mailto:hello@synaptics.fr" className="text-black underline">hello@synaptics.fr</a></p>
-                                <p>Adresse : Paris, France</p>
-                            </div>
-                        </section>
-
-                        <section className="mb-12">
-                            <h2>2. Hébergement</h2>
-                            <p>
-                                Le site est hébergé par :
-                                <br />
-                                <strong>Vercel Inc.</strong>
-                                <br />
-                                340 S Lemon Ave #1192
-                                <br />
-                                Walnut, CA 91789, USA
-                                <br />
-                                <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="text-black underline">https://vercel.com</a>
-                            </p>
-                        </section>
-
-                        <section className="mb-12">
-                            <h2>3. Propriété intellectuelle</h2>
-                            <p>
-                                L'ensemble des contenus présents sur ce site (textes, images, graphismes, logo, icônes, etc.) est la propriété exclusive de Synaptics ou de ses partenaires. Toute reproduction, distribution, modification, adaptation, retransmission ou publication, même partielle, de ces différents éléments est strictement interdite sans l'accord exprès par écrit de Synaptics.
-                            </p>
-                        </section>
-
-                        <section className="mb-12">
-                            <h2>4. Limitation de responsabilité</h2>
-                            <p>
-                                Synaptics s'efforce de fournir sur le site des informations aussi précises que possible. Toutefois, l'éditeur ne pourra être tenu responsable des omissions, des inexactitudes et des carences dans la mise à jour. L'utilisateur utilise le site à ses seuls risques.
-                            </p>
-                        </section>
-
-                        <section className="mb-12">
-                            <h2>5. Droit applicable</h2>
-                            <p>
-                                Tout litige en relation avec l'utilisation du site est soumis au droit français. Il est fait attribution exclusive de juridiction aux tribunaux compétents de Paris.
-                            </p>
-                        </section>
-                    </div>
-                </div>
-            </div>
+        <Layout variant="dark">
+            <LegalWrapper 
+                title={t.title}
+                lastUpdate={`${t.lastUpdate}${new Date().toLocaleDateString()}`}
+                sections={t.sections}
+                contact={t.contact}
+            />
         </Layout>
     );
 };

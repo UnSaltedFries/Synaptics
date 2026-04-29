@@ -3,15 +3,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal } from "@/components/visuals/ScrollReveal";
 import BlurText from "@/components/visuals/BlurText";
-import { 
-    Accordion, 
-    AccordionContent, 
-    AccordionItem, 
-    AccordionTrigger 
-} from "@/components/ui/accordion";
 
 export function FAQSection() {
     const { t } = useLanguage();
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     const faqs = useMemo(() => [
         { q: t("faq.q1"), a: t("faq.a1") },
