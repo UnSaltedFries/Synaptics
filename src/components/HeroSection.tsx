@@ -17,6 +17,20 @@ export function HeroSection() {
     <section ref={containerRef} className="min-h-screen flex flex-col justify-center text-white relative overflow-hidden pt-20">
 
       <div className="container relative z-10 flex-1 flex flex-col justify-center">
+        {/* Mobile Banner: Best on PC */}
+        <div className="md:hidden w-full flex justify-center mb-8 -mt-8">
+          <div className="text-xs text-gray-500 font-medium tracking-wider uppercase">
+            <BlurText
+              text={t("mobile.bestOnPc") || "Meilleure expérience sur PC"}
+              delay={50}
+              animateBy="letters"
+              direction="top"
+              startDelay={0}
+              className="inline-block"
+            />
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           {/* Left Column: Title */}

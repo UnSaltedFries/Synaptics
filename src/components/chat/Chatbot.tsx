@@ -148,6 +148,24 @@ export function Chatbot() {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  // Bloquer le scroll en arrière-plan sur mobile quand le chat est ouvert
+  useEffect(() => {
+    if (isOpen && isMobile) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      (window as any).lenis?.stop();
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      (window as any).lenis?.start();
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      (window as any).lenis?.start();
+    };
+  }, [isOpen, isMobile]);
+
   const handleSend = async () => {
     if (!inputValue.trim() || isLoading) return;
 
@@ -213,7 +231,7 @@ export function Chatbot() {
             className="fixed z-[9000]"
             style={{
               bottom: '82px',
-              right: '65px',   // Plus centré au-dessus de Zippy
+              right: '20px',   // Aligné plus près du bord pour suivre Zippy réduit
               background: 'rgba(20, 20, 20, 0.85)',
               backdropFilter: 'blur(12px)',
               border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -235,8 +253,8 @@ export function Chatbot() {
             </span>
 
             {/* Queue de la bulle (Bulles B.D. courbe centrée) */}
-            <div style={{ position: 'absolute', bottom: -12, right: 45, width: 10, height: 10, background: 'rgba(50, 50, 50, 0.8)', backdropFilter: 'blur(12px)', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)' }} />
-            <div style={{ position: 'absolute', bottom: -24, right: 38, width: 6, height: 6, background: 'rgba(50, 50, 50, 0.8)', backdropFilter: 'blur(12px)', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)' }} />
+            <div style={{ position: 'absolute', bottom: -12, right: 32, width: 10, height: 10, background: 'rgba(50, 50, 50, 0.8)', backdropFilter: 'blur(12px)', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)' }} />
+            <div style={{ position: 'absolute', bottom: -24, right: 28, width: 6, height: 6, background: 'rgba(50, 50, 50, 0.8)', backdropFilter: 'blur(12px)', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)' }} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -266,7 +284,7 @@ export function Chatbot() {
               boxShadow: 'none',
               zIndex: 9999,
             }}
-            className="fixed bottom-6 right-6 cursor-pointer flex items-center justify-center w-14 h-14"
+            className="fixed bottom-6 right-6 cursor-pointer flex items-center justify-center w-10 h-10 md:w-14 md:h-14"
           >
             <motion.img
               layoutId="zippy"
@@ -274,7 +292,7 @@ export function Chatbot() {
               transition={morphTransition}
               src="/images/chatbot/zippy.png"
               alt="Zippy"
-              className="w-14 h-14 object-contain rounded-full"
+              className="w-10 h-10 md:w-14 md:h-14 object-contain rounded-full"
             />
           </motion.button>
         )}
@@ -288,25 +306,26 @@ export function Chatbot() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={morphTransition}
-            className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[9000] flex flex-col"
+            className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[10002] flex flex-col"
             style={{
               width: isMobile ? '100%' : 340,
-              height: isMobile ? '100%' : 420,
+              height: isMobile ? '100dvh' : 420,
               maxHeight: isMobile ? '100dvh' : 'auto',
               borderRadius: isMobile ? 0 : 16,
-                background: 'rgba(0, 0, 0, 0.9)',
-                backdropFilter: 'blur(8px)',
-                border: isMobile ? 'none' : '1px solid rgba(255,255,255,0.12)',
-                boxShadow: `
-                  0 0 0 1px rgba(255,255,255,0.1),
-                  0 0 20px rgba(255,255,255,0.05),
+              background: isMobile ? '#000000' : 'rgba(0, 0, 0, 0.9)',
+              backdropFilter: isMobile ? 'none' : 'blur(8px)',
+              border: isMobile ? 'none' : '1px solid rgba(255,255,255,0.12)',
+              boxShadow: isMobile ? 'none' : `
+                0 0 0 1px rgba(255,255,255,0.1),
+                0 0 20px rgba(255,255,255,0.05),
                 0 32px 64px rgba(0,0,0,0.9)
               `,
               transformOrigin: isMobile ? 'center' : 'bottom right',
               fontFamily: "'Outfit', system-ui, sans-serif",
               pointerEvents: 'auto',
-              willChange: 'transform, opacity', // Accélération matérielle
+              willChange: 'transform, opacity',
             }}
+            data-lenis-prevent="true"
           >
             <style>
               {`
@@ -334,14 +353,14 @@ export function Chatbot() {
               `}
             </style>
               {/* Header */}
-              <div className="flex items-center justify-between shrink-0" style={{ padding: '16px 16px 0' }}>
+              <div className="flex items-center justify-between shrink-0" style={{ padding: isMobile ? '24px 20px 0' : '16px 16px 0' }}>
                 <motion.img
                   layoutId="zippy"
                   layout
                   transition={morphTransition}
                   src="/images/chatbot/zippy.png"
                   alt="Zippy"
-                  className="w-14 h-14 object-contain rounded-full"
+                  className="w-10 h-10 md:w-14 md:h-14 object-contain rounded-full"
                 />
                 <motion.button
                   whileHover={{ scale: 1.1, color: '#fff' }}
@@ -349,7 +368,7 @@ export function Chatbot() {
                   onClick={() => setIsOpen(false)}
                   style={{ padding: 6, borderRadius: 8, background: 'transparent', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', display: 'flex' }}
                 >
-                  <X size={16} />
+                  <X size={20} />
                 </motion.button>
               </div>
 
@@ -362,7 +381,7 @@ export function Chatbot() {
                   flex: 1, 
                   display: 'flex', 
                   flexDirection: 'column', 
-                  padding: '20px', 
+                  padding: isMobile ? '20px 20px' : '20px', 
                   overflowY: 'scroll',
                   overflowX: 'hidden',
                   gap: 16, 
@@ -375,11 +394,11 @@ export function Chatbot() {
                   touchAction: 'pan-y'
                 }}
               >
-                <div style={{ padding: '20px 0 30px', textAlign: 'center' }}>
+                <div style={{ padding: '10px 0 30px', textAlign: 'center' }}>
                   <h2 style={{ 
                     color: '#fff', 
                     fontWeight: 700, 
-                    fontSize: 24, 
+                    fontSize: isMobile ? 28 : 24, 
                     lineHeight: 1.2, 
                     letterSpacing: '-0.02em', 
                     margin: 0,
@@ -424,7 +443,7 @@ export function Chatbot() {
               </div>
 
               {/* Input */}
-              <div style={{ padding: '8px 16px 16px', flexShrink: 0 }}>
+              <div style={{ padding: isMobile ? '8px 20px 32px' : '8px 16px 16px', flexShrink: 0 }}>
                 <div style={{
                   display: 'flex', alignItems: 'flex-start', gap: 8, padding: '10px 12px',
                   borderRadius: 12,

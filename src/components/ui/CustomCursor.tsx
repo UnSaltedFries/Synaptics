@@ -9,7 +9,22 @@ export const CustomCursor = () => {
     const isHovering = useRef(false);
     const isInitialized = useRef(false);
 
+    const [isDesktop, setIsDesktop] = useState(true);
+
     useEffect(() => {
+        const checkDevice = () => {
+            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isSmall = window.innerWidth < 768;
+            setIsDesktop(!(isTouch || isSmall));
+        };
+        checkDevice();
+        window.addEventListener('resize', checkDevice);
+        return () => window.removeEventListener('resize', checkDevice);
+    }, []);
+
+    useEffect(() => {
+        if (!isDesktop) return;
+
         const cursor = cursorRef.current;
         const inner = innerRef.current;
         if (!cursor || !inner) return;
@@ -77,7 +92,9 @@ export const CustomCursor = () => {
                 document.head.removeChild(style);
             }
         };
-    }, []);
+    }, [isDesktop]);
+
+    if (!isDesktop) return null;
 
     return (
         <div

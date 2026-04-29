@@ -11,7 +11,7 @@ export const CinematicVision = () => {
     const textRef = useRef<HTMLHeadingElement>(null);
     const innerRef = useRef<HTMLDivElement>(null);
     
-    const text = t("about.vision.text");
+    const text = t("about.vision.text") || "";
     const words = useMemo(() => text.split(" "), [text]);
 
     useEffect(() => {

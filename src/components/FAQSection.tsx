@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
+import BlurText from "./BlurText";
 
 export function FAQSection() {
     const { t } = useLanguage();
@@ -49,69 +50,62 @@ export function FAQSection() {
         <section className="py-12 sm:py-24 md:py-32 bg-black relative overflow-hidden">
             <div className="container relative px-5 md:px-0">
                 {/* Titre animé */}
-                <motion.h2 
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    variants={titleVariants}
-                    className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-[-0.03em] text-center mb-8 sm:mb-16 md:mb-20"
-                >
-                    {t("faq.title")}
-                </motion.h2>
+                <BlurText
+                    text={t("faq.title")}
+                    className="w-full text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-[-0.03em] text-center mb-8 sm:mb-16 md:mb-20"
+                    animateBy="words"
+                    delay={80}
+                />
 
                 <div className="max-w-3xl mx-auto space-y-4">
                     {faqs.map((faq, i) => {
                         const isOpen = openIndex === i;
                         return (
-                            <motion.div
-                                key={i}
-                                custom={i}
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true, margin: "-50px" }}
-                                variants={itemVariants}
-                                className={`rounded-2xl border transition-colors duration-300 ${isOpen
-                                    ? "border-white/[0.15] bg-white/[0.04]"
-                                    : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
-                                    }`}
-                            >
-                                <button
-                                    onClick={() => setOpenIndex(isOpen ? null : i)}
-                                    className="w-full flex items-center justify-between p-4 sm:p-6 md:p-8 text-left cursor-pointer group"
+                            <ScrollReveal key={i} delay={0.1 + (i * 0.1)}>
+                                <div
+                                    className={`rounded-2xl border transition-colors duration-300 ${isOpen
+                                        ? "border-white/[0.15] bg-white/[0.04]"
+                                        : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
+                                        }`}
                                 >
-                                    <span className={`font-medium text-sm sm:text-base md:text-lg pr-6 sm:pr-8 leading-snug transition-colors duration-300 ${isOpen ? "text-white" : "text-white/80 group-hover:text-white"}`}>
-                                        {faq.q}
-                                    </span>
-                                    <motion.span 
-                                        animate={{ rotate: isOpen ? 45 : 0, color: isOpen ? "#fff" : "#9ca3af" }}
-                                        transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                                        className="text-2xl flex-shrink-0"
+                                    <button
+                                        onClick={() => setOpenIndex(isOpen ? null : i)}
+                                        className="w-full flex items-center justify-between p-4 sm:p-6 md:p-8 text-left cursor-pointer group"
                                     >
-                                        +
-                                    </motion.span>
-                                </button>
-                                
-                                <AnimatePresence initial={false}>
-                                    {isOpen && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ 
-                                                type: "spring", 
-                                                stiffness: 120, 
-                                                damping: 20,
-                                                opacity: { duration: 0.3 }
-                                            }}
-                                            className="overflow-hidden"
+                                        <span className={`font-medium text-sm sm:text-base md:text-lg pr-6 sm:pr-8 leading-snug transition-colors duration-300 ${isOpen ? "text-white" : "text-white/80 group-hover:text-white"}`}>
+                                            {faq.q}
+                                        </span>
+                                        <motion.span 
+                                            animate={{ rotate: isOpen ? 45 : 0, color: isOpen ? "#fff" : "#9ca3af" }}
+                                            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                                            className="text-2xl flex-shrink-0"
                                         >
-                                            <p className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 text-gray-400 text-sm sm:text-base leading-relaxed max-w-[90%]">
-                                                {faq.a}
-                                            </p>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
+                                            +
+                                        </motion.span>
+                                    </button>
+                                    
+                                    <AnimatePresence initial={false}>
+                                        {isOpen && (
+                                            <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: "auto", opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ 
+                                                    type: "spring", 
+                                                    stiffness: 120, 
+                                                    damping: 20,
+                                                    opacity: { duration: 0.3 }
+                                                }}
+                                                className="overflow-hidden"
+                                            >
+                                                <p className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 text-gray-400 text-sm sm:text-base leading-relaxed max-w-[90%]">
+                                                    {faq.a}
+                                                </p>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            </ScrollReveal>
                         );
                     })}
                 </div>

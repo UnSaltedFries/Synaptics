@@ -3,33 +3,14 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Layout } from "@/components/layout/Layout";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import Lenis from "lenis";
+import ChromeWord from "@/components/ChromeWord";
 
 const versions = ["1.0.8", "1.0.7", "1.0.6", "1.0.5", "1.0.4", "1.0.3", "1.0.2", "1.0.1"];
 
 export default function Changelog() {
     const { t } = useLanguage();
 
-    // Activation du Smooth Scroll Lenis (Inertial Scroll)
-    useEffect(() => {
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            lerp: 0.1,
-            infinite: false,
-        });
-
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-
-        return () => {
-            lenis.destroy();
-        };
-    }, []);
+    // The Layout component already handles global Lenis scrolling
 
     return (
         <Layout variant="dark">
@@ -45,8 +26,8 @@ export default function Changelog() {
                             <span className="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold tracking-widest uppercase mb-6">
                                 Synaptics OS
                             </span>
-                            <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-tight">
-                                {t("changelog.title")}
+                            <h1 className="text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-[0.85]">
+                                <ChromeWord>{t("changelog.title")}</ChromeWord>
                             </h1>
                             <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
                                 {t("changelog.subtitle")}
@@ -89,8 +70,8 @@ export default function Changelog() {
                                                         )}
                                                         <span className="text-blue-500 font-mono text-sm font-bold tracking-widest">{v}</span>
                                                     </div>
-                                                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-1">
-                                                        {t(`v${v}.title`)}
+                                                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-1 leading-normal">
+                                                        <ChromeWord>{t(`v${v}.title`)}</ChromeWord>
                                                     </h2>
                                                     <p className="text-gray-500 text-sm font-medium italic">
                                                         {t(`v${v}.date`)}

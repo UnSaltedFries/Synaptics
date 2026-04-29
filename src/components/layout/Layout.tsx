@@ -3,7 +3,8 @@ import { Footer } from "./Footer";
 import { MobileFooter } from "@/pages/mobile/MobileFooter";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useLocation } from "react-router-dom";
-import { useScroll, useTransform } from "framer-motion";
+import { useScroll, useTransform, motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface LayoutProps {
   children: ReactNode;
@@ -17,6 +18,7 @@ export function Layout({
   variant = "light",
 }: LayoutProps) {
   const location = useLocation();
+  const { lang } = useLanguage();
   const isMobile = useIsMobile();
   const [footerHeight, setFooterHeight] = useState(0);
 
@@ -61,7 +63,18 @@ export function Layout({
         className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         style={{ marginBottom: hideFooter ? 0 : "var(--footer-height)" }}
       >
-        {children}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={lang}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full"
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Reveal Footer Layer */}

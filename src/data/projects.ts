@@ -38,6 +38,7 @@ export const projects: Project[] = [
     color: "hsl(160, 50%, 45%)",
     heroImage: "/images/medical-clinic.png",
     dashboardImage: "/images/medical-dashboard.png",
+    fullDescription: "A high-volume medical clinic was overwhelmed by appointment booking calls — endless wait times, frustrated patients, and missed revenue. We deployed a HIPAA-compliant AI receptionist that answers every call instantly, triages symptoms with intelligent questioning, and books directly into their calendar (EHR/Doctolib). Result: zero missed calls and a 40% surge in confirmed appointments.",
     fullDescription_fr: "Une clinique médicale à fort volume était submergée par les appels de prise de rendez-vous — temps d'attente interminables, patients frustrés et rendez-vous manqués. Nous avons déployé un réceptionniste IA conforme HIPAA qui décroche chaque appel instantanément, trie les symptômes avec des questions intelligentes et réserve directement dans leur calendrier métier (Doctolib/EHR). Résultat : zéro appel manqué et un bond de 40% des rendez-vous confirmés.",
     review: "The AI agent has completely transformed our front-office operations.",
     review_fr: "“L'agent IA a complètement transformé la gestion de notre accueil. On ne perd plus aucun patient.”",

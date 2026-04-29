@@ -2,11 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { MobileFooter } from "./MobileFooter";
+import { Layout } from "@/components/layout/Layout";
 import { motion } from "framer-motion";
+import ScrollReveal from "@/components/ScrollReveal";
+import BlurText from "@/components/BlurText";
 
 /* ─── Animated Counter ──────────────────────────────────────────── */
-function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; suffix?: string; duration?: number }) {
+function AnimatedCounter({ end, suffix = "", duration = 2000, decimals = 0 }: { end: number; suffix?: string; duration?: number; decimals?: number }) {
     const [count, setCount] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
     const hasAnimated = useRef(false);
@@ -21,7 +23,7 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
                         const elapsed = currentTime - startTime;
                         const progress = Math.min(elapsed / duration, 1);
                         const eased = 1 - Math.pow(1 - progress, 3);
-                        setCount(Math.floor(end * eased));
+                        setCount(end * eased);
                         if (progress < 1) requestAnimationFrame(animate);
                     };
                     requestAnimationFrame(animate);
@@ -35,7 +37,7 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
 
     return (
         <div ref={ref} className="text-2xl font-bold tabular-nums">
-            {count}{suffix}
+            {count.toFixed(decimals)}{suffix}
         </div>
     );
 }
@@ -124,110 +126,120 @@ const MobileIndex = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-black text-white" style={{ backgroundColor: "#000000" }}>
+        <Layout>
+            <div className="min-h-screen bg-black text-white" style={{ backgroundColor: "#000000" }}>
 
             {/* ─── HERO ─────────────────────────────────────────────────── */}
             <section className="flex flex-col px-5 pt-20 pb-6 h-[100dvh]" style={{ backgroundColor: "#000000" }}>
                 {/* "Best on PC" — pinned to top */}
-                <p className="text-[10px] italic text-center mb-4 tracking-wide pt-2 chrome-word-always">
-                    {t("mobile.bestOnPc")}
-                </p>
+                <div className="flex justify-center mb-4 pt-2">
+                    <BlurText
+                        text={lang === "fr" ? "Meilleure expérience sur ordinateur" : "Best experience on computer"}
+                        className="text-[10px] italic tracking-wide"
+                        animateBy="letters"
+                        delay={50}
+                    />
+                </div>
 
                 {/* ── Text group: centered vertically ── */}
                 <div className="flex flex-col justify-center flex-1">
-                    <motion.h1
-                        initial={{ opacity: 0, y: -30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-                        className="text-[3.5rem] sm:text-[4.5rem] font-bold text-white tracking-tighter leading-[0.95] mb-8 animate-float"
-                    >
-                        {t("hero.title.line1")}
-                        <br />
-                        {t("hero.title.line2")}
-                    </motion.h1>
+                    <BlurText
+                        text={`${t("hero.title.line1")} ${t("hero.title.line2")}`}
+                        animateBy="letters"
+                        delay={50}
+                        duration={800}
+                        className="text-[3.2rem] sm:text-[4.5rem] font-bold text-white tracking-tighter leading-[0.95] mb-8"
+                    />
 
                     {/* Description — chrome shine effect */}
-                    <motion.p
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
-                        className="text-base sm:text-lg leading-relaxed text-gray-400"
-                    >
-                        {t("hero.desc")}
-                    </motion.p>
+                    <ScrollReveal delay={0.4}>
+                        <p className="text-base sm:text-lg leading-relaxed text-gray-400">
+                            {t("hero.desc")}
+                        </p>
+                    </ScrollReveal>
 
                     {/* Spacer */}
                     <div className="h-10" />
 
                     {/* CTA */}
-                    <motion.div
-                        initial={{ opacity: 0, y: -15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.55, ease: "easeOut" }}
-                    >
+                    <ScrollReveal delay={0.6}>
                         <Link
                             to="/contact"
-                            className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-base w-full"
+                            className="relative overflow-hidden inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-base w-full group active:scale-95 transition-transform"
                         >
-                            {t("hero.cta.button")} →
+                            {/* Shimmer Effect */}
+                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer animate-shimmer-slow" />
+                            
+                            <span className="relative z-10 flex items-center gap-2">
+                                {t("hero.cta.button")}
+                                <motion.span
+                                    animate={{ x: [0, 5, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                >
+                                    →
+                                </motion.span>
+                            </span>
                         </Link>
-                    </motion.div>
+                    </ScrollReveal>
                 </div>
 
                 {/* ── Bottom: Trust Indicators pinned to bottom of screen ── */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.7 }}
-                    className="grid grid-cols-2 gap-3 pt-4 text-[9px] uppercase tracking-wider text-gray-500 font-medium place-items-center"
-                >
-                    <div className="flex items-center gap-2">
-                        <div className="flex gap-0.5 text-yellow-500">
-                            {[...Array(5)].map((_, i) => (
-                                <svg key={i} className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                            ))}
+                <div className="grid grid-cols-2 gap-3 pt-4 text-[9px] uppercase tracking-wider text-gray-500 font-medium place-items-center">
+                    <ScrollReveal delay={0.7}>
+                        <div className="flex items-center gap-2">
+                            <div className="flex gap-0.5 text-yellow-500">
+                                {[...Array(5)].map((_, i) => (
+                                    <svg key={i} className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                ))}
+                            </div>
+                            <span className="text-white">4.9</span>
                         </div>
-                        <span className="text-white">4.9</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                        </svg>
-                        <span>{t("trustBadge.gdpr")}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <svg className="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>{t("trustBadge.response")}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <svg className="w-3.5 h-3.5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                        </svg>
-                        <span>{t("trustBadge.clients")}</span>
-                    </div>
-                </motion.div>
+                    </ScrollReveal>
+                    
+                    <ScrollReveal delay={0.8}>
+                        <div className="flex items-center gap-1.5">
+                            <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                            </svg>
+                            <span>{t("trustBadge.gdpr")}</span>
+                        </div>
+                    </ScrollReveal>
+                    
+                    <ScrollReveal delay={0.9}>
+                        <div className="flex items-center gap-1.5">
+                            <svg className="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>{t("trustBadge.response")}</span>
+                        </div>
+                    </ScrollReveal>
+                    
+                    <ScrollReveal delay={1.0}>
+                        <div className="flex items-center gap-1.5">
+                            <svg className="w-3.5 h-3.5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                            </svg>
+                            <span>{t("trustBadge.clients")}</span>
+                        </div>
+                    </ScrollReveal>
+                </div>
             </section>
 
             {/* ─── HOW IT WORKS ─────────────────────────────────────────── */}
             <section className="px-5 py-12" style={{ backgroundColor: "#000000" }}>
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.5 }}
+                <BlurText
+                    text={t("howItWorks.title")}
                     className="text-2xl font-bold mb-2 tracking-tight"
-                >{t("howItWorks.title")}</motion.h2>
-                <motion.p
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                    className="text-gray-400 text-sm mb-8 leading-relaxed"
-                >{t("howItWorks.subtitle")}</motion.p>
+                    animateBy="words"
+                    delay={100}
+                />
+                <ScrollReveal delay={0.1}>
+                    <p className="text-gray-400 text-sm mb-8 leading-relaxed">
+                        {t("howItWorks.subtitle")}
+                    </p>
+                </ScrollReveal>
 
                 <div className="flex flex-col gap-4">
                     {steps.map((step, i) => (
@@ -277,15 +289,9 @@ const MobileIndex = () => {
                         <div key={i} className="text-center">
                             <div className="text-white mb-1 flex items-center justify-center gap-0.5">
                                 {stat.prefix && <span className="text-2xl font-bold text-emerald-400">{stat.prefix}</span>}
-                                {stat.isDecimal ? (
-                                    <div className="text-2xl font-bold tabular-nums bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-                                        {stat.value}{stat.suffix}
-                                    </div>
-                                ) : (
-                                    <div className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-                                        <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-                                    </div>
-                                )}
+                                <div className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+                                    <AnimatedCounter end={stat.value} suffix={stat.suffix} decimals={stat.isDecimal ? 1 : 0} />
+                                </div>
                             </div>
                             <p className="text-[8px] uppercase tracking-[0.12em] text-gray-500 font-medium">{stat.label}</p>
                         </div>
@@ -546,16 +552,25 @@ const MobileIndex = () => {
                     {/* CTA */}
                     <Link
                         to="/contact"
-                        className="block w-full text-center py-3.5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-sm"
+                        className="relative overflow-hidden block w-full text-center py-3.5 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-sm group active:scale-[0.98] transition-transform"
                     >
-                        {t("roi.cta")} →
+                        {/* Shimmer Effect */}
+                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer animate-shimmer-slow" />
+                        
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                            {t("roi.cta")}
+                            <motion.span
+                                animate={{ x: [0, 5, 0] }}
+                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                                →
+                            </motion.span>
+                        </span>
                     </Link>
                 </div>
             </section>
-
-            {/* ─── FOOTER ───────────────────────────────────────────────── */}
-            <MobileFooter />
         </div>
+        </Layout>
     );
 };
 

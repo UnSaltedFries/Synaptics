@@ -48,23 +48,23 @@ const Pricing = () => {
                                 direction="bottom"
                             />
                         </div>
-                        <motion.p 
-                            initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-                            animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-                            className="text-gray-400 max-w-2xl mx-auto text-lg"
-                        >
-                            {t("pricing.subtitle")}
-                        </motion.p>
+                        <ScrollReveal delay={0.4}>
+                            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+                                {t("pricing.subtitle")}
+                            </p>
+                        </ScrollReveal>
                     </div>
 
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 items-start">
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-16">
                         {/* LEFT: The Kustom Agent Card */}
                         <ScrollReveal delay={0.4} className="w-full">
                             <div className="space-y-6">
-                                <h3 className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase">
-                                    01. AI FRONT-OFFICE
-                                </h3>
+                                <BlurText
+                                    text="01. AI FRONT-OFFICE"
+                                    className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase"
+                                    animateBy="letters"
+                                    delay={40}
+                                />
                                 <motion.div
                                     className="relative rounded-[2.5rem] border border-white/[0.1] bg-white/[0.03] backdrop-blur-md p-8 md:p-12 w-full overflow-hidden"
                                 >
@@ -108,12 +108,15 @@ const Pricing = () => {
                         {/* RIGHT: The Configurator */}
                         <ScrollReveal delay={0.6} className="w-full">
                             <div className="space-y-6">
-                                <h3 className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase">
-                                    02. WORKFLOW BACK-OFFICE
-                                </h3>
-                                <div className="relative w-full">
+                                <BlurText
+                                    text="02. WORKFLOW BACK-OFFICE"
+                                    className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase"
+                                    animateBy="letters"
+                                    delay={40}
+                                />
+                                <div className="relative w-full h-full">
                                     <div className="absolute inset-0 rounded-[2.5rem] border border-white/[0.1] bg-white/[0.03] backdrop-blur-md z-0" />
-                                    <div className="relative z-10 p-2 sm:p-4 md:p-8">
+                                    <div className="relative z-10 p-2 sm:p-4 md:p-8 h-full">
                                         <PricingConfigurator />
                                     </div>
                                 </div>

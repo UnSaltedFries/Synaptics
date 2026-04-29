@@ -1,47 +1,17 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { motion, MotionValue, useTransform, useMotionValue } from "framer-motion";
+import { motion, useTransform, MotionValue, useMotionValue } from "framer-motion";
 import { Linkedin, Twitter, Instagram } from "lucide-react";
 
 interface MobileFooterProps {
     progress?: MotionValue<number>;
 }
 
-interface CharProps {
-    char: string;
-    index: number;
-    total: number;
-    progress: MotionValue<number>;
-}
-
-function AnimatedChar({ char, index, total, progress }: CharProps) {
-    // Full range timing for mobile
-    const start = (index / total) * 0.7;
-    const end = Math.min(start + 0.3, 1);
-
-    const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
-    const y = useTransform(progress, [start, end], [40, 0], { clamp: true });
-
-    return (
-        <motion.span
-            style={{
-                opacity,
-                y,
-                display: "inline-block",
-                whiteSpace: char === " " ? "pre" : "normal",
-                willChange: "transform, opacity"
-            }}
-        >
-            {char}
-        </motion.span>
-    );
-}
 
 export function MobileFooter({ progress }: MobileFooterProps) {
     const { t } = useLanguage();
 
     const headlineText = t("footer.cta");
-    const characters = Array.from(headlineText);
 
     const staticProgress = useMotionValue(1);
     const activeProgress = progress || staticProgress;
@@ -57,7 +27,7 @@ export function MobileFooter({ progress }: MobileFooterProps) {
             className="text-white px-6 pt-24 pb-12 overflow-hidden"
             style={{ backgroundColor: "#161616" }}
         >
-            <h2 className="text-[28px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8">
+            <h2 className="text-[28px] md:text-[42px] font-bold leading-[1.1] tracking-tight font-sans text-white mb-8">
                 {headlineText}
             </h2>
 
@@ -71,7 +41,7 @@ export function MobileFooter({ progress }: MobileFooterProps) {
                 </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-2 gap-8 mb-8">
                 <div>
                     <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 mb-4 font-sans">{t("footer.col.product")}</h4>
                     <ul className="space-y-3">
@@ -88,6 +58,16 @@ export function MobileFooter({ progress }: MobileFooterProps) {
                         <li><Link to="/changelog" className="text-sm text-gray-300 font-sans">{t("footer.link.changelog")}</Link></li>
                     </ul>
                 </div>
+            </div>
+
+            <div className="mb-12">
+                <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 mb-4 font-sans">{t("footer.col.legal")}</h4>
+                <ul className="space-y-3 grid grid-cols-2">
+                    <li><Link to="/legal" className="text-sm text-gray-300 font-sans">{t("footer.link.legalNotice")}</Link></li>
+                    <li><Link to="/privacy" className="text-sm text-gray-300 font-sans">{t("footer.link.privacy")}</Link></li>
+                    <li><Link to="/cgv" className="text-sm text-gray-300 font-sans">{t("footer.link.cgv")}</Link></li>
+                    <li><Link to="/cookies" className="text-sm text-gray-300 font-sans">{t("footer.link.cookies")}</Link></li>
+                </ul>
             </div>
 
             <div className="flex gap-4 mb-12">

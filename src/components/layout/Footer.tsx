@@ -7,40 +7,11 @@ interface FooterProps {
   progress?: MotionValue<number>;
 }
 
-interface CharProps {
-  char: string;
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-}
-
-function AnimatedChar({ char, index, total, progress }: CharProps) {
-  // Full range timing: staggered reveal stretched across the entire progress
-  const start = (index / total) * 0.3;
-  const end = Math.min(start + 0.3, 1);
-
-  const opacity = useTransform(progress, [start, end], [0, 1], { clamp: true });
-  const y = useTransform(progress, [start, end], [60, 0], { clamp: true });
-
-  return (
-    <motion.span
-      style={{
-        opacity,
-        y,
-        display: "inline-block",
-        willChange: "transform, opacity"
-      }}
-    >
-      {char === " " ? " " : char}
-    </motion.span>
-  );
-}
 
 export function Footer({ progress }: FooterProps) {
   const { t } = useLanguage();
 
   const headlineText = t("footer.cta");
-  const characters = Array.from(headlineText);
 
   const staticProgress = useMotionValue(1);
   const activeProgress = progress || staticProgress;

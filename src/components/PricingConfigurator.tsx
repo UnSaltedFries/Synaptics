@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useCallback, memo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Check, Info, Minus, Plus, ShoppingCart, Tag } from "lucide-react";
@@ -42,8 +43,17 @@ const categories = [
 ];
 
 export function PricingConfigurator() {
-    const { t } = useLanguage();
+    const { t, lang } = useLanguage();
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+    const isUSD = lang === 'en';
+    const conversionRate = isUSD ? 1.1 : 1;
+    const currencySymbol = isUSD ? '$' : '€';
+
+    const formatPrice = (amount: number) => {
+        const converted = Math.round(amount * conversionRate);
+        return isUSD ? `${currencySymbol}${converted}` : `${converted} ${currencySymbol}`;
+    };
 
     const toggleService = useCallback((id: string) => {
         setSelectedIds(prev => 
@@ -80,7 +90,7 @@ export function PricingConfigurator() {
     }, [selectedIds]);
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative h-full">
             {/* Services List */}
             <div className="lg:col-span-7 space-y-10">
                 {categories.map(catKey => {
@@ -98,6 +108,7 @@ export function PricingConfigurator() {
                                         isSelected={selectedIds.includes(service.id)}
                                         onToggle={toggleService}
                                         t={t}
+                                        formatPrice={formatPrice}
                                     />
                                 ))}
                             </div>
@@ -107,20 +118,20 @@ export function PricingConfigurator() {
             </div>
 
             {/* Summary Sticky Panel */}
-            <div className="lg:col-span-5 relative">
-                <div className="lg:sticky lg:top-24 transition-all duration-300">
+            <div className="lg:col-span-5">
+                <div className="sticky top-32 z-30 transition-all duration-300">
                     <motion.div 
                         layout
-                        className="relative rounded-3xl overflow-hidden shadow-2xl shadow-purple-500/5 hover:shadow-purple-500/10 transition-shadow"
+                        className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-purple-500/5 hover:shadow-purple-500/10 transition-shadow"
                     >
-                        {/* Background Layer to prevent grey flicker during parent opacity animation */}
+                        {/* Background Layer */}
                         <div className="absolute inset-0 border border-white/[0.08] bg-[#111111]/80 z-0" />
                         
                         {/* Background Glow */}
                         <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/10 blur-[100px] rounded-full z-0" />
                         
                         {/* Content Wrap */}
-                        <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
+                        <div className="relative z-10 p-6 md:p-10 flex flex-col h-full">
 
                     <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                         <Tag className="w-6 h-6 text-purple-400" />
@@ -138,7 +149,7 @@ export function PricingConfigurator() {
                                         animate={{ opacity: 1, y: 0 }}
                                         className="text-5xl md:text-6xl font-bold text-white tracking-tighter"
                                     >
-                                        €{finalTotal}
+                                        {formatPrice(finalTotal)}
                                     </motion.span>
                                 </AnimatePresence>
                                 <span className="text-gray-500 font-medium">{t("config.perMonth")}</span>
@@ -153,25 +164,24 @@ export function PricingConfigurator() {
                                     <Badge variant="outline" className="bg-purple-500/10 text-purple-400 border-purple-500/20 py-1">
                                         -{discount * 100}% {t("config.discount")}
                                     </Badge>
-                                    <span className="text-sm text-gray-500 line-through">€{totalBase}</span>
+                                    <span className="text-sm text-gray-500 line-through">{formatPrice(totalBase)}</span>
                                 </motion.div>
                             )}
                         </div>
 
                         {/* Discount Tier Progress */}
-                        <div className="py-4 border-y border-white/[0.06] space-y-3">
+                        <div className="py-6 border-y border-white/[0.06] space-y-4">
                             <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold">
                                 {t("config.currentTier")} — <span className="text-white">{t(packName)}</span>
                             </p>
 
                             {/* Progress bar */}
-                            <div className="relative h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                            <div className="relative h-2 rounded-full bg-white/[0.06] overflow-hidden">
                                 <motion.div
                                     className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-purple-500 to-violet-400"
                                     animate={{ width: `${Math.min((selectedIds.length / 8) * 100, 100)}%` }}
                                     transition={{ duration: 0.4, ease: "easeOut" }}
                                 />
-                                {/* Tick marks at thresholds */}
                                 {[3, 5, 8].map(n => (
                                     <div
                                         key={n}
@@ -197,37 +207,20 @@ export function PricingConfigurator() {
                                     return (
                                         <motion.div
                                             key={threshold}
-                                            animate={{ opacity: 1 }}
                                             className={cn(
                                                 "flex flex-col items-center gap-1 flex-1 text-center",
                                                 reached ? "opacity-100" : "opacity-40"
                                             )}
                                         >
-                                            <motion.span
-                                                className={cn(
-                                                    "text-base font-bold font-mono",
-                                                    reached ? "text-green-400" : isNext ? "text-purple-400" : "text-gray-500"
-                                                )}
-                                                animate={{ scale: reached ? [1, 1.2, 1] : 1 }}
-                                                transition={{ duration: 0.3 }}
-                                            >
+                                            <span className={cn(
+                                                "text-base font-bold font-mono",
+                                                reached ? "text-green-400" : isNext ? "text-purple-400" : "text-gray-500"
+                                            )}>
                                                 -{pct}
-                                            </motion.span>
+                                            </span>
                                             <span className="text-[9px] uppercase tracking-wider text-gray-500 leading-tight">
                                                 {threshold} {t("config.services.label")}
                                             </span>
-                                            {reached && (
-                                                <motion.span
-                                                    initial={{ scale: 0 }}
-                                                    animate={{ scale: 1 }}
-                                                    className="w-1.5 h-1.5 rounded-full bg-green-400"
-                                                />
-                                            )}
-                                            {!reached && isNext && (
-                                                <span className="text-[8px] text-purple-400/70">
-                                                    +{threshold - selectedIds.length}
-                                                </span>
-                                            )}
                                         </motion.div>
                                     );
                                 })}
@@ -236,7 +229,7 @@ export function PricingConfigurator() {
 
                         {/* Selected Items List */}
                         <div 
-                            className="space-y-2 max-h-[200px] overflow-y-auto pr-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                            className="space-y-2 max-h-[160px] overflow-y-auto pr-2 chat-scrollbar"
                             data-lenis-prevent="true"
                         >
                             {selectedIds.length === 0 ? (
@@ -249,23 +242,27 @@ export function PricingConfigurator() {
                                             initial={{ opacity: 0, scale: 0.95 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             key={id} 
-                                            className="flex justify-between items-center text-sm text-gray-400 bg-white/[0.03] p-2 rounded-lg border border-white/[0.05]"
+                                            className="flex justify-between items-center text-sm text-gray-400 bg-white/[0.03] p-3 rounded-xl border border-white/[0.05]"
                                         >
                                             <span className="line-clamp-1">{t(s?.titleKey || "")}</span>
-                                            <span className="font-mono text-xs text-white/50 ml-4">€{s?.price}</span>
+                                            <span className="font-mono text-xs text-white/50 ml-4">{formatPrice(s?.price || 0)}</span>
                                         </motion.div>
                                     );
                                 })
                             )}
                         </div>
 
-                        <Button 
-                            className="w-full py-6 rounded-2xl bg-white text-black hover:bg-gray-200 transition-all font-bold text-base shadow-[0_10px_30px_rgba(255,255,255,0.1)] group"
-                            disabled={selectedIds.length === 0}
+                        <Link
+                            to="/checkout"
+                            state={{ selectedServices: selectedIds, total: finalTotal }}
+                            className={cn(
+                                "w-full py-7 rounded-2xl bg-white text-black hover:bg-gray-200 transition-all font-bold text-base shadow-[0_10px_40px_rgba(255,255,255,0.1)] group flex items-center justify-center",
+                                selectedIds.length === 0 && "opacity-50 pointer-events-none"
+                            )}
                         >
                             <ShoppingCart className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                             {t("config.cta")}
-                        </Button>
+                        </Link>
                         </div>
                     </div>
                 </motion.div>
@@ -282,21 +279,20 @@ interface ServiceCardProps {
     t: (key: string) => string;
 }
 
-const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onToggle, t }: ServiceCardProps) {
+const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onToggle, t, formatPrice }: ServiceCardProps & { formatPrice: (n: number) => string }) {
     return (
         <motion.div
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             onClick={() => onToggle(service.id)}
             className={cn(
-                "group relative p-4 md:p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4",
+                "group relative p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4",
                 isSelected 
                     ? "bg-purple-500/[0.08] border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.1)]" 
                     : "bg-white/[0.02] border-white/[0.08] hover:border-white/20"
             )}
         >
             <div className="flex items-center gap-4 flex-1">
-                {/* Custom Checkbox */}
                 <div className={cn(
                     "w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all flex-shrink-0",
                     isSelected 
@@ -317,7 +313,7 @@ const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onTog
                                     <Info className="w-3.5 h-3.5" />
                                 </button>
                             </DialogTrigger>
-                            <DialogContent className="bg-[#0B0B0B] border-white/[0.08] text-white rounded-3xl max-w-lg">
+                            <DialogContent className="bg-[#0B0B0B] border-white/[0.08] text-white rounded-[2rem] max-w-lg">
                                 <DialogHeader>
                                     <div className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-4">
                                         {t(service.categoryKey)}
@@ -337,9 +333,9 @@ const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onTog
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="mt-8 flex justify-between items-center py-4 border-t border-white/[0.08]">
-                                    <div className="text-2xl font-bold">€{service.price}<span className="text-sm text-gray-600">/mo</span></div>
-                                    <Button onClick={onToggle} className={cn(
-                                        "rounded-xl",
+                                    <div className="text-2xl font-bold">{formatPrice(service.price)}<span className="text-sm text-gray-600">/mo</span></div>
+                                    <Button onClick={() => onToggle(service.id)} className={cn(
+                                        "rounded-xl px-6 py-5 h-auto font-bold",
                                         isSelected ? "bg-red-500/10 text-red-500 hover:bg-red-500/20 border-red-500/20" : "bg-white text-black hover:bg-gray-200"
                                     )}>
                                         {isSelected ? <><Minus className="w-4 h-4 mr-2" /> Remove</> : <><Plus className="w-4 h-4 mr-2" /> Add to Pack</>}
@@ -349,13 +345,13 @@ const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onTog
                         </Dialog>
                     </div>
                     <p className="text-[10px] text-gray-600 line-clamp-1 max-w-[200px] uppercase tracking-wider">
-                        €{service.price} / month
+                        {formatPrice(service.price)} / month
                     </p>
                 </div>
             </div>
 
             <div className="text-base font-bold tracking-tighter text-gray-500 group-hover:text-white transition-colors">
-                +€{service.price}
+                +{formatPrice(service.price)}
             </div>
         </motion.div>
     );

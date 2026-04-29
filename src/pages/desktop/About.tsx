@@ -8,6 +8,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ValuePillars } from "@/components/about/ValuePillars";
 import { CinematicVision } from "@/components/about/CinematicVision";
+import ScrollReveal from "@/components/ScrollReveal";
+import BlurText from "@/components/BlurText";
+import ChromeWord from "@/components/ChromeWord";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,21 +28,16 @@ const achievements = [
 ];
 
 // Optimisation : Memoization du composant de style
-const ChromeWord = memo(({ children }: { children: string }) => (
-  <span className="chrome-word">{children}</span>
-));
-
-ChromeWord.displayName = "ChromeWord";
 
 const About = () => {
   const { t } = useLanguage();
   const textContainerRef = useRef<HTMLDivElement>(null);
 
   // Optimisation 1 : Mémoïser les découpages de mots pour soulager React
-  const bio1Words = useMemo(() => t("about.bio1").split(" "), [t]);
-  const bio2Words = useMemo(() => `${t("about.bio2.pre")} ${t("about.bio2.highlight")} ${t("about.bio2.post")}`.split(" "), [t]);
-  const bio3Words = useMemo(() => `${t("about.bio3.pre")} ${t("about.bio3.highlight")} ${t("about.bio3.post")}`.split(" "), [t]);
-  const bio4Words = useMemo(() => `${t("about.bio4.pre")} ${t("about.bio4.highlight")} ${t("about.bio4.post")}`.split(" "), [t]);
+  const bio1Words = useMemo(() => (t("about.bio1") || "").split(" "), [t]);
+  const bio2Words = useMemo(() => `${t("about.bio2.pre") || ""} ${t("about.bio2.highlight") || ""} ${t("about.bio2.post") || ""}`.split(" "), [t]);
+  const bio3Words = useMemo(() => `${t("about.bio3.pre") || ""} ${t("about.bio3.highlight") || ""} ${t("about.bio3.post") || ""}`.split(" "), [t]);
+  const bio4Words = useMemo(() => `${t("about.bio4.pre") || ""} ${t("about.bio4.highlight") || ""} ${t("about.bio4.post") || ""}`.split(" "), [t]);
 
   useEffect(() => {
     const container = textContainerRef.current;
@@ -47,57 +45,57 @@ const About = () => {
 
     // Optimisation 2 : Utilisation de gsap.context() pour un nettoyage propre et isolé
     const ctx = gsap.context(() => {
-        const words = container.querySelectorAll(".reveal-word");
-        const blocks = container.querySelectorAll(".reveal-text-block");
+      const words = container.querySelectorAll(".reveal-word");
+      const blocks = container.querySelectorAll(".reveal-text-block");
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: container,
-            start: "top 95%",
-            end: "bottom 70%",
-            scrub: 1, 
-          }
-        });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top 95%",
+          end: "bottom 70%",
+          scrub: 1,
+        }
+      });
 
-        tl.to(words, {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          stagger: 0.02,
-          duration: 0.4,
-          ease: "power2.out",
-          force3D: true,
-        });
+      tl.to(words, {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        stagger: 0.02,
+        duration: 0.4,
+        ease: "power2.out",
+        force3D: true,
+      });
 
-        blocks.forEach((block) => {
-          gsap.fromTo(
-            block,
-            { rotate: 5, y: 30, opacity: 0.5 },
-            {
-              rotate: 0,
-              y: 0,
-              opacity: 1,
-              ease: "none",
-              force3D: true,
-              scrollTrigger: {
-                trigger: block,
-                start: "top 98%",
-                end: "top 40%",
-                scrub: true,
-              }
+      blocks.forEach((block) => {
+        gsap.fromTo(
+          block,
+          { rotate: 5, y: 30, opacity: 0.5 },
+          {
+            rotate: 0,
+            y: 0,
+            opacity: 1,
+            ease: "none",
+            force3D: true,
+            scrollTrigger: {
+              trigger: block,
+              start: "top 98%",
+              end: "top 40%",
+              scrub: true,
             }
-          );
-        });
+          }
+        );
+      });
     }, textContainerRef);
 
     return () => ctx.revert(); // Nettoyage automatique de TOUS les ScrollTriggers de ce composant
   }, [t]);
 
   const services = useMemo(() => [
-    { name: t("about.service.receptionist"), description: t("about.service.receptionist.desc") },
-    { name: t("about.service.booking"), description: t("about.service.booking.desc") },
-    { name: t("about.service.leads"), description: t("about.service.leads.desc") },
-    { name: t("about.service.crm"), description: t("about.service.crm.desc") },
+    { name: t("about.service.receptionist") || "", description: t("about.service.receptionist.desc") || "" },
+    { name: t("about.service.booking") || "", description: t("about.service.booking.desc") || "" },
+    { name: t("about.service.leads") || "", description: t("about.service.leads.desc") || "" },
+    { name: t("about.service.crm") || "", description: t("about.service.crm.desc") || "" },
   ], [t]);
 
   return <Layout variant="light">
@@ -105,23 +103,25 @@ const About = () => {
       <div className="bg-white">
         <section className="pt-24 pb-24 md:pt-32 md:pb-32 bg-white relative overflow-hidden">
           <div className="absolute top-20 md:top-32 left-1/2 md:left-[75%] -translate-x-1/2 w-full max-w-4xl opacity-40 mix-blend-multiply pointer-events-none">
-            <Globe />
+            <Globe size={600} />
           </div>
           <div className="container max-w-5xl relative z-10 md:-translate-x-12">
             <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium text-black leading-[1.05] tracking-[-0.03em]">
-              {t("about.hero.line1")}
-              <ChromeWord>{t("about.hero.highlight1")}</ChromeWord>
+              {t("about.hero.line1") || ""}
+              <ChromeWord>{t("about.hero.highlight1") || ""}</ChromeWord>
               <br />
-              {t("about.hero.line2")}
-              <ChromeWord>{t("about.hero.highlight2")}</ChromeWord>.
+              {t("about.hero.line2") || ""}
+              <ChromeWord>{t("about.hero.highlight2") || ""}</ChromeWord>.
             </h1>
-            <p className="mt-8 md:mt-12 text-lg md:text-xl text-gray-400 max-w-lg leading-relaxed tracking-[-0.01em]">
-              {t("about.hero.sub1")}
-              <br />
-              {t("about.hero.sub2")}
-              <br />
-              <ChromeWord>{t("about.hero.highlight3")}</ChromeWord>{t("about.hero.sub3")}
-            </p>
+            <ScrollReveal delay={0.4}>
+              <p className="mt-8 md:mt-12 text-lg md:text-xl text-gray-400 max-w-lg leading-relaxed tracking-[-0.01em]">
+                {t("about.hero.sub1") || ""}
+                <br />
+                {t("about.hero.sub2") || ""}
+                <br />
+                <ChromeWord>{t("about.hero.highlight3") || ""}</ChromeWord>{t("about.hero.sub3") || ""}
+              </p>
+            </ScrollReveal>
           </div>
         </section>
 
@@ -134,24 +134,33 @@ const About = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12">
               <div className="lg:col-span-4 space-y-14 sticky top-32 h-fit">
                 <div>
-                  <h3 className="text-xs uppercase tracking-[0.15em] font-medium text-gray-500 mb-6">{t("about.services")}</h3>
+                  <BlurText
+                    text={t("about.services") || ""}
+                    className="text-xs uppercase tracking-[0.15em] font-medium text-gray-500 mb-6"
+                    animateBy="letters"
+                    delay={40}
+                  />
                   <div className="space-y-5">
-                    {services.map((item, index) => <div key={index}>
-                      <p className="text-sm font-medium text-black uppercase tracking-wide">{item.name}</p>
-                      <p className="text-sm text-gray-500">{item.description}</p>
-                    </div>)}
+                    {services.map((item, index) => (
+                      <ScrollReveal key={index} delay={0.1 + (index * 0.1)}>
+                        <div>
+                          <p className="text-sm font-medium text-black uppercase tracking-wide">{item.name}</p>
+                          <p className="text-sm text-gray-500">{item.description}</p>
+                        </div>
+                      </ScrollReveal>
+                    ))}
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-xs uppercase tracking-[0.15em] font-medium text-gray-500 mb-6">{t("about.techStack")}</h3>
+                  <h3 className="text-xs uppercase tracking-[0.15em] font-medium text-gray-500 mb-6">{t("about.techStack") || ""}</h3>
                   <div className="space-y-2">
                     {technologies.map((item, index) => <p key={index} className="text-sm text-gray-600">{item.name}</p>)}
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-xs uppercase tracking-[0.15em] font-medium text-gray-500 mb-6">{t("about.events")}</h3>
+                  <h3 className="text-xs uppercase tracking-[0.15em] font-medium text-gray-500 mb-6">{t("about.events") || ""}</h3>
                   <div className="space-y-2">
                     {achievements.map((item, index) => <p key={index} className="text-sm text-gray-600">
                       {item.event} ({item.location})

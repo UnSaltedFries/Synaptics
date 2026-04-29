@@ -93,9 +93,9 @@ const translations: Record<Lang, Record<string, string>> = {
         "contact.form.submitting": "Sending...",
         "contact.toast.success": "Your inquiry has been sent! We'll get back to you soon.",
         "contact.toast.error": "Failed to send your inquiry. Please try again.",
-        "contact.budget.starter": "Starter (€500-€1k/mo)",
-        "contact.budget.growth": "Growth (€1k-€3k/mo)",
-        "contact.budget.enterprise": "Enterprise (€3k+/mo)",
+        "contact.budget.starter": "Starter ($550-$1.1k/mo)",
+        "contact.budget.growth": "Growth ($1.1k-$3.3k/mo)",
+        "contact.budget.enterprise": "Enterprise ($3.3k+/mo)",
 
         // Project types
         "project.type.medical": "Medical Clinic",
@@ -142,6 +142,17 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.8.feat5": "Automatic resource cleanup for off-screen animated sections",
 
         "v1.0.7.title": "Cinematic Precision & Fluid FAQ",
+        "v1.0.7.date": "April 22, 2026",
+        "v1.0.7.desc": "Deep integration of cinematic motion principles across the entire interface, coupled with an interactive FAQ ecosystem.",
+        "v1.0.7.feat1": "Bezier-curved scroll physics for mobile navigation",
+        "v1.0.7.feat2": "Spring-based layout morphing for the Case Studies portal",
+        "v1.0.7.feat3": "Interactive FAQ accordion with high-frequency layout updates",
+
+        "v1.0.6.title": "Responsive Core & Visual Polish",
+        "v1.0.6.date": "April 21, 2026",
+        "v1.0.6.desc": "Stabilizing the mobile experience and aligning visual tokens across all viewports.",
+        "v1.0.6.feat1": "Mobile-first navigation strategy (Pill to Full-Screen)",
+        "v1.0.6.feat2": "Automated layout shifts reduction on language switch",
 
         "v1.0.5.title": "Absolute Fluidity & Pricing UX",
         "v1.0.5.date": "April 21, 2026",
@@ -260,7 +271,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "roi.subtitle": "See how much manual tasks are really costing your business.",
         "roi.callsPerMonth": "Calls per month",
         "roi.missedPercent": "% of missed calls",
-        "roi.avgDealValue": "Avg deal value (€)",
+        "roi.avgDealValue": "Avg deal value ($)",
         "roi.result.missed": "Missed calls / month",
         "roi.result.revenue": "Revenue lost / month",
         "roi.result.year": "Revenue lost / year",
@@ -285,7 +296,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "pricing.title": "Simple, transparent pricing",
         "pricing.subtitle": "No hidden fees. No setup costs. Cancel anytime.",
         "pricing.starter": "Starter",
-        "pricing.starter.price": "€500",
+        "pricing.starter.price": "$550",
         "pricing.starter.period": "/month",
         "pricing.starter.desc": "Perfect for small businesses getting started with AI.",
         "pricing.starter.f1": "Up to 200 calls/month",
@@ -294,7 +305,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "pricing.starter.f4": "Email notifications",
         "pricing.starter.f5": "Business hours only",
         "pricing.growth": "Growth",
-        "pricing.growth.price": "€1,500",
+        "pricing.growth.price": "$1,650",
         "pricing.growth.period": "/month",
         "pricing.growth.desc": "For growing teams that need 24/7 coverage.",
         "pricing.growth.f1": "Up to 1,000 calls/month",
@@ -471,7 +482,7 @@ const translations: Record<Lang, Record<string, string>> = {
 
         "config.s3.title": "Auto Quote & Invoice Generation",
         "config.s3.manual": "Manager manually creates every quote in Word/Excel, sends via email, follows up by hand, then recreates the invoice.",
-        "config.s3.argument": "A quote sent in 5 minutes vs 45 today. Every hour saved on admin is an hour billed to a client. Over a year, that's tens of thousands of euros saved.",
+        "config.s3.argument": "A quote sent in 5 minutes vs 45 today. Every hour saved on admin is an hour billed to a client. Over a year, that's tens of thousands of dollars saved.",
 
         "config.s4.title": "Automated Unpaid Invoice Follow-up",
         "config.s4.manual": "Accountant manually tracks dates, writes awkward emails, and sometimes forgets — creating significant cash flow delays.",
@@ -479,11 +490,11 @@ const translations: Record<Lang, Record<string, string>> = {
 
         "config.s5.title": "Auto Document Filing & Sorting",
         "config.s5.manual": "Invoices and bank statements arrive by email or paper. Someone sorts, renames, and files them manually every week.",
-        "config.s5.argument": "Your accountant bills €80/h. Every hour spent sorting documents is wasted money. This system does in 3 seconds what takes them 3 hours a week.",
+        "config.s5.argument": "Your accountant bills $90/h. Every hour spent sorting documents is wasted money. This system does in 3 seconds what takes them 3 hours a week.",
 
         "config.s6.title": "Competitor Watch & Auto Alerts",
         "config.s6.manual": "No one monitors competitor reviews, new market players, or price changes. Strategic info is not collected.",
-        "config.s6.argument": "Knowing your competitors' weaknesses before your prospects do is a measurable advantage. This system gives you the intelligence of a market analyst for less than €200/month.",
+        "config.s6.argument": "Knowing your competitors' weaknesses before your prospects do is a measurable advantage. This system gives you the intelligence of a market analyst for less than $220/month.",
 
         "config.s7.title": "Fully Automated Client Onboarding",
         "config.s7.manual": "When a client signs, manual welcome emails, tool access, and kick-off planning must be done every time.",
@@ -509,9 +520,9 @@ const translations: Record<Lang, Record<string, string>> = {
         "contact.form.industry.ecommerce": "E-commerce",
         "contact.form.industry.other": "Other",
 
-        "contact.form.budget.starter": "Less than €1k / mo",
-        "contact.form.budget.growth": "€1k - €5k / mo",
-        "contact.form.budget.enterprise": "More than €5k / mo",
+        "contact.form.budget.starter": "Less than $1.1k / mo",
+        "contact.form.budget.growth": "$1.1k - $5.5k / mo",
+        "contact.form.budget.enterprise": "More than $5.5k / mo",
 
         "contact.success.title": "Message sent!",
         "contact.success.desc": "Thank you for reaching out. Our team will get back to you within 24 hours.",
@@ -728,6 +739,17 @@ const translations: Record<Lang, Record<string, string>> = {
         "v1.0.8.feat5": "Nettoyage automatique des ressources pour les sections animées hors-champ",
 
         "v1.0.7.title": "Précision Cinématique & FAQ Fluide",
+        "v1.0.7.date": "22 Avril 2026",
+        "v1.0.7.desc": "Intégration profonde des principes de mouvement cinématographique sur toute l'interface, couplée à un écosystème de FAQ interactif.",
+        "v1.0.7.feat1": "Physique de scroll en courbe de Bézier pour la navigation mobile",
+        "v1.0.7.feat2": "Morphing de mise en page basé sur des ressorts (Spring) pour le portail d'études de cas",
+        "v1.0.7.feat3": "Accordéon FAQ interactif avec mises à jour de layout haute fréquence",
+
+        "v1.0.6.title": "Cœur Responsif & Finitions Visuelles",
+        "v1.0.6.date": "21 Avril 2026",
+        "v1.0.6.desc": "Stabilisation de l'expérience mobile et alignement des tokens visuels sur tous les viewports.",
+        "v1.0.6.feat1": "Stratégie de navigation Mobile-First (Pillule vers Plein Écran)",
+        "v1.0.6.feat2": "Réduction automatisée des sauts de mise en page lors du changement de langue",
 
         "v1.0.5.title": "Fluidité Absolue & UX Pricing",
         "v1.0.5.date": "21 Avril 2026",

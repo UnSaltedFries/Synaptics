@@ -5,6 +5,7 @@ import { projects } from "@/data/projects";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ProjectVisuals } from "@/components/blog/ProjectVisuals";
+import ChromeWord from "@/components/ChromeWord";
 
 const Blog = () => {
     const { lang } = useLanguage();
@@ -21,6 +22,17 @@ const Blog = () => {
         <Layout variant="dark" footerThreshold={0.8}>
             <div className="bg-black text-white pt-24 pb-8">
                 <div className="container px-6 max-w-[1400px] mx-auto">
+                    <div className="mb-12">
+                        <h1 className="text-5xl md:text-6xl font-bold tracking-tighter">
+                            <ChromeWord>Dev Blog</ChromeWord>
+                        </h1>
+                        <p className="text-gray-500 mt-4 text-lg">
+                            {lang === "fr" 
+                                ? "L'envers du décor de l'ingénierie Synaptics." 
+                                : "Behind the scenes of Synaptics engineering."}
+                        </p>
+                    </div>
+
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                         
                         {/* 2: COLONNE SCROLLABLE (Project List) */}
@@ -85,8 +97,8 @@ const Blog = () => {
                                         {/* 4: TEXTE FIXE (Info column) */}
                                         <div className="xl:col-span-2 h-full flex flex-col p-10 border-l border-white/5">
                                             <div className="flex-1 space-y-8">
-                                                <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
-                                                    {selectedTitle}
+                                                <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-normal">
+                                                    <ChromeWord>{selectedTitle}</ChromeWord>
                                                 </h2>
                                                 <p className="text-gray-400 text-lg leading-relaxed font-light">
                                                     {selectedFullDescription}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; suffix?: string; duration?: number }) {
+function AnimatedCounter({ end, suffix = "", duration = 2000, decimals = 0 }: { end: number; suffix?: string; duration?: number; decimals?: number }) {
     const [count, setCount] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
     const hasAnimated = useRef(false);
@@ -19,7 +19,7 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
                         const progress = Math.min(elapsed / duration, 1);
                         // ease-out cubic
                         const eased = 1 - Math.pow(1 - progress, 3);
-                        setCount(Math.floor(start + (end - start) * eased));
+                        setCount(start + (end - start) * eased);
 
                         if (progress < 1) {
                             requestAnimationFrame(animate);
@@ -38,7 +38,7 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
 
     return (
         <div ref={ref} className="text-5xl md:text-6xl lg:text-7xl font-bold tabular-nums">
-            {count}{suffix}
+            {count.toFixed(decimals)}{suffix}
         </div>
     );
 }
@@ -71,15 +71,9 @@ export function StatsSection() {
                                         {stat.prefix}
                                     </span>
                                 )}
-                                {stat.isDecimal ? (
-                                    <div className="text-5xl md:text-6xl lg:text-7xl font-bold tabular-nums bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-                                        {stat.value}{stat.suffix}
-                                    </div>
-                                ) : (
-                                    <div className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-                                        <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-                                    </div>
-                                )}
+                                <div className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+                                    <AnimatedCounter end={stat.value} suffix={stat.suffix} decimals={stat.isDecimal ? 1 : 0} />
+                                </div>
                             </div>
                             <p className="text-xs uppercase tracking-[0.15em] text-gray-500 font-medium">
                                 {stat.label}

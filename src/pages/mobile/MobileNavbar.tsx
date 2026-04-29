@@ -4,15 +4,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 
-const LIGHT_ROUTES = ["/about", "/privacy", "/terms", "/gdpr"];
-
 export function MobileNavbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const { lang, setLang, t } = useLanguage();
     const location = useLocation();
-
-    const isLightPage = LIGHT_ROUTES.includes(location.pathname);
 
     // Close menu on route change
     useEffect(() => {
@@ -21,8 +17,20 @@ export function MobileNavbar() {
 
     // Lock body scroll when menu is open
     useEffect(() => {
-        document.body.style.overflow = isOpen ? "hidden" : "";
-        return () => { document.body.style.overflow = ""; };
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden";
+            (window as any).lenis?.stop();
+        } else {
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+            (window as any).lenis?.start();
+        }
+        return () => {
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+            (window as any).lenis?.start();
+        };
     }, [isOpen]);
 
     const { scrollY } = useScroll();
@@ -38,13 +46,10 @@ export function MobileNavbar() {
         { label: t("nav.contacts"), to: "/contact" },
     ];
 
-    // Colors adapt based on light/dark page
-    const barColor = isLightPage && !isOpen
-        ? (scrolled ? "bg-white/80 backdrop-blur-xl border-b border-black/[0.06]" : "bg-transparent")
-        : (scrolled ? "bg-black/80 backdrop-blur-xl border-b border-white/[0.06]" : "bg-transparent");
-
-    const textColor = isLightPage && !isOpen ? "text-black" : "text-white";
-    const hamburgerColor = isLightPage && !isOpen ? "bg-black" : "bg-white";
+    // Always dark glassy like Desktop
+    const barColor = "bg-black/80 backdrop-blur-2xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.3)]";
+    const textColor = "text-white";
+    const hamburgerColor = "bg-white";
 
     return (
         <>
@@ -59,8 +64,12 @@ export function MobileNavbar() {
                 <Link
                     to="/"
                     onClick={() => {
+                        setIsOpen(false);
                         if (location.pathname === "/") {
-                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            (window as any).lenis?.scrollTo(0);
+                        } else {
+                            window.scrollTo(0, 0);
+                            (window as any).lenis?.scrollTo(0, { immediate: true });
                         }
                     }}
                     className={cn("flex items-center gap-2", textColor)}
@@ -102,58 +111,77 @@ export function MobileNavbar() {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="fixed inset-0 z-[10000] flex flex-col justify-center items-center"
-                        style={{ backgroundColor: "#000000" }}
+                        key="mobile-menu"
+                        initial={{ x: "100%" }}
+                        animate={{ x: 0 }}
+                        exit={{ x: "100%" }}
+                        transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                        className="fixed inset-0 z-[10005] bg-black flex flex-col justify-center items-center"
                     >
-                        <nav className="flex flex-col items-center gap-6">
-                            {links.map((link, i) => (
-                                <motion.div
-                                    key={link.to}
-                                    initial={{ opacity: 0, y: 20 }}
+                        {/* Close button inside menu */}
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+                            aria-label="Close menu"
+                        >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+
+                        <nav className="flex flex-col items-center gap-8">
+                            <AnimatePresence>
+                                <motion.div 
+                                    key={lang}
+                                    initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
-                                    transition={{ delay: i * 0.06, duration: 0.3 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="flex flex-col items-center gap-8"
                                 >
-                                    <Link
-                                        to={link.to}
-                                        className={cn(
-                                            "text-2xl font-medium tracking-tight transition-colors duration-200",
-                                            location.pathname === link.to ? "text-white" : "text-gray-500"
-                                        )}
-                                    >
-                                        {link.label}
-                                    </Link>
+                                    {links.map((link) => (
+                                        <Link
+                                            key={link.to}
+                                            to={link.to}
+                                            onClick={() => {
+                                                setIsOpen(false);
+                                                if (location.pathname === link.to) {
+                                                    (window as any).lenis?.scrollTo(0);
+                                                }
+                                            }}
+                                            className={cn(
+                                                "text-3xl font-bold tracking-tight transition-colors duration-200",
+                                                location.pathname === link.to ? "text-white" : "text-white/40"
+                                            )}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    ))}
+                                    {/* Language Toggle Inside Cross-fade */}
+                                    <div className="mt-8">
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setLang(lang === "en" ? "fr" : "en");
+                                            }}
+                                            className="relative flex items-center rounded-full overflow-hidden bg-white/[0.07] border border-white/[0.12] text-xs uppercase tracking-widest font-semibold"
+                                        >
+                                            <span className={cn("relative z-10 px-4 py-2 transition-colors duration-300", lang === "en" ? "text-white" : "text-gray-500")}>
+                                                EN
+                                            </span>
+                                            <span className={cn("relative z-10 px-4 py-2 transition-colors duration-300", lang === "fr" ? "text-white" : "text-gray-500")}>
+                                                FR
+                                            </span>
+                                            <div
+                                                className="absolute top-[2px] bottom-[2px] w-[calc(50%-2px)] rounded-full bg-white/[0.15] transition-all duration-400"
+                                                style={{ left: lang === "en" ? "2px" : "calc(50%)" }}
+                                            />
+                                        </button>
+                                    </div>
                                 </motion.div>
-                            ))}
+                            </AnimatePresence>
                         </nav>
-
-                        {/* Language Toggle */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.35, duration: 0.3 }}
-                            className="mt-12"
-                        >
-                            <button
-                                onClick={() => setLang(lang === "en" ? "fr" : "en")}
-                                className="relative flex items-center rounded-full overflow-hidden bg-white/[0.07] border border-white/[0.12] text-xs uppercase tracking-widest font-semibold"
-                            >
-                                <span className={cn("relative z-10 px-4 py-2 transition-colors duration-300", lang === "en" ? "text-white" : "text-gray-500")}>
-                                    EN
-                                </span>
-                                <span className={cn("relative z-10 px-4 py-2 transition-colors duration-300", lang === "fr" ? "text-white" : "text-gray-500")}>
-                                    FR
-                                </span>
-                                <div
-                                    className="absolute top-[2px] bottom-[2px] w-[calc(50%-2px)] rounded-full bg-white/[0.15] transition-all duration-400 ease-spring-smooth"
-                                    style={{ left: lang === "en" ? "2px" : "calc(50%)" }}
-                                />
-                            </button>
-                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>

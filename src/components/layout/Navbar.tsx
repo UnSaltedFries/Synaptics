@@ -212,7 +212,7 @@ export function Navbar({ variant = "light" }: NavbarProps) {
           onClick={(e) => {
             if (isHome) {
               e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
+              (window as any).lenis?.scrollTo(0);
             }
           }}
           className="text-xs uppercase tracking-[0.12em] font-medium transition-all duration-300 hover:scale-105 hover:opacity-100 text-white flex items-center gap-2 group"
