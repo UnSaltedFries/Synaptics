@@ -107,7 +107,7 @@ function AppRoutes() {
         <MobileNavbar />
       </div>
 
-      <Chatbot />
+      {/* <Chatbot /> */}
 
       <Suspense fallback={<div className="bg-black min-h-screen" />}>
         <AnimatePresence mode="wait">
