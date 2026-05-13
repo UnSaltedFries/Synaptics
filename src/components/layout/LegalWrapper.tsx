@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ChromeWord } from "@/components/visuals/ChromeWord";
+import ChromeWord from "@/components/visuals/ChromeWord";
 import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
