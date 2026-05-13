@@ -10,6 +10,10 @@ import { MobileNavbar } from "@/components/layout/MobileNavbar";
 import { Chatbot } from "@/components/chat/Chatbot";
 import { AnimatePresence, motion } from "framer-motion";
 import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Index = lazy(() => import("./pages/home/index"));
 const About = lazy(() => import("./pages/about/index"));
@@ -29,19 +33,63 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 
 function SEOManager() {
   const { pathname } = useLocation();
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
 
   useEffect(() => {
+    // 1. Dynamic Titles
     const titles: Record<string, string> = {
-      "/": "Synaptics — AI Agency Paris",
-      "/about": "About — Synaptics",
-      "/contact": "Contact — Synaptics",
-      "/pricing": "Pricing — Synaptics",
-      "/blog": "Case Studies — Synaptics",
+      "/": lang === 'fr' ? "Synaptics — Agence IA Paris | Agents IA 24/7" : "Synaptics — AI Agency Paris | 24/7 AI Agents",
+      "/about": lang === 'fr' ? "À propos — Synaptics | Experts en Automatisation IA" : "About — Synaptics | AI Automation Experts",
+      "/contact": lang === 'fr' ? "Contact — Synaptics | Réservez votre Démo IA" : "Contact — Synaptics | Book your AI Demo",
+      "/pricing": lang === 'fr' ? "Tarifs — Synaptics | Solutions IA sur mesure" : "Pricing — Synaptics | Custom AI Solutions",
+      "/blog": lang === 'fr' ? "Études de Cas — Synaptics | Résultats de l'IA en entreprise" : "Case Studies — Synaptics | AI Results in Business",
+      "/changelog": "Dev Blog — Synaptics",
       "/checkout": "Checkout — Synaptics",
     };
     document.title = titles[pathname] || "Synaptics";
-  }, [pathname, lang]);
+
+    // 2. Dynamic Meta Description
+    const descriptions: Record<string, string> = {
+      "/": t("seo.description.home"),
+      "/about": t("seo.description.about"),
+      "/contact": t("seo.description.contact"),
+      "/pricing": t("seo.description.pricing"),
+      "/blog": t("seo.description.blog"),
+    };
+    
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", descriptions[pathname] || t("seo.description.home"));
+    }
+
+    // 3. Dynamic Canonical Link
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', `https://synaptics.fr${pathname}`);
+
+    // 4. Dynamic OG Tags
+    const updateMeta = (property: string, content: string) => {
+      let el = document.querySelector(`meta[property="${property}"]`);
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute('property', property);
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", content);
+    };
+
+    updateMeta("og:title", document.title);
+    updateMeta("og:description", descriptions[pathname] || t("seo.description.home"));
+    updateMeta("og:url", `https://synaptics.fr${pathname}`);
+    
+    // 5. Update HTML lang attribute
+    document.documentElement.lang = lang;
+
+  }, [pathname, lang, t]);
 
   return null;
 }
@@ -54,7 +102,7 @@ function AppRoutes() {
   const lenisRef = useRef<Lenis | null>(null);
   const isMobile = useIsMobile();
   
-  // GLOBAL LENIS SETUP
+  // GLOBAL LENIS SETUP — synchronized with GSAP ScrollTrigger
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -70,24 +118,37 @@ function AppRoutes() {
     lenisRef.current = lenis;
     (window as any).lenis = lenis;
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    // Sync Lenis scroll position with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
 
-    requestAnimationFrame(raf);
+    // Use GSAP ticker for the RAF loop (recommended Lenis + GSAP pattern)
+    const tickerCallback = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(tickerCallback);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       lenis.destroy();
+      gsap.ticker.remove(tickerCallback);
     };
   }, []);
 
-  // Instant Scroll Reset and Lenis Sync
+  // Cleanup ScrollTriggers + Reset scroll on route change
   useLayoutEffect(() => {
+    // Kill all ScrollTriggers from the previous page
+    ScrollTrigger.getAll().forEach(st => st.kill());
+
     window.scrollTo(0, 0);
     if (lenisRef.current) {
       lenisRef.current.scrollTo(0, { immediate: true });
     }
+
+    // Refresh ScrollTrigger after new page renders
+    const raf = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+    return () => cancelAnimationFrame(raf);
   }, [location.pathname]);
   
   const lightVariantRoutes = ['/about', '/privacy', '/terms', '/cgv', '/legal', '/cookies', '/gdpr', '/changelog'];
@@ -110,15 +171,7 @@ function AppRoutes() {
       {/* <Chatbot /> */}
 
       <Suspense fallback={<div className="bg-black min-h-screen" />}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="w-full"
-          >
+          <div className="w-full">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
@@ -135,11 +188,79 @@ function AppRoutes() {
               <Route path="/gdpr" element={<GDPR />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </motion.div>
-        </AnimatePresence>
+          </div>
       </Suspense>
     </div>
   );
+}
+
+function SchemaManager() {
+  const { pathname } = useLocation();
+  const { lang, t } = useLanguage();
+
+  useEffect(() => {
+    const schemas: any[] = [];
+
+    // 1. Organization Schema (Global)
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Synaptics",
+      "url": "https://synaptics.fr",
+      "logo": "https://synaptics.fr/favicon.ico",
+      "sameAs": [
+        "https://linkedin.com",
+        "https://x.com/SynapticsIA",
+        "https://www.instagram.com/synapticsia/"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+33-6-72-62-70-40",
+        "contactType": "customer service",
+        "email": "hello@synaptics.fr",
+        "availableLanguage": ["French", "English"]
+      }
+    });
+
+    // 2. FAQ Schema (Pages with FAQ)
+    const faqPages = ["/", "/about", "/blog"];
+    if (faqPages.includes(pathname)) {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": t("faq.q1"),
+            "acceptedAnswer": { "@type": "Answer", "text": t("faq.a1") }
+          },
+          {
+            "@type": "Question",
+            "name": t("faq.q2"),
+            "acceptedAnswer": { "@type": "Answer", "text": t("faq.a2") }
+          },
+          {
+            "@type": "Question",
+            "name": t("faq.q3"),
+            "acceptedAnswer": { "@type": "Answer", "text": t("faq.a3") }
+          }
+        ]
+      });
+    }
+
+    // Inject JSON-LD
+    const existing = document.querySelectorAll('script[type="application/ld+json"]');
+    existing.forEach(s => s.remove());
+
+    schemas.forEach(schema => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(schema);
+      document.head.appendChild(script);
+    });
+  }, [pathname, lang, t]);
+
+  return null;
 }
 
 const App = () => (
@@ -149,6 +270,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <SchemaManager />
           <AppRoutes />
         </BrowserRouter>
       </TooltipProvider>

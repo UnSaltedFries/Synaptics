@@ -56,25 +56,16 @@ export function Layout({
   }, [hideFooter, isMobile, location.pathname]);
 
   return (
-    <div className="min-h-screen relative bg-black selection:bg-purple-500/30 overflow-x-hidden">
+    <div className="min-h-screen relative bg-black selection:bg-purple-500/30">
       {/* Main Content Layer */}
       <main
         ref={containerRef}
         className="relative z-10 bg-black min-h-screen shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         style={{ marginBottom: hideFooter ? 0 : "var(--footer-height)" }}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={lang}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="w-full"
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        <div className="w-full">
+          {children}
+        </div>
       </main>
 
       {/* Reveal Footer Layer */}

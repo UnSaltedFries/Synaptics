@@ -55,21 +55,31 @@ const Blog = () => {
         <Layout variant="dark" footerThreshold={0.8}>
             <div className="bg-black text-white pt-24 pb-8">
                 <div className="container px-6 max-w-[1400px] mx-auto">
-                    <div className="mb-12">
+                    <motion.div 
+                        className="mb-12"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
                         <h1 className="text-5xl md:text-6xl font-bold tracking-tighter">
-                            <ChromeWord>Dev Blog</ChromeWord>
+                            <ChromeWord>{lang === "fr" ? "Études de Cas" : "Case Studies"}</ChromeWord>
                         </h1>
-                        <p className="text-gray-500 mt-4 text-lg">
+                        <motion.p 
+                            className="text-gray-500 mt-4 text-lg"
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                        >
                             {lang === "fr" 
                                 ? "L'envers du décor de l'ingénierie Synaptics." 
                                 : "Behind the scenes of Synaptics engineering."}
-                        </p>
-                    </div>
+                        </motion.p>
+                    </motion.div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                         
                         {/* SIDEBAR: List of Projects and Articles */}
-                        <div className="lg:col-span-4 h-[calc(100vh-120px)] sticky top-24 overflow-y-auto pr-8 space-y-4 pb-20 scrollbar-hide" data-lenis-prevent>
+                        <div className="lg:col-span-4 h-[calc(100vh-120px)] sticky top-24 overflow-y-auto pr-8 space-y-4 pb-20 scrollbar-hide overscroll-contain will-change-transform" data-lenis-prevent>
                             {items.map((item, index) => {
                                 let title = "";
                                 let tag = "";
@@ -132,7 +142,7 @@ const Blog = () => {
                         </div>
 
                         {/* CONTENT VIEW */}
-                        <div className="lg:col-span-8 sticky top-24 h-[calc(100vh-120px)] bg-zinc-900/40 rounded-[3rem] border border-white/10 overflow-hidden relative shadow-2xl backdrop-blur-sm">
+                        <div className="lg:col-span-8 sticky top-24 h-[calc(100vh-120px)] bg-zinc-900/40 rounded-[3rem] border border-white/10 overflow-hidden relative shadow-2xl backdrop-blur-sm will-change-transform">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={selectedId}
@@ -144,7 +154,7 @@ const Blog = () => {
                                 >
                                     <div className="grid grid-cols-1 xl:grid-cols-5 h-full">
                                         
-                                        <div className="xl:col-span-3 h-full overflow-y-auto p-10 pr-6 scrollbar-hide" data-lenis-prevent>
+                                        <div className="xl:col-span-3 h-full overflow-y-auto p-10 pr-6 scrollbar-hide overscroll-contain" data-lenis-prevent>
                                             {selectedItem.type === 'project' ? (
                                                 <ProjectVisuals project={selectedItem.data as Project} />
                                             ) : (
@@ -159,7 +169,7 @@ const Blog = () => {
                                         </div>
 
                                         <div className="xl:col-span-2 h-full flex flex-col p-10 border-l border-white/5">
-                                            <div className="flex-1 space-y-8 overflow-y-auto pr-2 scrollbar-hide">
+                                            <div className="flex-1 space-y-8 overflow-y-auto pr-2 scrollbar-hide overscroll-contain" data-lenis-prevent>
                                                 <div className="space-y-2">
                                                     <span className="text-[10px] text-purple-500 font-bold tracking-widest uppercase">
                                                         {display.category}

@@ -1,5 +1,29 @@
 # 🛠 Synaptics — Journal de Développement
 
+## 📅 Session du 13 Mai 2026
+**Objectif :** Animations d'entrée fluides, ajustements Mobile & Audit SEO/Perf.
+
+---
+
+### 🚀 Améliorations
+
+#### 1. Animations d'Entrée & Fluidité Visuelle
+- **Action :** Ajout d'animations `framer-motion` (fade-in + slide-up) sur l'en-tête de la page *Études de Cas* (`/blog`) et la section *Hero* de la page *À Propos* (`/about`).
+- **Mobile & Desktop :** Cohérence des animations sur les deux supports. Sur la page *À Propos*, le Globe 3D et le texte défilant (Marquee) ont désormais une apparition graduelle.
+- **Résultat :** Rendu plus "premium" et vivant dès l'arrivée sur la page, sans compromettre les performances.
+
+#### 2. Ajustements Layout (Responsive & Espacements)
+- **Mobile :** Repositionnement du Globe 3D (`-top-10` -> `top-16`) sur la version Mobile pour éviter qu'il n'écrase le haut du texte principal.
+- **Desktop :** Ajout de 60px d'espacement supplémentaire sous le Marquee de la page À Propos pour aérer visuellement la section "Services".
+- **Fix Structurel :** Correction d'un conflit entre les animations *Framer Motion* et le positionnement *Tailwind* (`-translate-x-1/2`) en isolant les conteneurs absolus.
+
+#### 3. Audit Complet SEO & Performance (Background)
+- **SEO :** Validation de l'architecture existante gérée par `SEOManager` (balises Open Graph, balise canonical dynamique, balises meta et titres localisés dynamiquement EN/FR).
+- **Indexation :** Fichiers `robots.txt` permissif et `sitemap.xml` structuré opérationnels en production.
+- **Performances :** Validation du *Lazy Loading* (Code Splitting via React `Suspense`), et de la bonne utilisation native de `loading="lazy"` / `decoding="async"` sur les images critiques.
+
+---
+
 ## 📅 Session du 25 Avril 2026
 **Objectif :** Polish footer reveal + stabilisation curseur custom.
 

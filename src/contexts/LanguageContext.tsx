@@ -123,6 +123,14 @@ const translations: Record<Lang, Record<string, string>> = {
         "changelog.subtitle": "A technical journey behind Synaptics",
         "changelog.latest": "Latest",
         
+        "v1.0.10.title": "Fluidity Enhancements & Core Optimization",
+        "v1.0.10.date": "May 13, 2026",
+        "v1.0.10.desc": "Major visual layout improvements for mobile experiences and an underlying SEO/Performance audit.",
+        "v1.0.10.feat1": "Synchronized Framer Motion entry sequences (About & Case Studies)",
+        "v1.0.10.feat2": "Responsive Absolute Layouts stabilization (Mobile Globe offset)",
+        "v1.0.10.feat3": "Resolution of Tailwind Transform vs Framer Motion conflicts",
+        "v1.0.10.feat4": "Validation of dynamic SEO routing and component Lazy Loading",
+
         "v1.0.9.title": "Stability Audit & Legal Reach",
         "v1.0.9.date": "April 24, 2026",
         "v1.0.9.desc": "Comprehensive site audit to finalize UX stability, global internationalization, and high-performance cursor tracking.",
@@ -720,6 +728,14 @@ const translations: Record<Lang, Record<string, string>> = {
         "changelog.subtitle": "L'aventure technique derrière Synaptics",
         "changelog.latest": "Dernier",
         
+        "v1.0.10.title": "Fluidité d'Entrée & Optimisation Cœur",
+        "v1.0.10.date": "13 Mai 2026",
+        "v1.0.10.desc": "Améliorations majeures de la fluidité visuelle pour les expériences mobiles et audit complet SEO/Performances.",
+        "v1.0.10.feat1": "Séquences d'entrée synchronisées via Framer Motion (À Propos & Études de Cas)",
+        "v1.0.10.feat2": "Stabilisation des Layouts Absolus Responsifs (Repositionnement du Globe)",
+        "v1.0.10.feat3": "Résolution des conflits d'animation (Tailwind Transform vs Framer Motion)",
+        "v1.0.10.feat4": "Validation du routage SEO dynamique et du Lazy Loading des composants",
+
         "v1.0.9.title": "Audit de Stabilité & Portée Juridique",
         "v1.0.9.date": "24 Avril 2026",
         "v1.0.9.desc": "Audit complet du site pour finaliser la stabilité UX, l'internationalisation globale et le suivi haute performance du curseur.",
@@ -1119,22 +1135,21 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }, [lang]);
 
     const handleSetLang = (newLang: Lang) => {
-        // Fade out → swap → fade in
+        if (newLang === lang) return;
+
+        // Start fade out
         document.documentElement.classList.add("lang-transitioning");
+        
+        // Wait for fade out to complete (matching CSS 0.3s duration)
         setTimeout(() => {
             setLang(newLang);
             localStorage.setItem("synaptics-lang", newLang);
             
-            // Fade back in after React re-renders
-            requestAnimationFrame(() => {
-                document.documentElement.classList.remove("lang-transitioning");
-            });
-
-            // Safety fallback to ensure the site is never stuck in a hidden state
+            // Allow React to process the state change before fading back in
             setTimeout(() => {
                 document.documentElement.classList.remove("lang-transitioning");
-            }, 500);
-        }, 300);
+            }, 50);
+        }, 300); 
     };
 
     const t = (key: string): string => {

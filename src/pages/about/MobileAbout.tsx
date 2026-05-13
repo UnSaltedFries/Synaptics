@@ -45,22 +45,32 @@ const MobileAbout = () => {
 
     return (
         <Layout>
-            <div className="min-h-screen bg-black overflow-hidden">
                 <div className="bg-white text-black">
                     {/* Hero */}
                     <section className="px-5 pt-28 pb-10 relative">
                         {/* Background Globe */}
-                        <div className="absolute -top-10 -right-10 opacity-30 mix-blend-multiply pointer-events-none">
-                            <Globe size={400} />
+                        <div className="absolute top-16 -right-10 mix-blend-multiply pointer-events-none">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 0.3, scale: 1 }}
+                                transition={{ duration: 1.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                                <Globe size={400} />
+                            </motion.div>
                         </div>
 
-                        <h1 className="relative z-10 text-2xl font-bold leading-[1.3] tracking-tight mb-6 text-black">
+                        <motion.h1 
+                            className="relative z-10 text-2xl font-bold leading-[1.3] tracking-tight mb-6 text-black"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                        >
                             {t("about.hero.line1")}{" "}
                             <ChromeWord>{t("about.hero.highlight1")}</ChromeWord>
                             <br />
                             {t("about.hero.line2")}{" "}
                             <ChromeWord>{t("about.hero.highlight2")}</ChromeWord>.
-                        </h1>
+                        </motion.h1>
                         <ScrollReveal delay={0.3}>
                             <p className="text-sm text-gray-500 leading-relaxed max-w-sm">
                                 {t("about.hero.sub1")}
@@ -70,14 +80,17 @@ const MobileAbout = () => {
                         </ScrollReveal>
                     </section>
 
-                    <ScrollReveal delay={0.1}>
-                        <div className="py-6">
-                            <InfiniteMarquee speed={20} />
-                        </div>
-                    </ScrollReveal>
+                    <motion.div 
+                        className="py-6"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+                    >
+                        <InfiniteMarquee speed={20} />
+                    </motion.div>
 
                     {/* Services */}
-                    <section className="px-5 py-8">
+                    <section className="px-5 pt-[60px] pb-8">
                         <BlurText
                             text={t("about.services")}
                             className="text-[9px] uppercase tracking-[0.15em] font-medium text-gray-500 mb-6"
@@ -171,7 +184,6 @@ const MobileAbout = () => {
                 <div style={{ backgroundColor: "#000000" }} className="pt-4 pb-12">
                     <FAQSection />
                 </div>
-            </div>
         </Layout>
     );
 };

@@ -10,7 +10,6 @@ export const ValuePillars = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLDivElement>(null);
 
-    // Optimisation 1 : Mémoïser la liste des piliers
     const pillars = useMemo(() => [
         {
             id: "01",
@@ -40,43 +39,49 @@ export const ValuePillars = () => {
         const trigger = triggerRef.current;
         if (!section || !trigger) return;
 
-        // Optimisation 2 : GSAP Context pour isolation et nettoyage
-        const ctx = gsap.context(() => {
-            const totalWidth = section.scrollWidth;
+        const raf = requestAnimationFrame(() => {
+            const ctx = gsap.context(() => {
+                // Distance totale = tout le contenu qui dépasse l'écran
+                const scrollDistance = section.scrollWidth - window.innerWidth;
+                if (scrollDistance <= 0) return;
 
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: trigger,
-                    pin: true,
-                    scrub: 1,
-                    start: "top top",
-                    end: () => "+=450%", 
-                    invalidateOnRefresh: true, // Recalcule si la fenêtre change de taille
-                },
-            });
-
-            tl.fromTo(section, 
-                { x: "100vw" }, 
-                { 
-                    x: `-${totalWidth + 500}px`, 
+                gsap.to(section, {
+                    x: -scrollDistance,
                     ease: "none",
-                    force3D: true // Accélération matérielle
-                }
-            );
-        }, triggerRef);
+                    force3D: true,
+                    scrollTrigger: {
+                        trigger: trigger,
+                        pin: true,
+                        scrub: 0.5,
+                        start: "top top",
+                        // Distance de scroll généreuse pour un défilement confortable
+                        end: () => `+=${scrollDistance * 1.5}`,
+                        invalidateOnRefresh: true,
+                        anticipatePin: 1,
+                    },
+                });
+            }, trigger);
 
-        return () => ctx.revert();
-    }, [pillars]); // Dépendance sur pillars pour recalculer si la langue change
+            (trigger as any).__gsapCtx = ctx;
+        });
+
+        return () => {
+            cancelAnimationFrame(raf);
+            const ctx = (triggerRef.current as any)?.__gsapCtx;
+            if (ctx) ctx.revert();
+        };
+    }, [pillars]);
 
     return (
-        <div ref={triggerRef} className="bg-black overflow-hidden relative">
+        <div ref={triggerRef} className="bg-black overflow-hidden relative z-10">
             <div 
                 ref={sectionRef} 
-                className="flex h-screen items-center gap-10 pr-[10vw]" 
-                style={{ 
-                    willChange: "transform",
-                }}
+                className="flex h-screen items-center gap-10" 
+                style={{ willChange: "transform" }}
             >
+                {/* Espace noir avant les cartes */}
+                <div className="w-screen h-full flex-shrink-0" />
+
                 {pillars.map((pillar) => (
                     <div 
                         key={pillar.id} 
@@ -85,7 +90,6 @@ export const ValuePillars = () => {
                         <div 
                             className="w-full h-[70vh] rounded-[3.5rem] border border-white/10 bg-white/[0.02] backdrop-blur-sm relative overflow-hidden p-8 md:p-16 flex flex-col justify-center"
                             style={{ 
-                                // Optimisation 4 : Isoler le rendu de la carte (Backface visibility hidden pour GPU)
                                 backfaceVisibility: "hidden",
                                 transform: "translateZ(0)"
                             }}
@@ -126,6 +130,9 @@ export const ValuePillars = () => {
                         </div>
                     </div>
                 ))}
+
+                {/* Espace noir après les cartes */}
+                <div className="w-screen h-full flex-shrink-0" />
             </div>
         </div>
     );

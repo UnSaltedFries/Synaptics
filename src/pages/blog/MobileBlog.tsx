@@ -37,16 +37,22 @@ const MobileBlog = () => {
         <Layout>
             <div className="min-h-screen bg-black text-white" style={{ backgroundColor: "#000000" }}>
                 <div className="px-5 pt-24 pb-10">
-                    <h1 className="text-3xl font-bold mb-2 tracking-tight">
-                        <ChromeWord>Dev Blog</ChromeWord>
-                    </h1>
-                    <ScrollReveal delay={0.2}>
-                        <p className="text-sm text-gray-400 mb-5">
-                            {lang === "fr"
-                                ? "Découvrez comment nous transformons les entreprises avec nos agents IA."
-                                : "Discover how we transform businesses with our AI agents."}
-                        </p>
-                    </ScrollReveal>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                        <h1 className="text-3xl font-bold mb-2 tracking-tight">
+                            <ChromeWord>{lang === "fr" ? "Études de Cas" : "Case Studies"}</ChromeWord>
+                        </h1>
+                        <ScrollReveal delay={0.2}>
+                            <p className="text-sm text-gray-400 mb-5">
+                                {lang === "fr"
+                                    ? "Découvrez comment nous transformons les entreprises avec nos agents IA."
+                                    : "Discover how we transform businesses with our AI agents."}
+                            </p>
+                        </ScrollReveal>
+                    </motion.div>
 
                     {/* Project List */}
                     <div className="flex flex-col gap-2">

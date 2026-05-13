@@ -9,86 +9,80 @@ export const CinematicVision = () => {
     const { t } = useLanguage();
     const containerRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLHeadingElement>(null);
-    const innerRef = useRef<HTMLDivElement>(null);
     
     const text = t("about.vision.text") || "";
     const words = useMemo(() => text.split(" "), [text]);
 
     useEffect(() => {
+        const container = containerRef.current;
         const letters = textRef.current?.querySelectorAll(".letter");
-        if (!letters || letters.length === 0) return;
+        if (!container || !letters || letters.length === 0) return;
 
-        const ctx = gsap.context(() => {
-            // État initial forcé (placé dans le context pour plus de fiabilité)
-            gsap.set(letters, { 
-                y: "120%",
-                opacity: 0,
-                scale: 0.8,
-                filter: "blur(15px)",
-                force3D: true
-            });
-
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top top",
-                    end: "+=1000%", 
-                    scrub: 2, 
-                    pin: innerRef.current,
-                    pinSpacing: true,
-                    anticipatePin: 1,
-                }
-            });
-
-            // 1. DÉBUT : Zone de calme (25%)
-            tl.to({}, { duration: 0.25 });
-
-            // 2. MILIEU : Révélation (30%)
-            tl.fromTo(letters, 
-                { 
-                    y: "120%",
+        const raf = requestAnimationFrame(() => {
+            const ctx = gsap.context(() => {
+                // État initial : invisible
+                gsap.set(letters, {
+                    y: 80,
                     opacity: 0,
                     scale: 0.8,
-                    filter: "blur(15px)"
-                },
-                { 
-                    y: "0%", 
+                    filter: "blur(12px)",
+                });
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top top",
+                        end: "+=250%",
+                        scrub: 0.5,
+                        pin: true,
+                        pinSpacing: true,
+                        anticipatePin: 1,
+                        invalidateOnRefresh: true,
+                    }
+                });
+
+                // Phase 1 : Apparition des lettres (0% → 50%)
+                tl.to(letters, {
+                    y: 0,
                     opacity: 1,
                     scale: 1,
                     filter: "blur(0px)",
-                    stagger: 0.05,
-                    ease: "power2.out",
-                    duration: 0.30,
-                    force3D: true
-                }
-            );
+                    stagger: 0.04,
+                    ease: "power3.out",
+                    duration: 0.5,
+                    force3D: true,
+                });
 
-            // 3. MAINTIEN : Immersion totale (25%)
-            tl.to({}, { duration: 0.25 });
+                // Phase 2 : Pause — le texte reste visible (50% → 70%)
+                tl.to({}, { duration: 0.2 });
 
-            // 4. SORTIE : Décollage (10%)
-            tl.to(letters, {
-                y: "-100px",
-                opacity: 0,
-                scale: 1.1,
-                filter: "blur(20px)",
-                stagger: 0.02,
-                ease: "power2.in",
-                duration: 0.10,
-                force3D: true
-            });
+                // Phase 3 : Disparition du texte (70% → 100%)
+                tl.to(letters, {
+                    y: -60,
+                    opacity: 0,
+                    scale: 1.1,
+                    filter: "blur(8px)",
+                    stagger: 0.02,
+                    ease: "power2.in",
+                    duration: 0.3,
+                    force3D: true,
+                });
 
-            // 5. FIN : Silence radio (10%)
-            tl.to({}, { duration: 0.10 });
+            }, container);
+
+            (container as any).__gsapCtx = ctx;
         });
 
-        return () => ctx.revert();
+        return () => {
+            cancelAnimationFrame(raf);
+            const ctx = (containerRef.current as any)?.__gsapCtx;
+            if (ctx) ctx.revert();
+        };
     }, [text]);
 
     return (
-        <section ref={containerRef} className="bg-black relative z-10 w-full">
+        <section ref={containerRef} className="bg-black relative z-10 w-full h-screen">
             <div 
-                ref={innerRef}
                 className="h-screen w-full flex flex-col items-center justify-center overflow-hidden px-6 md:px-20"
             >
                 <div className="absolute inset-0 bg-black pointer-events-none" />
@@ -96,8 +90,8 @@ export const CinematicVision = () => {
                 <div 
                     className="w-full max-w-5xl relative z-20"
                     style={{
-                        maskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
-                        WebkitMaskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+                        maskImage: "linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)",
+                        WebkitMaskImage: "linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)",
                         contain: "layout style"
                     }}
                 >

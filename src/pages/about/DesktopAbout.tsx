@@ -11,6 +11,7 @@ import { CinematicVision } from "@/components/about/CinematicVision";
 import ScrollReveal from "@/components/visuals/ScrollReveal";
 import BlurText from "@/components/visuals/BlurText";
 import ChromeWord from "@/components/visuals/ChromeWord";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -99,20 +100,31 @@ const About = () => {
   ], [t]);
 
   return <Layout variant="light">
-    <div className="bg-black min-h-screen">
       <div className="bg-white">
         <section className="pt-24 pb-24 md:pt-32 md:pb-32 bg-white relative overflow-hidden">
-          <div className="absolute top-20 md:top-32 left-1/2 md:left-[75%] -translate-x-1/2 w-full max-w-4xl opacity-40 mix-blend-multiply pointer-events-none">
-            <Globe size={600} />
+          <div className="absolute top-10 md:top-20 left-1/2 md:left-[70%] -translate-x-1/2 w-full max-w-4xl mix-blend-multiply pointer-events-none">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 0.4, scale: 1 }}
+              transition={{ duration: 1.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full flex justify-center"
+            >
+              <Globe size={600} />
+            </motion.div>
           </div>
           <div className="container max-w-5xl relative z-10 md:-translate-x-12">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium text-black leading-[1.05] tracking-[-0.03em]">
+            <motion.h1 
+                className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-medium text-black leading-[1.05] tracking-[-0.03em]"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} // smooth ease out
+            >
               {t("about.hero.line1") || ""}
               <ChromeWord>{t("about.hero.highlight1") || ""}</ChromeWord>
               <br />
               {t("about.hero.line2") || ""}
               <ChromeWord>{t("about.hero.highlight2") || ""}</ChromeWord>.
-            </h1>
+            </motion.h1>
             <ScrollReveal delay={0.4}>
               <p className="mt-8 md:mt-12 text-lg md:text-xl text-gray-400 max-w-lg leading-relaxed tracking-[-0.01em]">
                 {t("about.hero.sub1") || ""}
@@ -125,9 +137,15 @@ const About = () => {
           </div>
         </section>
 
-        <InfiniteMarquee speed={25} />
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+        >
+            <InfiniteMarquee speed={25} />
+        </motion.div>
 
-        <section className="pb-24 md:pb-32 bg-white">
+        <section className="pt-[60px] pb-24 md:pb-32 bg-white">
           <div className="container">
             <div className="w-full h-px bg-gray-200 mb-16" />
 
@@ -232,7 +250,6 @@ const About = () => {
       <ValuePillars />
       <CinematicVision />
       <FAQSection />
-    </div>
   </Layout>;
 };
 export default About;
