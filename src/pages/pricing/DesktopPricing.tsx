@@ -60,7 +60,7 @@ const Pricing = () => {
                         <ScrollReveal delay={0.4} className="w-full">
                             <div className="space-y-6">
                                 <BlurText
-                                    text="01. AI FRONT-OFFICE"
+                                    text="01. IA CUSTOM WORKFLOW"
                                     className="text-xs font-bold tracking-[0.3em] text-white/40 uppercase"
                                     animateBy="letters"
                                     delay={40}

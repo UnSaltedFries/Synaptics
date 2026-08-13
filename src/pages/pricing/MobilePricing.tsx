@@ -59,7 +59,7 @@ const MobilePricing = () => {
                         {/* Section 01: Front Office Card */}
                         <div className="space-y-6">
                             <BlurText
-                                text="01. AI FRONT-OFFICE"
+                                text="01. IA CUSTOM WORKFLOW"
                                 className="text-[10px] font-bold tracking-[0.3em] text-white/30 uppercase text-center w-full"
                                 animateBy="letters"
                                 delay={40}
