@@ -470,27 +470,7 @@ const MobileIndex = () => {
                 <audio ref={audioRef} onEnded={handleEnded} className="hidden" />
             </section>
 
-            {/* ─── AI WORKFLOWS ECOSYSTEM ───────────────────────────────── */}
-            <div className="border-t border-white/[0.05]">
-                <WorkflowEcosystem />
-            </div>
-
-            {/* ─── INTEGRATIONS ─────────────────────────────────────────── */}
-            <section className="px-5 py-10" style={{ backgroundColor: "#000000" }}>
-                <h2 className="text-xl font-bold mb-1.5 tracking-tight text-center">{t("integrations.title")}</h2>
-                <p className="text-gray-400 text-xs mb-5 text-center">{t("integrations.subtitle")}</p>
-
-                <div className="grid grid-cols-3 gap-2">
-                    {integrations.map((integration, i) => (
-                        <div key={i} className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 flex flex-col items-center gap-2">
-                            <img src={integration.logo} alt={integration.name} className="w-6 h-6" />
-                            <span className="text-[9px] text-gray-400 font-medium text-center leading-tight">{integration.name}</span>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* ─── ROI CALCULATOR ───────────────────────────────────────── */}
+            {/* ─── ROI CALCULATOR (Pillar 01: Voice ROI) ────────────────── */}
             <section className="px-5 py-10" style={{ backgroundColor: "#000000" }}>
                 <h2 className="text-xl font-bold mb-1.5 tracking-tight">{t("roi.title")}</h2>
                 <p className="text-gray-400 text-xs mb-5 leading-relaxed">{t("roi.subtitle")}</p>
@@ -578,6 +558,26 @@ const MobileIndex = () => {
                             </motion.span>
                         </span>
                     </Link>
+                </div>
+            </section>
+
+            {/* ─── 02. AI WORKFLOWS ECOSYSTEM ───────────────────────────── */}
+            <div className="border-t border-white/[0.05]">
+                <WorkflowEcosystem />
+            </div>
+
+            {/* ─── INTEGRATIONS ─────────────────────────────────────────── */}
+            <section className="px-5 py-10" style={{ backgroundColor: "#000000" }}>
+                <h2 className="text-xl font-bold mb-1.5 tracking-tight text-center">{t("integrations.title")}</h2>
+                <p className="text-gray-400 text-xs mb-5 text-center">{t("integrations.subtitle")}</p>
+
+                <div className="grid grid-cols-3 gap-2">
+                    {integrations.map((integration, i) => (
+                        <div key={i} className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 flex flex-col items-center gap-2">
+                            <img src={integration.logo} alt={integration.name} className="w-6 h-6" />
+                            <span className="text-[9px] text-gray-400 font-medium text-center leading-tight">{integration.name}</span>
+                        </div>
+                    ))}
                 </div>
             </section>
         </div>

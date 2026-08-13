@@ -42,16 +42,18 @@ const Index = () => {
           <HeroSection />
 
 
-          {/* Sections moved from Blog */}
+          {/* Sections */}
           <div className="space-y-0 mt-32 md:mt-64">
+            {/* ── 01. IA FRONT-OFFICE & AGENT VOCAL ── */}
             <ScrollReveal className="relative z-30"><HowItWorks /></ScrollReveal>
             <ScrollReveal className="relative z-20"><StatsSection /></ScrollReveal>
-
             <ScrollReveal><AudioDemo /></ScrollReveal>
+            <ScrollReveal><ROICalculator /></ScrollReveal>
+
+            {/* ── 02. IA BACK-OFFICE & WORKFLOWS ── */}
             <ScrollReveal><WorkflowEcosystem /></ScrollReveal>
             {/* <ScrollReveal><Testimonials /></ScrollReveal> */}
             <ScrollReveal><IntegrationsGrid /></ScrollReveal>
-            <ScrollReveal><ROICalculator /></ScrollReveal>
           </div>
 
 
