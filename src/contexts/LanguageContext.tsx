@@ -68,6 +68,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "contact.success.title": "Request Received!",
         "contact.success.desc": "Thank you for your message. Our team will review your project and get back to you within 24 hours.",
         "contact.success.button": "Back to Home",
+        "contact.success.another": "Send another message",
         "contact.useCase": "Use Case",
         "contact.useCase.desc": "AI agents for calls, emails, documents, invoicing, and custom workflows.",
         "contact.onboarding": "Deployment",
@@ -532,14 +533,30 @@ const translations: Record<Lang, Record<string, string>> = {
         "contact.form.budget.growth": "$1.1k - $5.5k / mo",
         "contact.form.budget.enterprise": "More than $5.5k / mo",
 
-        "contact.success.title": "Message sent!",
-        "contact.success.desc": "Thank you for reaching out. Our team will get back to you within 24 hours.",
-        "contact.success.another": "Send another message",
-
-
-        "contact.form.referralPlaceholder": "Google, referral...",
-        "contact.form.submit": "Request a Demo →",
-        "contact.form.submitting": "Sending...",
+        // AI Ecosystem Section
+        "ecosystem.eyebrow": "Autonomous AI Ecosystem",
+        "ecosystem.title": "Beyond Voice: Automate your entire operations",
+        "ecosystem.subtitle": "From phone reception to auto-quotes, unpaid invoice recovery and CRM sync: deploy tailored autonomous AI workflows to boost your business efficiency.",
+        "ecosystem.tab.frontoffice": "Support & Front-Office",
+        "ecosystem.tab.finance": "Finance & Invoicing",
+        "ecosystem.tab.backoffice": "Documents & Operations",
+        "ecosystem.tab.growth": "Strategy & HR",
+        "ecosystem.label.before": "Without Synaptics (Manual)",
+        "ecosystem.label.after": "With Synaptics AI",
+        "ecosystem.label.impact": "Key Impact",
+        "ecosystem.chain.title": "How our AI agents collaborate in real-time",
+        "ecosystem.chain.subtitle": "A fully connected autonomous pipeline that runs 24/7 without human intervention",
+        "ecosystem.chain.step1": "Inbound Request",
+        "ecosystem.chain.step1.desc": "Voice call, web chat or email handled in under 2 seconds.",
+        "ecosystem.chain.step2": "AI Qualification",
+        "ecosystem.chain.step2.desc": "Extracts intent, budget & syncs instant details to your CRM.",
+        "ecosystem.chain.step3": "Instant Actions",
+        "ecosystem.chain.step3.desc": "Auto-generates quotes, schedules meetings or triggers tasks.",
+        "ecosystem.chain.step4": "Automated Follow-up",
+        "ecosystem.chain.step4.desc": "Monitors payments, collects 5-star Google reviews and alerts team.",
+        "ecosystem.cta.title": "Build your custom AI pack",
+        "ecosystem.cta.desc": "Combine our specialized agents to automate up to 80% of your operational workload.",
+        "ecosystem.cta.button": "Explore Pricing & Packages",
     },
 
     fr: {
@@ -564,9 +581,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "contact.form.budget.growth": "1k€ - 5k€ / mois",
         "contact.form.budget.enterprise": "Plus de 5k€ / mois",
 
-        "contact.success.title": "Message envoyé !",
-        "contact.success.desc": "Merci de nous avoir contactés. Notre équipe reviendra vers vous sous 24h.",
-        "contact.success.another": "Envoyer un autre message",
+
 
 
         // Navbar
@@ -627,6 +642,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "contact.success.title": "Demande Reçue !",
         "contact.success.desc": "Merci pour votre message. Notre équipe va examiner votre projet et vous recontactera sous 24 heures.",
         "contact.success.button": "Retour à l'accueil",
+        "contact.success.another": "Envoyer un autre message",
         "contact.useCase": "Cas d'usage",
         "contact.useCase.desc": "Agents IA pour appels, emails, documents, facturation et workflows personnalisés.",
         "contact.onboarding": "Déploiement",
@@ -1072,6 +1088,31 @@ const translations: Record<Lang, Record<string, string>> = {
         "config.s8.title": "Gestion automatisée des congés et absences",
         "config.s8.manual": "Les demandes arrivent par email ou verbalement. Le gérant valide sans suivi centralisé. Les conflits sont découverts trop tard.",
         "config.s8.argument": "Pour un gérant de PME, gérer les congés représente 3-4h par mois de friction. Ce système rend l'expérience fluide et vous libère d'une charge mentale invisible mais réelle.",
+
+        // AI Ecosystem Section
+        "ecosystem.eyebrow": "Écosystème IA Autonome",
+        "ecosystem.title": "Au-delà de la voix : automatisez toutes vos opérations",
+        "ecosystem.subtitle": "Du standard téléphonique aux devis automatiques, relances d'impayés et synchronisation CRM : découvrez nos workflows IA sur-mesure pour démultiplier vos marges.",
+        "ecosystem.tab.frontoffice": "Support & Front-Office",
+        "ecosystem.tab.finance": "Finance & Facturation",
+        "ecosystem.tab.backoffice": "Documents & Opérations",
+        "ecosystem.tab.growth": "Stratégie & RH",
+        "ecosystem.label.before": "Sans Synaptics (Manuel)",
+        "ecosystem.label.after": "Avec Synaptics IA",
+        "ecosystem.label.impact": "Impact Clé",
+        "ecosystem.chain.title": "Comment nos agents IA collaborent en temps réel",
+        "ecosystem.chain.subtitle": "Un pipeline interconnecté qui tourne 24h/24 sans aucune friction humaine",
+        "ecosystem.chain.step1": "Demande Entrante",
+        "ecosystem.chain.step1.desc": "Appel vocal, chat web ou email traité en moins de 2 secondes.",
+        "ecosystem.chain.step2": "Qualification IA",
+        "ecosystem.chain.step2.desc": "Analyse du besoin, extraction des données & synchro CRM directe.",
+        "ecosystem.chain.step3": "Action Instantanée",
+        "ecosystem.chain.step3.desc": "Devis auto, prise de rendez-vous ou déclenchement du flux métier.",
+        "ecosystem.chain.step4": "Suivi & Fidélisation",
+        "ecosystem.chain.step4.desc": "Relance automatique, collecte d'avis Google 5★ et alertes proactives.",
+        "ecosystem.cta.title": "Composez votre pack d'agents sur-mesure",
+        "ecosystem.cta.desc": "Combinez nos agents spécialisés pour automatiser jusqu'à 80% de votre charge administrative.",
+        "ecosystem.cta.button": "Découvrir les Tarifs & Packs",
     },
 };
 

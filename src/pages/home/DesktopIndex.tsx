@@ -10,6 +10,7 @@ import { AudioDemo } from "@/components/media/AudioDemo";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { IntegrationsGrid } from "@/components/sections/IntegrationsGrid";
 import { ROICalculator } from "@/components/pricing/ROICalculator";
+import { WorkflowEcosystem } from "@/components/sections/WorkflowEcosystem";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -47,6 +48,7 @@ const Index = () => {
             <ScrollReveal className="relative z-20"><StatsSection /></ScrollReveal>
 
             <ScrollReveal><AudioDemo /></ScrollReveal>
+            <ScrollReveal><WorkflowEcosystem /></ScrollReveal>
             {/* <ScrollReveal><Testimonials /></ScrollReveal> */}
             <ScrollReveal><IntegrationsGrid /></ScrollReveal>
             <ScrollReveal><ROICalculator /></ScrollReveal>

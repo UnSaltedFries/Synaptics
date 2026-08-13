@@ -6,6 +6,7 @@ import { Layout } from "@/components/layout/Layout";
 import { motion } from "framer-motion";
 import ScrollReveal from "@/components/visuals/ScrollReveal";
 import BlurText from "@/components/visuals/BlurText";
+import { WorkflowEcosystem } from "@/components/sections/WorkflowEcosystem";
 
 /* ─── Animated Counter ──────────────────────────────────────────── */
 function AnimatedCounter({ end, suffix = "", duration = 2000, decimals = 0 }: { end: number; suffix?: string; duration?: number; decimals?: number }) {
@@ -463,6 +464,11 @@ const MobileIndex = () => {
 
                 <audio ref={audioRef} onEnded={handleEnded} className="hidden" />
             </section>
+
+            {/* ─── AI WORKFLOWS ECOSYSTEM ───────────────────────────────── */}
+            <div className="border-t border-white/[0.05]">
+                <WorkflowEcosystem />
+            </div>
 
             {/* ─── INTEGRATIONS ─────────────────────────────────────────── */}
             <section className="px-5 py-10" style={{ backgroundColor: "#000000" }}>
