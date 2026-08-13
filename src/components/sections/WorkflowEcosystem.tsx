@@ -377,27 +377,43 @@ export function WorkflowEcosystem() {
                             ].map((step, idx) => {
                                 const StepIcon = step.icon;
                                 return (
-                                    <div
-                                        key={idx}
-                                        className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.15] transition-all flex flex-col justify-between"
-                                    >
-                                        <div>
-                                            <div className="flex items-center justify-between mb-4">
-                                                <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center border", step.color)}>
-                                                    <StepIcon className="w-5 h-5" />
+                                    <React.Fragment key={idx}>
+                                        <div
+                                            className="relative p-6 md:p-7 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-purple-500/40 hover:bg-white/[0.04] transition-all duration-300 flex flex-col justify-between group shadow-lg"
+                                        >
+                                            {/* Top line glow on hover */}
+                                            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                                            <div>
+                                                <div className="flex items-center justify-between mb-4">
+                                                    <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center border", step.color)}>
+                                                        <StepIcon className="w-5 h-5" />
+                                                    </div>
+                                                    <span className="text-xs font-mono font-bold text-gray-500 group-hover:text-purple-400 transition-colors">{step.num}</span>
                                                 </div>
-                                                <span className="text-xs font-mono font-bold text-gray-500">{step.num}</span>
+                                                <h4 className="text-base font-bold text-white mb-2">{step.title}</h4>
+                                                <p className="text-xs text-gray-400 leading-relaxed">{step.desc}</p>
                                             </div>
-                                            <h4 className="text-base font-bold text-white mb-2">{step.title}</h4>
-                                            <p className="text-xs text-gray-400 leading-relaxed">{step.desc}</p>
+
+                                            {/* Desktop Connector Arrow */}
+                                            {idx < 3 && (
+                                                <div className="hidden md:flex absolute -right-[15px] top-1/2 -translate-y-1/2 z-30 items-center justify-center pointer-events-none">
+                                                    <div className="w-7 h-7 rounded-full bg-[#121212] border border-purple-500/40 flex items-center justify-center shadow-[0_0_12px_rgba(168,85,247,0.3)]">
+                                                        <ArrowRight className="w-3.5 h-3.5 text-purple-400 stroke-[2.5]" />
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
 
+                                        {/* Mobile Connector Arrow between stacked cards */}
                                         {idx < 3 && (
-                                            <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 z-20 text-gray-600">
-                                                <ArrowRight className="w-4 h-4" />
+                                            <div className="md:hidden flex justify-center -my-3 z-20 pointer-events-none">
+                                                <div className="w-7 h-7 rounded-full bg-[#121212] border border-purple-500/40 flex items-center justify-center shadow-[0_0_10px_rgba(168,85,247,0.25)] text-purple-400">
+                                                    <ArrowRight className="w-3.5 h-3.5 rotate-90 stroke-[2.5]" />
+                                                </div>
                                             </div>
                                         )}
-                                    </div>
+                                    </React.Fragment>
                                 );
                             })}
                         </div>
