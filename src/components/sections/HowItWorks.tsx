@@ -39,6 +39,11 @@ export function HowItWorks() {
 
                     {/* Header - Centered */}
                     <div className="text-center mb-8 md:mb-12">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/[0.08] border border-blue-500/20 backdrop-blur-md mb-6">
+                            <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-blue-400">
+                                {t("howItWorks.eyebrow")}
+                            </span>
+                        </div>
                         <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-[-0.03em] mb-6">
                             {t("howItWorks.title")}
                         </h2>

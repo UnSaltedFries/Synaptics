@@ -339,8 +339,9 @@ const translations: Record<Lang, Record<string, string>> = {
         "pricing.custom.note": "Every project is unique — contact us for a tailored quote.",
 
         // How It Works
-        "howItWorks.title": "How it works",
-        "howItWorks.subtitle": "From first call to full deployment in 3 simple steps.",
+        "howItWorks.eyebrow": "01. AI FRONT-OFFICE & VOICE AGENT",
+        "howItWorks.title": "How our Voice Receptionist works",
+        "howItWorks.subtitle": "From the first phone call to deploying your AI receptionist in 3 simple steps.",
         "howItWorks.step1.title": "Tell us about your business",
         "howItWorks.step1.desc": "We analyze your call flow, understand your industry, and design a custom voice agent that speaks like your best receptionist.",
         "howItWorks.step2.title": "We configure your AI agent",
@@ -534,7 +535,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "contact.form.budget.enterprise": "More than $5.5k / mo",
 
         // AI Ecosystem Section
-        "ecosystem.eyebrow": "Autonomous AI Ecosystem",
+        "ecosystem.eyebrow": "02. AI BACK-OFFICE & WORKFLOWS",
         "ecosystem.title": "Beyond Voice: Automate your entire operations",
         "ecosystem.subtitle": "From phone reception to auto-quotes, unpaid invoice recovery and CRM sync: deploy tailored autonomous AI workflows to boost your business efficiency.",
         "ecosystem.tab.frontoffice": "Support & Front-Office",
@@ -915,8 +916,9 @@ const translations: Record<Lang, Record<string, string>> = {
         "pricing.custom.note": "Chaque projet est unique — contactez-nous pour un devis personnalisé.",
 
         // How It Works
-        "howItWorks.title": "Comment ça marche",
-        "howItWorks.subtitle": "Du premier appel au déploiement en 3 étapes simples.",
+        "howItWorks.eyebrow": "01. IA FRONT-OFFICE & AGENT VOCAL",
+        "howItWorks.title": "Le Standard Vocal IA : Comment ça marche",
+        "howItWorks.subtitle": "Du premier appel téléphonique au déploiement de votre réceptionniste IA en 3 étapes simples.",
         "howItWorks.step1.title": "Parlez-nous de votre activité",
         "howItWorks.step1.desc": "On analyse votre flux d'appels, on comprend votre secteur, et on conçoit un agent vocal sur mesure qui parle comme votre meilleur(e) réceptionniste.",
         "howItWorks.step2.title": "On configure votre agent IA",
@@ -1090,7 +1092,7 @@ const translations: Record<Lang, Record<string, string>> = {
         "config.s8.argument": "Pour un gérant de PME, gérer les congés représente 3-4h par mois de friction. Ce système rend l'expérience fluide et vous libère d'une charge mentale invisible mais réelle.",
 
         // AI Ecosystem Section
-        "ecosystem.eyebrow": "Écosystème IA Autonome",
+        "ecosystem.eyebrow": "02. IA BACK-OFFICE & WORKFLOWS",
         "ecosystem.title": "Au-delà de la voix : automatisez toutes vos opérations",
         "ecosystem.subtitle": "Du standard téléphonique aux devis automatiques, relances d'impayés et synchronisation CRM : découvrez nos workflows IA sur-mesure pour démultiplier vos marges.",
         "ecosystem.tab.frontoffice": "Support & Front-Office",

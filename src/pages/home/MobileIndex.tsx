@@ -228,8 +228,13 @@ const MobileIndex = () => {
                 </div>
             </section>
 
-            {/* ─── HOW IT WORKS ─────────────────────────────────────────── */}
+            {/* ─── 01. HOW IT WORKS / VOICE AGENT ───────────────────────── */}
             <section className="px-5 py-12" style={{ backgroundColor: "#000000" }}>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/[0.08] border border-blue-500/20 backdrop-blur-md mb-4">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400">
+                        {t("howItWorks.eyebrow")}
+                    </span>
+                </div>
                 <BlurText
                     text={t("howItWorks.title")}
                     className="text-2xl font-bold mb-2 tracking-tight"
