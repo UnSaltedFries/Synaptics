@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, useTransform, MotionValue, useMotionValue } from "framer-motion";
-import { Linkedin, Twitter, Instagram } from "lucide-react";
+import { Twitter, Instagram } from "lucide-react";
 
 interface MobileFooterProps {
     progress?: MotionValue<number>;
@@ -17,7 +17,6 @@ export function MobileFooter({ progress }: MobileFooterProps) {
     const activeProgress = progress || staticProgress;
 
     const socialLinks = [
-        { label: "LinkedIn", href: "https://linkedin.com", icon: <Linkedin className="w-5 h-5" /> },
         { label: "X", href: "https://x.com/SynapticsIA", icon: <Twitter className="w-5 h-5" /> },
         { label: "Instagram", href: "https://www.instagram.com/synapticsia/", icon: <Instagram className="w-5 h-5" /> },
     ];

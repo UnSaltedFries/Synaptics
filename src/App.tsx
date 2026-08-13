@@ -209,7 +209,6 @@ function SchemaManager() {
       "url": "https://synaptics.fr",
       "logo": "https://synaptics.fr/favicon.ico",
       "sameAs": [
-        "https://linkedin.com",
         "https://x.com/SynapticsIA",
         "https://www.instagram.com/synapticsia/"
       ],
