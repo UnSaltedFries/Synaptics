@@ -484,7 +484,7 @@ const translations: Record<Lang, Record<string, string>> = {
 
         "config.s1.title": "Intelligent Support Chatbot & FAQ",
         "config.s1.manual": "Team manually answers the same 20 questions (hours, rates, deadlines) multiple times a day.",
-        "config.s1.argument": "Your team spends 2h a day onrepetitive questions. This chatbot frees them for high-value tasks — and your clients get an answer in 3 seconds, at 3 AM.",
+        "config.s1.argument": "Your team spends 2h a day on repetitive questions. This chatbot frees them for high-value tasks — and your clients get an answer in 3 seconds, at 3 AM.",
         
         "config.s2.title": "Automated Customer Satisfaction (NPS)",
         "config.s2.manual": "No one follows up after service. Google reviews are never requested. Satisfaction is never measured.",

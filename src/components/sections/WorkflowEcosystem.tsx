@@ -312,7 +312,7 @@ export function WorkflowEcosystem() {
                                     <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
                                         <span className="text-xs text-gray-500 font-mono flex items-center gap-1.5">
                                             <Shield className="w-3.5 h-3.5 text-purple-400" />
-                                            100% Automatisé & Conforme RGPD
+                                            {lang === "fr" ? "100% Automatisé & Conforme RGPD" : "100% Automated & GDPR Compliant"}
                                         </span>
                                         <Link
                                             to="/pricing"
