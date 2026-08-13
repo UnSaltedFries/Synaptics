@@ -56,7 +56,7 @@ export function PricingConfigurator() {
     };
 
     const toggleService = useCallback((id: string) => {
-        setSelectedIds(prev => 
+        setSelectedIds(prev =>
             prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
         );
     }, []);
@@ -65,10 +65,10 @@ export function PricingConfigurator() {
         const base = services
             .filter(s => selectedIds.includes(s.id))
             .reduce((sum, s) => sum + s.price, 0);
-        
+
         let d = 0;
         let name = "config.pack.standard";
-        
+
         const count = selectedIds.length;
         if (count >= 8) {
             d = 0.20;
@@ -80,7 +80,7 @@ export function PricingConfigurator() {
             d = 0.10;
             name = "config.pack.starter";
         }
-        
+
         return {
             totalBase: base,
             discount: d,
@@ -102,7 +102,7 @@ export function PricingConfigurator() {
                             </h3>
                             <div className="grid grid-cols-1 gap-3">
                                 {catServices.map(service => (
-                                    <ServiceCard 
+                                    <ServiceCard
                                         key={service.id}
                                         service={service}
                                         isSelected={selectedIds.includes(service.id)}
@@ -120,152 +120,152 @@ export function PricingConfigurator() {
             {/* Summary Sticky Panel */}
             <div className="lg:col-span-5">
                 <div className="sticky top-32 z-30 transition-all duration-300">
-                    <motion.div 
+                    <motion.div
                         layout
                         className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-purple-500/5 hover:shadow-purple-500/10 transition-shadow"
                     >
                         {/* Background Layer */}
                         <div className="absolute inset-0 border border-white/[0.08] bg-[#111111]/80 z-0" />
-                        
+
                         {/* Background Glow */}
                         <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/10 blur-[100px] rounded-full z-0" />
-                        
+
                         {/* Content Wrap */}
                         <div className="relative z-10 p-6 md:p-10 flex flex-col h-full">
 
-                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                        <Tag className="w-6 h-6 text-purple-400" />
-                        {t("config.total")}
-                    </h2>
+                            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                                <Tag className="w-6 h-6 text-purple-400" />
+                                {t("config.total")}
+                            </h2>
 
-                    <div className="space-y-6">
-                        {/* Price Display */}
-                        <div className="flex flex-col">
-                            <div className="flex items-baseline gap-2">
-                                <AnimatePresence mode="wait">
-                                    <motion.span 
-                                        key={finalTotal}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-5xl md:text-6xl font-bold text-white tracking-tighter"
-                                    >
-                                        {formatPrice(finalTotal)}
-                                    </motion.span>
-                                </AnimatePresence>
-                                <span className="text-gray-500 font-medium">{t("config.perMonth")}</span>
-                            </div>
-                            
-                            {discount > 0 && (
-                                <motion.div 
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    className="flex items-center gap-2 mt-2"
-                                >
-                                    <Badge variant="outline" className="bg-purple-500/10 text-purple-400 border-purple-500/20 py-1">
-                                        -{discount * 100}% {t("config.discount")}
-                                    </Badge>
-                                    <span className="text-sm text-gray-500 line-through">{formatPrice(totalBase)}</span>
-                                </motion.div>
-                            )}
-                        </div>
+                            <div className="space-y-6">
+                                {/* Price Display */}
+                                <div className="flex flex-col">
+                                    <div className="flex items-baseline gap-2">
+                                        <AnimatePresence mode="wait">
+                                            <motion.span
+                                                key={finalTotal}
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                className="text-5xl md:text-6xl font-bold text-white tracking-tighter"
+                                            >
+                                                {formatPrice(finalTotal)}
+                                            </motion.span>
+                                        </AnimatePresence>
+                                        <span className="text-gray-500 font-medium">{t("config.perMonth")}</span>
+                                    </div>
 
-                        {/* Discount Tier Progress */}
-                        <div className="py-6 border-y border-white/[0.06] space-y-4">
-                            <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold">
-                                {t("config.currentTier")} — <span className="text-white">{t(packName)}</span>
-                            </p>
-
-                            {/* Progress bar */}
-                            <div className="relative h-2 rounded-full bg-white/[0.06] overflow-hidden">
-                                <motion.div
-                                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-purple-500 to-violet-400"
-                                    animate={{ width: `${Math.min((selectedIds.length / 8) * 100, 100)}%` }}
-                                    transition={{ duration: 0.4, ease: "easeOut" }}
-                                />
-                                {[3, 5, 8].map(n => (
-                                    <div
-                                        key={n}
-                                        className="absolute top-0 bottom-0 w-px bg-black/40"
-                                        style={{ left: `${(n / 8) * 100}%` }}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Tier labels */}
-                            <div className="flex items-end justify-between gap-2">
-                                {[
-                                    { threshold: 3, discount: "10%", label: t("config.pack.starter") },
-                                    { threshold: 5, discount: "15%", label: t("config.pack.growth") },
-                                    { threshold: 8, discount: "20%", label: t("config.pack.full") },
-                                ].map(({ threshold, discount: pct, label }) => {
-                                    const reached = selectedIds.length >= threshold;
-                                    const isNext = !reached && (
-                                        threshold === 3 ? selectedIds.length < 3 :
-                                        threshold === 5 ? selectedIds.length >= 3 && selectedIds.length < 5 :
-                                        selectedIds.length >= 5 && selectedIds.length < 8
-                                    );
-                                    return (
+                                    {discount > 0 && (
                                         <motion.div
-                                            key={threshold}
-                                            className={cn(
-                                                "flex flex-col items-center gap-1 flex-1 text-center",
-                                                reached ? "opacity-100" : "opacity-40"
-                                            )}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            className="flex items-center gap-2 mt-2"
                                         >
-                                            <span className={cn(
-                                                "text-base font-bold font-mono",
-                                                reached ? "text-green-400" : isNext ? "text-purple-400" : "text-gray-500"
-                                            )}>
-                                                -{pct}
-                                            </span>
-                                            <span className="text-[9px] uppercase tracking-wider text-gray-500 leading-tight">
-                                                {threshold} {t("config.services.label")}
-                                            </span>
+                                            <Badge variant="outline" className="bg-purple-500/10 text-purple-400 border-purple-500/20 py-1">
+                                                -{discount * 100}% {t("config.discount")}
+                                            </Badge>
+                                            <span className="text-sm text-gray-500 line-through">{formatPrice(totalBase)}</span>
                                         </motion.div>
-                                    );
-                                })}
+                                    )}
+                                </div>
+
+                                {/* Discount Tier Progress */}
+                                <div className="py-6 border-y border-white/[0.06] space-y-4">
+                                    <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold">
+                                        {t("config.currentTier")} — <span className="text-white">{t(packName)}</span>
+                                    </p>
+
+                                    {/* Progress bar */}
+                                    <div className="relative h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                                        <motion.div
+                                            className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-purple-500 to-violet-400"
+                                            animate={{ width: `${Math.min((selectedIds.length / 8) * 100, 100)}%` }}
+                                            transition={{ duration: 0.4, ease: "easeOut" }}
+                                        />
+                                        {[3, 5, 8].map(n => (
+                                            <div
+                                                key={n}
+                                                className="absolute top-0 bottom-0 w-px bg-black/40"
+                                                style={{ left: `${(n / 8) * 100}%` }}
+                                            />
+                                        ))}
+                                    </div>
+
+                                    {/* Tier labels */}
+                                    <div className="flex items-end justify-between gap-2">
+                                        {[
+                                            { threshold: 3, discount: "10%", label: t("config.pack.starter") },
+                                            { threshold: 5, discount: "15%", label: t("config.pack.growth") },
+                                            { threshold: 8, discount: "20%", label: t("config.pack.full") },
+                                        ].map(({ threshold, discount: pct, label }) => {
+                                            const reached = selectedIds.length >= threshold;
+                                            const isNext = !reached && (
+                                                threshold === 3 ? selectedIds.length < 3 :
+                                                    threshold === 5 ? selectedIds.length >= 3 && selectedIds.length < 5 :
+                                                        selectedIds.length >= 5 && selectedIds.length < 8
+                                            );
+                                            return (
+                                                <motion.div
+                                                    key={threshold}
+                                                    className={cn(
+                                                        "flex flex-col items-center gap-1 flex-1 text-center",
+                                                        reached ? "opacity-100" : "opacity-40"
+                                                    )}
+                                                >
+                                                    <span className={cn(
+                                                        "text-base font-bold font-mono",
+                                                        reached ? "text-green-400" : isNext ? "text-purple-400" : "text-gray-500"
+                                                    )}>
+                                                        -{pct}
+                                                    </span>
+                                                    <span className="text-[9px] uppercase tracking-wider text-gray-500 leading-tight">
+                                                        {threshold} {t("config.services.label")}
+                                                    </span>
+                                                </motion.div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {/* Selected Items List */}
+                                <div
+                                    className="space-y-2 max-h-[160px] overflow-y-auto pr-2 chat-scrollbar"
+                                    data-lenis-prevent="true"
+                                >
+                                    {selectedIds.length === 0 ? (
+                                        <p className="text-sm text-gray-500 italic">{t("config.emptyState")}</p>
+                                    ) : (
+                                        selectedIds.map(id => {
+                                            const s = services.find(srv => srv.id === id);
+                                            return (
+                                                <motion.div
+                                                    initial={{ opacity: 0, scale: 0.95 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    key={id}
+                                                    className="flex justify-between items-center text-sm text-gray-400 bg-white/[0.03] p-3 rounded-xl border border-white/[0.05]"
+                                                >
+                                                    <span className="line-clamp-1">{t(s?.titleKey || "")}</span>
+                                                    <span className="font-mono text-xs text-white/50 ml-4">{formatPrice(s?.price || 0)}</span>
+                                                </motion.div>
+                                            );
+                                        })
+                                    )}
+                                </div>
+
+                                <Link
+                                    to="/checkout"
+                                    state={{ selectedServices: selectedIds, total: finalTotal }}
+                                    className={cn(
+                                        "w-full py-7 rounded-2xl bg-white text-black hover:bg-gray-200 transition-all font-bold text-base shadow-[0_10px_40px_rgba(255,255,255,0.1)] group flex items-center justify-center",
+                                        selectedIds.length === 0 && "opacity-50 pointer-events-none"
+                                    )}
+                                >
+                                    <ShoppingCart className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                                    {t("config.cta")}
+                                </Link>
                             </div>
                         </div>
-
-                        {/* Selected Items List */}
-                        <div 
-                            className="space-y-2 max-h-[160px] overflow-y-auto pr-2 chat-scrollbar"
-                            data-lenis-prevent="true"
-                        >
-                            {selectedIds.length === 0 ? (
-                                <p className="text-sm text-gray-500 italic">{t("config.emptyState")}</p>
-                            ) : (
-                                selectedIds.map(id => {
-                                    const s = services.find(srv => srv.id === id);
-                                    return (
-                                        <motion.div 
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            key={id} 
-                                            className="flex justify-between items-center text-sm text-gray-400 bg-white/[0.03] p-3 rounded-xl border border-white/[0.05]"
-                                        >
-                                            <span className="line-clamp-1">{t(s?.titleKey || "")}</span>
-                                            <span className="font-mono text-xs text-white/50 ml-4">{formatPrice(s?.price || 0)}</span>
-                                        </motion.div>
-                                    );
-                                })
-                            )}
-                        </div>
-
-                        <Link
-                            to="/checkout"
-                            state={{ selectedServices: selectedIds, total: finalTotal }}
-                            className={cn(
-                                "w-full py-7 rounded-2xl bg-white text-black hover:bg-gray-200 transition-all font-bold text-base shadow-[0_10px_40px_rgba(255,255,255,0.1)] group flex items-center justify-center",
-                                selectedIds.length === 0 && "opacity-50 pointer-events-none"
-                            )}
-                        >
-                            <ShoppingCart className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                            {t("config.cta")}
-                        </Link>
-                        </div>
-                    </div>
-                </motion.div>
+                    </motion.div>
                 </div>
             </div>
         </div>
@@ -287,16 +287,16 @@ const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onTog
             onClick={() => onToggle(service.id)}
             className={cn(
                 "group relative p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4",
-                isSelected 
-                    ? "bg-purple-500/[0.08] border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.1)]" 
+                isSelected
+                    ? "bg-purple-500/[0.08] border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.1)]"
                     : "bg-white/[0.02] border-white/[0.08] hover:border-white/20"
             )}
         >
             <div className="flex items-center gap-4 flex-1">
                 <div className={cn(
                     "w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all flex-shrink-0",
-                    isSelected 
-                        ? "bg-purple-500 border-purple-500 text-white" 
+                    isSelected
+                        ? "bg-purple-500 border-purple-500 text-white"
                         : "border-white/10 group-hover:border-white/30"
                 )}>
                     {isSelected && <Check className="w-4 h-4 stroke-[3]" />}
@@ -333,7 +333,7 @@ const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onTog
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="mt-8 flex justify-between items-center py-4 border-t border-white/[0.08]">
-                                    <div className="text-2xl font-bold">{formatPrice(service.price)}<span className="text-sm text-gray-600">/mo</span></div>
+                                    <div className="text-2xl font-bold">{formatPrice(service.price)}<span className="text-sm text-gray-600"> {t("config.mo")}</span></div>
                                     <Button onClick={() => onToggle(service.id)} className={cn(
                                         "rounded-xl px-6 py-5 h-auto font-bold",
                                         isSelected ? "bg-red-500/10 text-red-500 hover:bg-red-500/20 border-red-500/20" : "bg-white text-black hover:bg-gray-200"
@@ -345,7 +345,7 @@ const ServiceCard = React.memo(function ServiceCard({ service, isSelected, onTog
                         </Dialog>
                     </div>
                     <p className="text-[10px] text-gray-600 line-clamp-1 max-w-[200px] uppercase tracking-wider">
-                        {formatPrice(service.price)} / month
+                        {formatPrice(service.price)} {t("config.perMonth")}
                     </p>
                 </div>
             </div>
